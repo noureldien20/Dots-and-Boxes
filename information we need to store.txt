@@ -1,0 +1,17 @@
+updated during the game
+    turn
+    # of moves of each player
+    score of each player
+    remaining dots
+    Time passed in minutes and seconds
+
+after the game
+    add winner only to users list (a file) name should be case insensitive
+    add his score, if its not the first time then if score is higher than the last then update it
+    we don't have to save them sorted, but we need to print them in a sorted order.
+
+at any time the game could be saved to a file, saved game could be loaded and contioud
+we should have 3 saved files for 3 different games
+The saved file could be a binary file,
+
+we need to store data for the redo but, we don't need to save them.
