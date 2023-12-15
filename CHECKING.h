@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <C:\COLLEGE\Programming\Dots-and-Boxes\Basic Var. & Func .h>
+#include <C:\COLLEGE\Programming\Dots-and-Boxes\Basic Var. & Func.h>
 
 /******************************** بسم الله الرحمن الرحيم  **************************************/
 
@@ -28,10 +28,9 @@ int check_boxes(short int boxes,int size){
    int i,j ;
    for (i=0 ; i<n ; i++){
       for (j=0 ; j<n ; j++){
-         if(boxes[i][j]){
+         //if(boxes[i][j]){
 
          }
       }
-   }
 }
 
