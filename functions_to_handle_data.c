@@ -1,6 +1,12 @@
+
+
+//still not finished , used txt file instead of binary
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#define MAX_PLAYERS_TO_PRINT 10
 
 typedef struct Player 
 {
@@ -9,35 +15,35 @@ typedef struct Player
 }Player;
 
 
-void Winner(Player *winner, int *MAX_PLAYERS) 
+void Winner(Player *winner) 
 {
-    FILE *file = fopen("player_data.bin", "rb+");
+    FILE *file = fopen("player_data.txt", "a+");
 
     if (file == NULL) 
     {
-                                                                        // create the file if it doesn't exist
-        file = fopen("player_data.bin", "wb+");
+        // create the file if it doesn't exist
+        file = fopen("player_data.bin", "w+");
         if (file == NULL) printf("Error opening or creating the file.\n");
     }
 
-    Player currentPlayer;
+    Player temp;
     int found = 0;
 
     //Search for the player in the file
 
-    while (fread(&currentPlayer, sizeof(Player), 1, file) == 1) 
+    while (fscanf(file, "%49s %d", temp.name, &temp.score) == 2) 
     {
-        if (strcmp(currentPlayer.name, winner->name) == 0)      //strcmp compares 2 strings and return 0 if they are the same
+        if (strcmp(temp.name, winner->name) == 0) 
         {
             found = 1;
 
-            if (winner->score > currentPlayer.score)         //compare scores
+            if (winner->score > temp.score) 
             {
-                currentPlayer.score = winner->score;
+                temp.score = winner->score;
 
-                fseek(file, -sizeof(Player), SEEK_CUR);     //update the score
+                fseek(file, -(49 + sizeof(int) + 2), SEEK_SET);
 
-                fwrite(&currentPlayer, sizeof(Player), 1, file);
+                fprintf(file, "%s %d\n", temp.name, temp.score);
             }
             break;
         }
@@ -45,9 +51,7 @@ void Winner(Player *winner, int *MAX_PLAYERS)
 
     if (!found) 
     {
-        fseek(file, 0, SEEK_END);
-        fwrite(winner, sizeof(Player), 1, file);
-        (*MAX_PLAYERS)++;
+        fprintf(file, "%s %d\n", winner->name, winner->score);
     }
 
     fclose(file);
@@ -55,28 +59,42 @@ void Winner(Player *winner, int *MAX_PLAYERS)
 
 // Display the top 10 players and their scores
 
-void printTopPlayers(int MAX_PLAYERS) 
+void printTopPlayers() 
 {
-    FILE *file = fopen("player_data.bin", "rb");
+    FILE *file = fopen("player_data.txt", "r");
 
-    if (file == NULL) printf("Error opening the file.\n");
+    if (file == NULL) 
+    {
+        printf("Error opening the file.\n");
+        exit(1);
+    }
 
-    Player players[MAX_PLAYERS];
+    Player *players = NULL;  // Dynamic array to store players
     int numPlayers = 0;
 
-    // Read player data into an array of player structures
-    while (numPlayers < MAX_PLAYERS) 
+    // Read players from the file dynamically
+    Player tempPlayer;
+    while (fscanf(file, "%49s %d", tempPlayer.name, &tempPlayer.score) == 2) 
     {
-        if(fread(&players[numPlayers], sizeof(Player), 1, file) == 1)
+        // Dynamically allocate memory for a new player
+        players = realloc(players, (numPlayers + 1) * sizeof(Player));
+
+        // Check if memory allocation is successful
+        if (players == NULL) 
         {
-            numPlayers++;
+            printf("Memory allocation failed.\n");
+            exit(1);
         }
+
+        // Copy the temporary player data to the array
+        players[numPlayers++] = tempPlayer;
+        //numPlayers++;
     }
 
     fclose(file);
 
-    // Sort the players
-    for (int i = 0; i < numPlayers - 1; i++) 
+    // Sort the players based on score
+    for (int i = 0; i < numPlayers - 1; i++)
     {
         for (int j = i + 1; j < numPlayers; j++) 
         {
@@ -89,20 +107,22 @@ void printTopPlayers(int MAX_PLAYERS)
         }
     }
 
-    int numPlayersToPrint = (numPlayers < 10) ? numPlayers : 10;
+    printf("Top %d Players:\n", numPlayers);
 
-    printf("Top %d Players:\n", numPlayersToPrint);
+    int numPlayersToPrint = (numPlayers < MAX_PLAYERS_TO_PRINT) ? numPlayers : MAX_PLAYERS_TO_PRINT;
 
-    for (int i = 0; i < numPlayersToPrint ; i++) 
+    for (int i = 0; i < numPlayersToPrint; i++) 
     {
         printf("%d. %s - %d\n", i + 1, players[i].name, players[i].score);
     }
+
+    // Free dynamically allocated memory
+    free(players);
 }
+
 
 int main() 
 {
-    int MAX_PLAYERS = 0;
-
     while(1)
     {
         Player winner;
@@ -113,11 +133,9 @@ int main()
         printf("enter score:");
         scanf("%d", &winner.score);
 
-        Winner(&winner, &MAX_PLAYERS);
+        Winner(&winner);
 
-        printf("MAX_PLAYERS: %d\n", MAX_PLAYERS);
-
-        printTopPlayers(MAX_PLAYERS) ;
+        printTopPlayers();
     }
 }
 
