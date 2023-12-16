@@ -1,5 +1,4 @@
 #include <stdio.h>
-//#include <C:\COLLEGE\Programming\Dots & Boxes\Display.h>
 #include <C:\COLLEGE\Programming\Dots-and-Boxes\Basic Var. & Func.h>
 
 #define line "_______"
@@ -21,17 +20,25 @@ number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k
 **/
 
+void print_boxes_color(short int c,short int i){
+   if (boxes[c-1][i]=='1'){
+      printf(back_cyan"       ") ;
+   }else if(boxes[c-1][i]=='2'){
+      printf(back_green"       ") ;
+   }else{
+      printf("       ") ;
+   }
+}
+
 void print_horizontal(short int r,short int n,char row_edges[][n]){
-int i ; ///r is not index , if r=2 ---> row that has index 1
+   int i ;   ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
       printf(white".") ;
 
       if (row_edges[r-1][i] == 1){
          printf(cyan"%s",line) ;
-
       }else if(row_edges[r-1][i] == 2){
          printf(green"%s",line) ;
-
       }else{
          printf("\t") ;
       }
@@ -43,21 +50,20 @@ void print_vertical(short int c,short int n,char col_edges[][n+1]){
    int i ;
    for(int j=0; j<3 ;j++){
       for(i=0 ; i<n ; i++){
-         if (col_edges[c-1][i]==1){
-            printf(cyan"|");
-            printf(back_white"\t") ;
 
-         }else if(col_edges[c-1][i]==2){
-            printf(green"|");
-            printf(back_white"\t") ;
-
+         if(col_edges[c-1][i]=='1' || boxes[c-1][i]=='1'){
+            printf(cyan"|") ;
+         }else if(col_edges[c-1][i]=='2' || boxes[c-1][i]=='2'){
+            printf(green"|") ;
          }else{
-            printf(back_white" \t") ;
+            printf(" ") ;
          }
+         print_boxes_color(c,i) ;
       }
-   if (col_edges[c-1][i]==1){
+
+   if (col_edges[c-1][i]=='1'){
       printf(cyan"|\n");
-   }else if(col_edges[c-1][i]==2){
+   }else if(col_edges[c-1][i]=='2'){
       printf(green"|\n") ;
    }else{
       printf(" \n") ;
