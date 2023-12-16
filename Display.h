@@ -1,16 +1,6 @@
 #include <stdio.h>
 //#include <C:\COLLEGE\Programming\Dots & Boxes\Display.h>
-
-#define black "\e[1;30m"
-#define red "\e[1;31m"
-#define green "\e[1;32m"
-#define High_intensity_green "\e[1;92m"
-#define yellow "\e[1;33m"
-#define blue  "\e[1;34m"
-#define cyan "\e[1;36m"
-#define High_intensity_cyan "\e[1;96m"
-#define white "\e[1;37m"
-#define High_intensity_white "\e[1;97m"
+#include <C:\COLLEGE\Programming\Dots-and-Boxes\Basic Var. & Func.h>
 
 #define line "_______"
 
@@ -31,38 +21,38 @@ number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k
 **/
 
-void print_horizontal(int r,int n,int row_edges[][n]){
+void print_horizontal(short int r,short int n,char row_edges[][n]){
 int i ; ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
-      printf(High_intensity_white".") ;
+      printf(white".") ;
 
       if (row_edges[r-1][i] == 1){
-         printf(High_intensity_cyan"%s",line) ;
+         printf(cyan"%s",line) ;
 
       }else if(row_edges[r-1][i] == 2){
-         printf(High_intensity_green"%s",line) ;
+         printf(green"%s",line) ;
 
       }else{
          printf("\t") ;
       }
    }
-   printf(High_intensity_white".\n") ;
+   printf(white".\n") ;
 }
 
-void print_vertical(int c,int n,int col_edges[][n+1]){
+void print_vertical(short int c,short int n,char col_edges[][n+1]){
    int i ;
    for(int j=0; j<3 ;j++){
       for(i=0 ; i<n ; i++){
          if (col_edges[c-1][i]==1){
             printf(cyan"|");
-            printf("\t") ;
+            printf(back_white"\t") ;
 
          }else if(col_edges[c-1][i]==2){
             printf(green"|");
-            printf("\t") ;
+            printf(back_white"\t") ;
 
          }else{
-            printf(" \t") ;
+            printf(back_white" \t") ;
          }
       }
    if (col_edges[c-1][i]==1){
@@ -75,7 +65,7 @@ void print_vertical(int c,int n,int col_edges[][n+1]){
    }
 }
 
-void print_grid(int n){
+void print_grid(short int n){
    int j ;
    for(j=1 ; j<=n ; j++){
       print_horizontal(j,n,row_edges) ;
