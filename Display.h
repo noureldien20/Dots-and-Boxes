@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <C:\COLLEGE\Programming\Dots-and-Boxes\Basic Var. & Func.h>
+#include "Basic Var. & Func.h"
 
 #define line "_______"
 
