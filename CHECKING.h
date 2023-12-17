@@ -25,13 +25,25 @@ void check_edges(){   //no errors
 
 short int check_box(short int i,short int j){
    short int n_zeros = 0 ;
-   short int m=0,n=0;
    if(boxes[i][j] != '0'){
 
       if(row_edges[i][j] == '0'){n_zeros++ ; }
       if(row_edges[i][j+1] == '0'){n_zeros++ ; }
       if(col_edges[i][j] == '0'){n_zeros++ ; }
       if(col_edges[i+1][j] == '0'){n_zeros++ ; }
+
+      if(row_edges[i][j] == '0' && n_zeros==1){
+         row_edges[i][j] == turn ;
+      }
+      if(row_edges[i][j+1] == '0' && n_zeros==1){
+         row_edges[i][j+1] == turn ;
+      }
+      if(col_edges[i][j] == '0' && n_zeros==1){
+         col_edges[i][j] == turn ;
+      }
+      if(col_edges[i+1][j] == '0' && n_zeros==1){
+         row_edges[i+1][j] == turn ;
+      }
 
       if(n_zeros==1){
          boxes[i][j] == turn ;
