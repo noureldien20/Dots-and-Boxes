@@ -18,19 +18,20 @@ number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
 
 short int n ;
-char row_edges ;  //2D array of the edges of rows  ( of size [n+1][n])
+char **row_edges ;  //2D array of the edges of rows  ( of size [n+1][n])
 char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
+char **dfs ;
 char turn ;
-int score1 , score2 ;  // Scores of players
+//int score1 , score2 ;  // Scores of players
 
 
-/*void zero_array_2D(short int row,short int col,char arr[][]){
+void zero_array_2D(short int row,short int col,char arr[][]){
    for (int i=0 ; i<row ; i++){
       for (int j=0 ; j<col ; j++){
-         *(*(arr + i)) + j = '0' ; }
+         arr[i][j] = '0' ; }
    }
-}*/
+}
 
 void print_array_2D(short int row,short int col,char arr[][]){
    for (short int i=0 ; i<row ; i++){
@@ -53,4 +54,5 @@ void declare_arrays(short int n){
    char **row_edges = create_array(n+1,n) ;
    char **col_edges = create_array(n,n+1) ;
    char **boxes = create_array(n,n) ;
+   char **dfs = create_array(n,n) ;
 }

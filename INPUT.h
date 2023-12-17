@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include <C:\COLLEGE\Programming\Dots-and-Boxes\Basic Var. & Func.h>
+#include "Basic Var. & Func.h"
 
-int r1,r2,c1,c2 ;
+short int r1,r2,c1,c2 ;
 char abs(char x){
     if(x<0){
         return -1*x ;
@@ -20,10 +20,10 @@ char min(char x,char y){
 
 void input_edge(){
 
-    scanf("%c",&r1) ; scanf("%c") ;
-    scanf("%c",&r2) ; scanf("%c") ;
-    scanf("%c",&c1) ; scanf("%c") ;
-    scanf("%c",&c2) ;
+    scanf("%d",&r1) ; //scanf("%c") ;
+    scanf("%d",&r2) ; //scanf("%c") ;
+    scanf("%d",&c1) ; //scanf("%c") ;
+    scanf("%d",&c2) ;
 
     if(!
     (r1==r2 || c1==c2) &&   //nodes are adjacent
