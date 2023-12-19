@@ -1,23 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-#define MAX_SIZE_OF_STACK 30
-
-typedef struct 
-{
-    double number_of_moves;
-    char turn;
-} game;
-
-// Structure to represent the stack
-typedef struct 
-{
-    game array[MAX_SIZE_OF_STACK];
-    int top; 
-} Stack;
-
-Stack undo_stack;
-Stack redo_stack;
+#include "Basic Var. & Func.h"
 
 void initialize_undo_stack(Stack* stack) 
 {
@@ -39,17 +22,17 @@ void initialize_stacks(void)
 
 game peek(Stack* stack)
 {
-    return stack->array[stack->top];
+    return stack->stack_array[stack->top];
 }
 
 game pop(Stack* stack) 
 {
-    return stack->array[stack->top--];
+    return stack->stack_array[stack->top--];
 }
 
 void push(Stack *stack, game game)
 {
-    stack->array[++stack->top] = game;
+    stack->stack_array[++stack->top] = game;
 }
 
 void empty(Stack *stack)
