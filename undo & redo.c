@@ -5,7 +5,7 @@
 
 typedef struct 
 {
-    double elapsed_time;
+    double number_of_moves;
     char turn;
 } game;
 
@@ -21,13 +21,7 @@ Stack redo_stack;
 
 void initialize_undo_stack(Stack* stack) 
 {
-    stack->top = 0;
-
-    game zero;
-    zero.elapsed_time = 0;
-    zero.turn = 'A';
-
-    stack->array[0] = zero;
+    stack->top = -1;
 }
 
 void initialize_redo_stack(Stack* stack) 
@@ -58,11 +52,16 @@ void push(Stack *stack, game game)
     stack->array[++stack->top] = game;
 }
 
-game undo_stack(Stack *undo_stack,Stack *redo_stack, game before_current)
+void empty(Stack *stack)
 {
-    if (before_current.turn == peek(undo_stack).turn)
+    stack->top = -1;
+}
+
+void undo(Stack *undo_stack,Stack *redo_stack, game *current)
+{
+    if (current->turn == peek(undo_stack).turn && undo_stack->top != -1)
     {
-        push(&redo_stack, pop(&undo_stack));
+        push(redo_stack, pop(undo_stack));
         
         printf("Undo successful.\n");
     } 
@@ -71,14 +70,14 @@ game undo_stack(Stack *undo_stack,Stack *redo_stack, game before_current)
         printf("u can't undo_stack anymore.\n");
     }
 
-    return peek(&undo_stack);
+    *current = peek(undo_stack);
 }
 
-void redo_stack(Stack *undo_stack,Stack *redo_stack, game after_current)
+void redo(Stack *undo_stack,Stack *redo_stack, game *current)
 {
-    if (after_current.turn == peek(redo_stack).turn)
+    if (current->turn == peek(redo_stack).turn && undo_stack->top != -1)
     {
-        push(&undo_stack, pop(&redo_stack));
+        push(undo_stack, pop(redo_stack));
  
         printf("Redo successful.\n");
     } 
@@ -87,7 +86,7 @@ void redo_stack(Stack *undo_stack,Stack *redo_stack, game after_current)
         printf("u can't redo_stack anymore\n");
     }
 
-    return peek(&undo_stack);
+    *current = peek(undo_stack);
 }
 
 int main()
@@ -95,34 +94,35 @@ int main()
     initialize_stacks();
 
     game current;
+    current.number_of_moves = 0;
+    current.turn = 'A';
+
+    push(&undo_stack, current);
+
+    printf("Current game: number of moves: %.2lf, Turn: %c\n", current.number_of_moves, current.turn);
 
     while (1)
     {
-        printf("enter time: ");
-        scanf("%lf", &current.elapsed_time);
+        printf("enter number of moves: ");
+        scanf("%lf", &current.number_of_moves);
 
-        printf("enter turn: ");
-        scanf("%c", &current.turn);
-
-        char option;
+        int option;
         printf("enter option num: ");
-        scanf("%c", &option);
+        scanf("%d", &option);
 
-        switch (option)
+        if(option == 1)
         {
-        case 'u':
-            undo_stack(&undo_stack, &redo_stack, current);
-            break;
-        case 'r':
-            redo_stack(&undo_stack, &redo_stack, current);
-            break;
-        case 's' : 
-            break;
-        default:
-            break;
+            undo(&undo_stack, &redo_stack, &current);
         }
+        else if(option == 2)
+        {
+            redo(&undo_stack, &redo_stack, &current);
+        }
+        else
+        {
+            push(&undo_stack, current);
+        }
+
+        printf("After operation\nCurrent game: number of moves: %.2lf, Turn: %c\n", current.number_of_moves, current.turn);
     }
-    
-
-
 }
