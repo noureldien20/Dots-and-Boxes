@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 65
+#define MAX_SIZE_OF_STACK 30
 
 typedef struct 
 {
@@ -12,115 +12,117 @@ typedef struct
 // Structure to represent the stack
 typedef struct 
 {
-    game array[MAX_SIZE];
-    int top; // Index of the top element
+    game array[MAX_SIZE_OF_STACK];
+    int top; 
 } Stack;
 
-Stack undo;
-Stack redo;
+Stack undo_stack;
+Stack redo_stack;
 
-void initialize(Stack* stack) 
+void initialize_undo_stack(Stack* stack) 
 {
-    stack->top = -1; // Initialize the top index to -1
+    stack->top = 0;
+
+    game zero;
+    zero.elapsed_time = 0;
+    zero.turn = 'A';
+
+    stack->array[0] = zero;
 }
 
-// Function to check if the stack is empty
-int isEmpty(Stack* stack) 
+void initialize_redo_stack(Stack* stack) 
 {
-    return stack->top == -1;
+    stack->top = -1;
 }
 
-// Function to check if the stack is full
-int isFull(Stack* stack) 
+void initialize_stacks(void)
 {
-    return stack->top == MAX_SIZE - 1;
+    initialize_undo_stack(&undo_stack);
+    initialize_redo_stack(&redo_stack);
+
+    printf("stacks initialized successfully\n");
 }
 
-// Function to get the top element of the stack without removing it
-game peek(Stack* stack) // like top() function
+game peek(Stack* stack)
 {
-    game emptyStruct = {0.0, '\0'}; // Return a special value to indicate an error
-    if (isEmpty(stack)) 
-    {
-        printf("The stack is empty. No element to peek.\n");
-        return emptyStruct;
-    }
-
     return stack->array[stack->top];
 }
 
 game pop(Stack* stack) 
 {
-    game emptyStruct = {0.0, '\0'}; // Return a special value to indicate an error
-
-    if (isEmpty(stack))
-    {
-        printf("Stack underflow. Cannot pop from an empty stack.\n");
-        return emptyStruct;
-    }
-
     return stack->array[stack->top--];
 }
 
-void push_play_to_stack(Stack *stack, game game)
+void push(Stack *stack, game game)
 {
-    if (isFull(stack)) 
-    {
-        printf("Stack overflow. Cannot push onto the stack.\n");
-        return;
-    }
-
     stack->array[++stack->top] = game;
 }
 
-void game_undo(Stack *undo,Stack *redo)
+game undo_stack(Stack *undo_stack,Stack *redo_stack, game before_current)
 {
-    if (!isEmpty(&undo)) 
+    if (before_current.turn == peek(undo_stack).turn)
     {
-        push_play_to_stack(&redo, pop(&undo));
+        push(&redo_stack, pop(&undo_stack));
+        
         printf("Undo successful.\n");
     } 
     else 
     {
-        printf("No moves to undo.\n");
+        printf("u can't undo_stack anymore.\n");
     }
+
+    return peek(&undo_stack);
 }
 
-void game_redo(Stack *undo,Stack *redo)
+void redo_stack(Stack *undo_stack,Stack *redo_stack, game after_current)
 {
-    if (!isEmpty(&redo)) 
+    if (after_current.turn == peek(redo_stack).turn)
     {
-        push_play_to_stack(&undo, pop(&redo));
+        push(&undo_stack, pop(&redo_stack));
+ 
         printf("Redo successful.\n");
     } 
     else 
     {
-        printf("No moves to redo.\n");
+        printf("u can't redo_stack anymore\n");
     }
+
+    return peek(&undo_stack);
 }
 
 int main()
 {
-    initialize(&undo);
-    initialize(&redo);
+    initialize_stacks();
 
-    game first;
-    first.elapsed_time = 0.0;
-    first.turn = 'A';
+    game current;
 
-    game second;
-    second.elapsed_time = 2.0;
-    second.turn = 'B';
+    while (1)
+    {
+        printf("enter time: ");
+        scanf("%lf", &current.elapsed_time);
 
-    game third;
-    third.elapsed_time = 3.0;
-    third.turn = 'A';
+        printf("enter turn: ");
+        scanf("%c", &current.turn);
 
-    push_play_to_stack(&undo, first);
-    push_play_to_stack(&undo, second);
-    push_play_to_stack(&undo, third);
+        char option;
+        printf("enter option num: ");
+        scanf("%c", &option);
 
+        switch (option)
+        {
+        case 'u':
+            undo_stack(&undo_stack, &redo_stack, current);
+            break;
+        case 'r':
+            redo_stack(&undo_stack, &redo_stack, current);
+            break;
+        case 's' : 
+            break;
+        default:
+            break;
+        }
+    }
+    
 
-    game current
 
 }

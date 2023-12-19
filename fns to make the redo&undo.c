@@ -12,7 +12,7 @@ typedef struct
 // Structure to represent the stack
 typedef struct 
 {
-    action array[MAX_SIZE];
+    action array[MAX_SIZE_OF_STACK];
     int top; // Index of the top element
 } Stack;
 
@@ -31,7 +31,7 @@ int isEmpty(Stack* stack)
 // Function to check if the stack is full
 int isFull(Stack* stack) 
 {
-    return stack->top == MAX_SIZE - 1;
+    return stack->top == MAX_SIZE_OF_STACK - 1;
 }
 
 // Function to push an element onto the stack
