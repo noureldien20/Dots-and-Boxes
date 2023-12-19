@@ -56,3 +56,35 @@ void declare_arrays(short int n){
    char **boxes = create_array(n,n) ;
    char **dfs = create_array(n,n) ;
 }
+
+// this is to be modified.
+
+// struct to represent player data
+typedef struct Player 
+{
+    char name[50];
+    int score;
+    int number_of_moves;
+}Player;
+
+Player A;
+Player B;
+
+#define MAX_SIZE_OF_STACK 30
+
+// struct to represent game data
+typedef struct 
+{
+    double number_of_moves;
+    char turn;
+} game;
+
+// Structure to represent the stack
+typedef struct 
+{
+    game stack_array[MAX_SIZE_OF_STACK];
+    int top; 
+} Stack;
+
+Stack undo_stack;
+Stack redo_stack;
