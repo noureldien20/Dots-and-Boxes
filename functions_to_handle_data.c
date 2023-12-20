@@ -1,5 +1,4 @@
 
-
 //still not finished , used txt file instead of binary
 
 #include <stdio.h>
@@ -49,7 +48,7 @@ void Winner(Player *winner)
         }
     }
 
-    if (!found) 
+    if (!found)
     {
         fprintf(file, "%s %d\n", winner->name, winner->score);
     }

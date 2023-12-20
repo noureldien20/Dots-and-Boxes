@@ -1,5 +1,8 @@
+#ifndef CHECKING_H
+# define CHECKING_H
+
 #include <stdio.h>
-#include "Basic Var. & Func.h"
+#include "Basic Var. and Func.h"
 
 /******************************** بسم الله الرحمن الرحيم  **************************************/
 
@@ -77,3 +80,8 @@ void DFS(short int a,short int b){
    
    }
 }
+
+
+
+
+#endif

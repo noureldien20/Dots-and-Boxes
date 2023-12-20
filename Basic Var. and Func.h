@@ -1,3 +1,6 @@
+#ifndef BASIC_VAR._AND_FUNC_H
+#define BASIC_VAR._AND_FUNC_H
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,6 +16,10 @@
 #define back_green "\e[42m"
 #define back_white "\e[47m"
 
+#define Ctrl+Z '\x1A'
+#define Ctrl+R '\x12'
+#define Ctrl+S '\x13'
+
 /** Names of variables
 number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
@@ -26,7 +33,7 @@ char turn ;
 //int score1 , score2 ;  // Scores of players
 
 
-void zero_array_2D(short int row,short int col,char arr[][]){
+void zero_2D_array(short int row,short int col,char arr[][]){
    for (int i=0 ; i<row ; i++){
       for (int j=0 ; j<col ; j++){
          arr[i][j] = '0' ; }
@@ -44,6 +51,7 @@ void print_array_2D(short int row,short int col,char arr[][]){
 
 char **create_array(short int row,short int col){
    char **arr = (char**)calloc((row),sizeof(char*)) ;
+   
    for(short int i=0 ; i<row ; i++){
       arr[i] = (char*)calloc(col, sizeof(char));
    }
@@ -56,3 +64,15 @@ void declare_arrays(short int n){
    char **boxes = create_array(n,n) ;
    char **dfs = create_array(n,n) ;
 }
+
+char small(char c){
+   if (c>=65 && c<=90){ return c+32 ; }
+   else{return c ;}
+}
+
+char big(char c){
+   if (c>=97 && c<=122){ return c-32 ; }
+   else{return c ;}
+}
+
+#endif

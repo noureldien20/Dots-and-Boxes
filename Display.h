@@ -1,5 +1,8 @@
+#ifndef DISPLAY_H
+#define DISPLAY_H
+
 #include <stdio.h>
-#include "Basic Var. & Func.h"
+#include "Basic Var. and Func.h"
 
 #define line "_______"
 
@@ -80,8 +83,10 @@ void print_grid(short int n){
    print_horizontal(j,n,row_edges) ;
 }
 
-void menu(){
+void print_menu(){
    int x,y ;
    printf("Welcome to Dots & Boxes game\n") ;
    printf("Choose Beginner or Expert : ") ;
 }
+
+#endifb
