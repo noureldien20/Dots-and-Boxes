@@ -109,3 +109,31 @@ int main()
         printf("After operation\nCurrent game: number of moves: %.2lf, Turn: %c\n", current.number_of_moves, current.turn);
     }
 }
+
+int number_of_filled_boxes() 
+{
+    // int n, char array[n][n] of boxes
+    int sum = 0;
+
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            sum += array[i][j] - '0';
+        }
+    }
+
+    return sum;
+}
+
+short int previous_sum; // needs to be updated at the end of every round
+
+char switch_turn()
+{
+    if(number_of_filled_boxes() = previous_sum)
+    {
+        empty(&undo_stack);
+        empty(&redo_stack);
+        return (currentTurn == 1) ? 2 : 1;
+    }
+}

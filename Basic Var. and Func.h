@@ -76,3 +76,102 @@ char big(char c){
 }
 
 #endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#define MAX_SIZE_OF_STACK 30
+
+#define MAX_PLAYERS_TO_PRINT 10
+
+#define MAX_NAME_LENGHT 20
+
+typedef struct 
+{
+    char name[MAX_NAME_LENGHT];
+    int score;
+    int number_of_moves;
+} player;
+
+typedef struct 
+{
+    double elapsed_time;
+    char turn;
+    int number_of_remaining_boxes;
+    player player_1;
+    player player_2;
+
+} game;
+
+// Structure to represent the stack
+typedef struct 
+{
+    game array[MAX_SIZE_OF_STACK];
+    int top;
+} Stack;
+
+Stack undo_stack;
+Stack redo_stack;
+
