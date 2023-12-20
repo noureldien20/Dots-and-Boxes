@@ -126,14 +126,20 @@ int number_of_filled_boxes()
     return sum;
 }
 
-short int previous_sum; // needs to be updated at the end of every round
-
 char switch_turn()
 {
     if(number_of_filled_boxes() = previous_sum)
     {
         empty(&undo_stack);
         empty(&redo_stack);
-        return (currentTurn == 1) ? 2 : 1;
+        return (currentTurn == 1) ? 2 : 1; /*1 and 2 or a and b*/ //modify the condition
     }
 }
+
+    //DURING GAME PRINTING
+    printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ? current_game.player_1.name : current_game.player_2.name); //modify the condition
+    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
+    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
+    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
+    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+    //we still need to print the time

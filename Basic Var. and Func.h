@@ -148,30 +148,33 @@ char big(char c){
 
 #define MAX_NAME_LENGHT 20
 
-typedef struct 
-{
-    char name[MAX_NAME_LENGHT];
-    int score;
-    int number_of_moves;
+#define MAX_SIZE_OF_ARRAY 10
+
+typedef struct {
+   char name[MAX_NAME_LENGHT];
+   int score;
+   int number_of_moves;
 } player;
 
-typedef struct 
-{
-    double elapsed_time;
-    char turn;
-    int number_of_remaining_boxes;
-    player player_1;
-    player player_2;
+typedef struct {
+   short int n;
+   char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+   char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+   char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+   double elapsed_time;
+   char turn;
+   int number_of_remaining_boxes;
+   player player_1;
+   player player_2;
+   short int previous_sum;
 
 } game;
 
-// Structure to represent the stack
-typedef struct 
-{
-    game array[MAX_SIZE_OF_STACK];
-    int top;
+typedef struct {
+   game array[MAX_SIZE_OF_STACK];
+   int top;
 } Stack;
 
 Stack undo_stack;
 Stack redo_stack;
-
+game current_game;
