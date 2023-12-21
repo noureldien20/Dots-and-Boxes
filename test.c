@@ -121,67 +121,95 @@ printf("size = %hu\n",n) ;
 }*/
 
 #include <stdio.h>
-unsigned short int n = 5 ;
+unsigned short int abs(unsigned short int x){
+    if(x<0){
+        return -1*x ;
+    }else{
+        return x ;
+    }
+}
+
+unsigned short int min(unsigned short int x,unsigned short int y){
+    if(x<y){
+        return x ;
+    }else{
+        return y ;
+    }
+}
+
+unsigned short int n = 3 ;
+
 unsigned short int check_node(char x){
    if (
        (int)x <= 57 && (int)x >= 49 && // integer
-       (int)x<=(n+48) //positive & less than size
+       (int)x<=(n+49) //positive & less than size
        ){
-          return 1;
+         return 1;
        }else{
          return 0 ;}
 }
 
+char row_edges[4][3] = {
+    {'1','0','0'},
+    {'2','1','0'},
+    {'1','0','2'},
+    {'0','2','1'}
+};
+char col_edges[3][4] = {
+    {'1','2','1','0'},
+    {'1','0','2','0'},
+    {'1','2','0','1'}
+};
+char turn = '1';
+
 void input_nodes(){
 
-short int r1,r2,c1,c2;
-printf("Enter 2 dots (row,row , column,column) : ") ;
+   unsigned short int r1,r2,c1,c2;
+   printf("Enter 2 dots (row,row , column,column) : ") ;
 
-char temp[20] = {'\0'} ;
-scanf("%s",temp) ;
+   char temp[20] = {'\0'} ;
+   scanf("%s",temp) ;
 
-if( !(check_node(temp[0]) && check_node(temp[1]) &&
-   check_node(temp[2]) && check_node(temp[3])) ){
+   if( !(check_node(temp[0]) && check_node(temp[1]) &&
+      check_node(temp[2]) && check_node(temp[3])) ){
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }
+
+   if(temp[4]=='\0'){
+
+      r1 = (unsigned short int)temp[0]-48 ; r2 = (unsigned short int)temp[1]-48 ;
+      c1 = (unsigned short int)temp[2]-48 ; c2 = (unsigned short int)temp[3]-48 ;
+
+      if(!
+         (r1==r2 || c1==c2) &&   //nodes are adjacent
+         (abs(r1-r2)==1 || abs(c1-c2)==1)  //short line not long line
+         ){
+           printf("Invalid input\n") ;
+           input_nodes() ;
+
+      }else if(row_edges[r1-1][min(c1,c2)-1]!='0' && r1==r2 ||
+               col_edges[min(r1,r2)-1][c1-1]!='0' && c1==c2){
+
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }else{
+
+        if(r1==r2){
+            row_edges[r1-1][min(c1,c2)-1] = turn ;
+        }else{
+            col_edges[min(r1,r2)-1][c1-1] = turn ;
+        }
+
+      }
+
+   }else{
       printf("Invalid input\n") ;
       input_nodes() ;
    }
-
-if(temp[4]=='\0'){
-
-   r1 = temp[0] ; r2 = temp[1] ;
-   c1 = temp[2] ; c2 = temp[3] ;
-
-   if(!
-      (r1==r2 || c1==c2) &&   //nodes are adjacent
-      (abs(r1-r2)==1 || abs(c1-c2)==1) &&  //short line not long line
-      ){
-        printf("Invalid input\n") ;
-        input_nodes() ;
-
-   else if(){
-
-      //condition of if the edge is already filled
-   }else{
-
-     if(r1==r2){
-         row_edges[r1-1][min(c1,c2)-1] = turn ;
-     }else{
-         col_edges[min(r1,r2)-1][c1-1] = turn ;
-     }
-
-   }
-
-}else{
-   printf("Invalid input\n") ;
-   input_nodes() ;
 }
-
 int main(){
+
 input_nodes() ;
+
 }
-
-
-
-
-
-

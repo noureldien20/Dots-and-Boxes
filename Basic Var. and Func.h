@@ -16,9 +16,9 @@
 #define back_green "\e[42m"
 #define back_white "\e[47m"
 
-#define Ctrl+Z '\x1A'
-#define Ctrl+R '\x12'
-#define Ctrl+S '\x13'
+#define Ctrl_Z '\x1A'
+#define Ctrl_R '\x12'
+#define Ctrl_S '\x13'
 
 /** Names of variables
 number of dots  = (n+1)(n+1)
@@ -109,7 +109,6 @@ typedef struct {
    int score;
    int number_of_moves;
 } player;
-
 
 typedef struct {
     short int n;
