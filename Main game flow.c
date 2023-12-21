@@ -22,7 +22,7 @@ printf("Enter name of player 1 : ") ;
 if (!mode){
     printf("Enter name of player 2 : ") ;
 }
-//handle myteen om el 2sm
+
 print_grid() ;
 
 while(number_of_filled_boxes() != n*n){
@@ -37,12 +37,9 @@ while(number_of_filled_boxes() != n*n){
 //print options
 printf("test") ;
 */
-<<<<<<< HEAD
-=======
 }
 }
 }
->>>>>>> 0f23d2c30d21e85e4e1b669ac0c404cc92c1e5ee
 
 }
 }while(!quit)

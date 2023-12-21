@@ -3,8 +3,8 @@
 
 #include <stdio.h>
 #include "Basic Var. and Func.h"
-
-#define line "_______"
+             
+#define line "-------"
 
 /******************************** بسم الله الرحمن الرحيم  ************************************/
 
@@ -34,23 +34,23 @@ void print_boxes_color(short int c,short int i){
 }
 
 void print_horizontal(short int r,short int n,char row_edges[][n]){
-   int i ;   ///r is not index , if r=2 ---> row that has index 1
+   short int i ;   ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
-      printf(white".") ;
+      printf(white"+") ;
 
-      if (row_edges[r-1][i] == 1){
+      if (row_edges[r-1][i] == '1'){
          printf(cyan"%s",line) ;
-      }else if(row_edges[r-1][i] == 2){
+      }else if(row_edges[r-1][i] == '2'){
          printf(green"%s",line) ;
       }else{
          printf("\t") ;
       }
    }
-   printf(white".\n") ;
+   printf(white"+\n") ;
 }
 
 void print_vertical(short int c,short int n,char col_edges[][n+1]){
-   int i ;
+   short int i ;
    for(int j=0; j<3 ;j++){
       for(i=0 ; i<n ; i++){
 
@@ -75,7 +75,7 @@ void print_vertical(short int c,short int n,char col_edges[][n+1]){
 }
 
 void print_grid(short int n){
-   int j ;
+   short int j ;
    for(j=1 ; j<=n ; j++){
       print_horizontal(j,n,row_edges) ;
       print_vertical(j,n,col_edges) ;
