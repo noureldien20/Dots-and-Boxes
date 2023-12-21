@@ -1,43 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Basic Var. & Func.h"
+#include <stdio.h>
 
-void initialize_undo_stack(Stack* stack) 
-{
-    stack->top = -1;
-}
+#define MAX_SIZE_OF_STACK 30
 
-void initialize_redo_stack(Stack* stack) 
-{
-    stack->top = -1;
-}
+#define MAX_PLAYERS_TO_PRINT 10
 
-void initialize_stacks(void)
-{
-    initialize_undo_stack(&undo_stack);
-    initialize_redo_stack(&redo_stack);
+#define MAX_NAME_LENGHT 20
 
-    printf("stacks initialized successfully\n");
-}
+#define MAX_SIZE_OF_ARRAY 10
+
+typedef struct {
+   char name[MAX_NAME_LENGHT];
+   int score;
+   int number_of_moves;
+} player;
+
+typedef struct {
+    short int n;
+    char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    double elapsed_time;
+    char turn;
+    int number_of_remaining_boxes;
+    player player_1;
+    player player_2;
+    int previous_sum;
+
+} game;
+
+typedef struct {
+    game array[MAX_SIZE_OF_STACK];
+    int top;
+} Stack;
+
+Stack undo_stack;
+Stack redo_stack;
+game current_game;
 
 game peek(Stack* stack)
 {
-    return stack->stack_array[stack->top];
+    return stack->array[stack->top];
 }
 
 game pop(Stack* stack) 
 {
-    return stack->stack_array[stack->top--];
+    return stack->array[stack->top--];
 }
 
 void push(Stack *stack, game game)
 {
-    stack->stack_array[++stack->top] = game;
+    stack->array[++stack->top] = game;
 }
 
-void empty(Stack *stack)
+void empty(Stack *stack) // also used to initialize the stack
 {
     stack->top = -1;
+}
+void empty_both_stacks()
+{
+    empty(&undo_stack);
+    empty(&redo_stack);
 }
 
 void undo(Stack *undo_stack,Stack *redo_stack, game *current)
@@ -50,7 +74,7 @@ void undo(Stack *undo_stack,Stack *redo_stack, game *current)
     } 
     else 
     {
-        printf("u can't undo_stack anymore.\n");
+        printf("u can't undo anymore.\n");
     }
 
     *current = peek(undo_stack);
@@ -66,83 +90,37 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
     } 
     else 
     {
-        printf("u can't redo_stack anymore\n");
+        printf("u can't redo anymore\n");
     }
 
     *current = peek(undo_stack);
 }
 
-int main()
-{
-    initialize_stacks();
-
-    game current;
-    current.number_of_moves = 0;
-    current.turn = 'A';
-
-    push(&undo_stack, current);
-
-    printf("Current game: number of moves: %.2lf, Turn: %c\n", current.number_of_moves, current.turn);
-
-    while (1)
-    {
-        printf("enter number of moves: ");
-        scanf("%lf", &current.number_of_moves);
-
-        int option;
-        printf("enter option num: ");
-        scanf("%d", &option);
-
-        if(option == 1)
-        {
-            undo(&undo_stack, &redo_stack, &current);
-        }
-        else if(option == 2)
-        {
-            redo(&undo_stack, &redo_stack, &current);
-        }
-        else
-        {
-            push(&undo_stack, current);
-        }
-
-        printf("After operation\nCurrent game: number of moves: %.2lf, Turn: %c\n", current.number_of_moves, current.turn);
-    }
-}
-
 int number_of_filled_boxes() 
 {
-    // int n, char array[n][n] of boxes
-    int sum = 0;
+    int count = 0;
 
-    for (int i = 0; i < n; ++i) 
+    for (int i = 0; i < current_game.n; ++i) 
     {
-        for (int j = 0; j < n; ++j) 
+        for (int j = 0; j < current_game.n; ++j) 
         {
-            sum += array[i][j] - '0';
+            if (current_game.array_of_boxes[i][j] == '1' || current_game.array_of_boxes[i][j] == '2') 
+            {
+                count++;
+            }
         }
     }
 
-    return sum;
+    return count;
 }
 
-void switch_turn(char *turn)
+void switch_turn()
 {
-    if(number_of_filled_boxes() = previous_sum)
+    if(number_of_filled_boxes() == current_game.previous_sum)
     {
-        empty(&undo_stack);
-        empty(&redo_stack);
-        turn = (currentTurn == 1) ? 2 : 1; /*1 and 2 or a and b*/ //modify the condition
+        printf("entered fn ");
+        empty_both_stacks();
+        current_game.turn = (current_game.turn == '1') ? '2' : '1'; /*1 and 2 or a and b*/ //modify the condition
     }
-}
-
-//DURING GAME PRINTING
-void display_stats()
-{
-    printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ? current_game.player_1.name : current_game.player_2.name); //modify the condition
-    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
-    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
-    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
-    //we still need to print the time
+    current_game.previous_sum = number_of_filled_boxes();
 }

@@ -4,7 +4,7 @@
 #include "Basic Var. and Func.h"
 #include "INPUT.h"
 #include "Display.h"
-#include <pthread.h>
+//#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  *********************************/
 Create_thread()
@@ -25,18 +25,24 @@ if (!mode){
 //handle myteen om el 2sm
 print_grid() ;
 
-while(win != n*n){
+while(number_of_filled_boxes() != n*n){
     input_edge() ;
     check_edges() ;
     print_grid() ;
 
-    //print data
+    display_stats();
     /**nour hyn2l el wr2a
 
 
 //print options
 printf("test") ;
 */
+<<<<<<< HEAD
+=======
+}
+}
+}
+>>>>>>> 0f23d2c30d21e85e4e1b669ac0c404cc92c1e5ee
 
 }
 }while(!quit)
