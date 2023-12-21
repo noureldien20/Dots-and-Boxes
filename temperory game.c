@@ -254,7 +254,7 @@ void DFS(short int a,short int b){
 //DURING GAME PRINTING
 void display_stats()
 {
-    printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ? current_game.player_1.name : current_game.player_2.name); //modify the condition
+    printf("Current turn: %s\n", current_game.turn == 1 ? current_game.player_1.name : current_game.player_2.name);
     printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
     printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
@@ -502,7 +502,7 @@ void switch_turn()
     {
         printf("entered fn ");
         empty_both_stacks();
-        current_game.turn = (current_game.turn == '1') ? '2' : '1'; /*1 and 2 or a and b*/ //modify the condition
+        current_game.turn = (current_game.turn == '1') ? '2' : '1';
     }
     current_game.previous_sum = number_of_filled_boxes();
 }
@@ -560,7 +560,7 @@ void print_menu(){
 
 int main()
 {
-    printf("Welcome to Dots & Boxes game\n") ;
+    printf("Welcome to Dots & Boxes game\n");
     while(1)
     {
         print_menu() ;
