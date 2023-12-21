@@ -22,6 +22,7 @@ void check_edges(){   //no errors
              boxes[i][j] == '0'){
            
             boxes[i][j] = turn ;
+            //dfs
          }
       }
    }

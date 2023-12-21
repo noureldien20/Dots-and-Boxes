@@ -35,14 +35,14 @@ time_t time ;
 // mode indicator
 short int mode ;  // 1 --> computer
 
-void zero_2D_array(short int row,short int col,char arr[][]){
+void zero_2D_array(short int row,short int col,char **arr){
    for (int i=0 ; i<row ; i++){
       for (int j=0 ; j<col ; j++){
          arr[i][j] = '0' ; }
    }
 }
 
-void print_array_2D(short int row,short int col,char arr[][]){
+void print_array_2D(short int row,short int col,char **arr){
    for (short int i=0 ; i<row ; i++){
       for (short int j=0 ; j<col ; j++){
       printf("%c ",arr[i][j]);
@@ -60,11 +60,11 @@ char **create_array(short int row,short int col){
    return arr ;
 }
 
-void declare_arrays(short int n){
-   char **row_edges = create_array(n+1,n) ;
-   char **col_edges = create_array(n,n+1) ;
-   char **boxes = create_array(n,n) ;
-   char **dfs = create_array(n,n) ;
+void declare_arrays(){
+   row_edges = create_array(n+1,n) ;
+   col_edges = create_array(n,n+1) ;
+   boxes = create_array(n,n) ;
+   dfs = create_array(n,n) ;
 }
 
 char small(char c){
