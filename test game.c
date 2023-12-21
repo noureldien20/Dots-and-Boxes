@@ -57,6 +57,22 @@ char **dfs ;
 char turn ;
 //time_t time ;
 
+char **create_array(short int row,short int col){
+   char **arr = (char **)calloc(row, sizeof(char *)) ;
+   
+   for(short int i=0 ; i<row ; i++){
+      arr[i] = (char *)calloc(col, sizeof(char));
+   }
+   return arr ;
+}
+
+void declare_arrays(short int n){
+   row_edges = create_array(n+1,n) ;
+   col_edges = create_array(n,n+1) ;
+   boxes = create_array(n,n) ;
+   //dfs = create_array(n,n) ;
+}
+
 void zero_2D_array(short int row,short int col,char **arr){
 
    for (int i=0 ; i<row ; i++)
@@ -77,20 +93,74 @@ void print_array_2D(short int row,short int col,char **arr){
    }
 }
 
-char **create_array(short int row,short int col){
-   char **arr = (char**)calloc((row),sizeof(char*)) ;
-   
-   for(short int i=0 ; i<row ; i++){
-      arr[i] = (char*)calloc(col, sizeof(char));
+void print_horizontal(short int r){
+   short int i ;   ///r is not index , if r=2 ---> row that has index 1
+   for(i=0 ; i<n ; i++){
+        printf(white"+") ;
+        //printf("%hd", r);
+        //print_array_2D(n+1,n, row_edges);
+        
+        if (row_edges[r-1][i] == '1'){
+            printf(cyan"%s",line) ;
+        }else if(row_edges[r-1][i] == '2'){
+            printf(green"%s",line) ;
+        }else{
+            printf("       ") ;
+        }
    }
-   return arr ;
+   printf(white"+\n") ;
 }
 
-void declare_arrays(short int n){
-   char **row_edges = create_array(n+1,n) ;
-   char **col_edges = create_array(n,n+1) ;
-   char **boxes = create_array(n,n) ;
-   char **dfs = create_array(n,n) ;
+void print_boxes_color(short int c,short int i){
+   if (boxes[c-1][i]=='1'){
+      printf(back_cyan"       ") ;
+   }else if(boxes[c-1][i]=='2'){
+      printf(back_green"       ") ;
+   }else{
+      printf("       ") ;
+   }
+}
+
+void print_vertical(short int c){
+   int i ;
+   for(int j=0; j<3 ;j++){
+      for(i=0 ; i<n ; i++){
+
+         if(col_edges[c-1][i] =='1' || boxes[c-1][i] == '1'){
+            printf(cyan"|") ;
+         }else if(col_edges[c-1][i] =='2' || boxes[c-1][i] == '2'){
+            printf(green"|") ;
+         }else{
+            printf(" ") ;
+         }
+         print_boxes_color(c,i) ;
+      }
+
+   if (col_edges[c-1][i]== '1'){
+      printf(cyan"|\n");
+   }else if(col_edges[c-1][i]== '2'){
+      printf(green"|\n") ;
+   }else{
+      printf(" \n") ;
+      }
+   }
+}
+
+void print_grid(unsigned short int n){
+   short int j ;
+   for(j=1 ; j<=n ; j++)
+   {
+        print_horizontal(j) ;
+        print_vertical(j) ;
+   }
+   print_horizontal(j) ;
+}
+
+void free_array(short int row, char **arr) {
+    for (short int i = 0; i < row; i++) {
+        free(arr[i]);
+    }
+    free(arr);
 }
 
 char small(char c){
@@ -190,69 +260,6 @@ void display_stats()
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
     printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
     //we still need to print the time
-}
-
-void print_boxes_color(short int c,short int i){
-   if (boxes[c-1][i]=='1'){
-      printf(back_cyan"       ") ;
-   }else if(boxes[c-1][i]=='2'){
-      printf(back_green"       ") ;
-   }else{
-      printf("       ") ;
-   }
-}
-
-void print_horizontal(short int r ,char **row_edges){
-   short int i ;   ///r is not index , if r=2 ---> row that has index 1
-   for(i=0 ; i<n ; i++){
-        printf(white"+") ;
-        printf("%hd", r);
-        print_array_2D(n +1 , n, row_edges);
-        
-        if (row_edges[r-1][i] == '1'){
-            printf(cyan"%s",line) ;
-        }else if(row_edges[r-1][i] == '2'){
-            printf(green"%s",line) ;
-        }else{
-            printf("\t") ;
-        }
-   }
-   printf(white"+\n") ;
-}
-
-void print_vertical(short int c, char **col_edges){
-   int i ;
-   for(int j=0; j<3 ;j++){
-      for(i=0 ; i<n ; i++){
-
-         if(col_edges[c-1][i] =='1' || boxes[c-1][i] == '1'){
-            printf(cyan"|") ;
-         }else if(col_edges[c-1][i] =='2' || boxes[c-1][i] == '2'){
-            printf(green"|") ;
-         }else{
-            printf(" ") ;
-         }
-         print_boxes_color(c,i) ;
-      }
-
-   if (col_edges[c-1][i]== '1'){
-      printf(cyan"|\n");
-   }else if(col_edges[c-1][i]== '2'){
-      printf(green"|\n") ;
-   }else{
-      printf(" \n") ;
-      }
-   }
-}
-
-void print_grid(unsigned short int n){
-   short int j ;
-   for(j=1 ; j<=n ; j++)
-   {
-        print_horizontal(j, row_edges) ;
-        print_vertical(j, col_edges) ;
-   }
-   print_horizontal(j, row_edges) ;
 }
 
 void Winner(player *winner) 
@@ -546,6 +553,7 @@ void print_menu(){
             {
                 printf("Enter name of player 2 : ") ;
             }*/
+
         }
     }
 }
@@ -553,11 +561,14 @@ void print_menu(){
 int main()
 {
     printf("Welcome to Dots & Boxes game\n") ;
-    do
+    while(1)
     {
         print_menu() ;
 
+        while(number_of_filled_boxes() != n*n)
+        {
+            //flow of the game
+        }
         print_grid(n) ;
-
-    }while(number_of_filled_boxes() != n*n);
+    }
 }
