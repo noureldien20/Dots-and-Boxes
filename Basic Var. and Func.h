@@ -30,8 +30,11 @@ char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn ;
+time_t time ;
 //int score1 , score2 ;  // Scores of players
 
+// mode indicator
+short int mode; // 1 -> computer
 
 void zero_2D_array(short int row,short int col,char arr[][]){
    for (int i=0 ; i<row ; i++){
@@ -75,4 +78,12 @@ char big(char c){
    else{return c ;}
 }
 
+void time_passed(){
+
+   while(win !== n*n){
+      sleep(1) ;
+      game.time++ ;
+   }
+   
+}
 #endif

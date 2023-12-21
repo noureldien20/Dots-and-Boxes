@@ -84,9 +84,32 @@ void print_grid(short int n){
 }
 
 void print_menu(){
-   int x,y ;
    printf("Welcome to Dots & Boxes game\n") ;
-   printf("Choose Beginner or Expert : ") ;
+   printf("To Start game [Press S]\n");
+   printf("To load previous game [Press L]\n");
+   printf("To display Top 10 players [Press T]\n");
+   printf("To Exit game [Press E]\n");
+
+   char o ;
+   scanf("%c",&o) ;
+   if(lower(o) == 'l'){
+      // function to load from file
+   }else if(lower(o) == 't'){
+      //function to print top 10
+      print_menu() ;
+   }else if(lower(o) =='e'){
+      exit(1) ;
+   }else{
+      if(lower(o)!='s'){
+         print_menu() ;
+      }else{
+         printf("Enter size : ") ;
+         //input size valid
+         declare_arrays(n) ;
+      }
+
+   }
+   
 }
 
-#endifb
+#endif

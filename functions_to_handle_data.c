@@ -48,7 +48,7 @@ void Winner(Player *winner)
         }
     }
 
-    if (!found)
+    if (!found) 
     {
         fprintf(file, "%s %d\n", winner->name, winner->score);
     }
