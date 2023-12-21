@@ -24,17 +24,16 @@
 number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
 
-short int n ;
+unsigned short int n ;
 char **row_edges ;  //2D array of the edges of rows  ( of size [n+1][n])
 char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn ;
 time_t time ;
-//int score1 , score2 ;  // Scores of players
 
 // mode indicator
-short int mode; // 1 -> computer
+short int mode ;  // 1 --> computer
 
 void zero_2D_array(short int row,short int col,char arr[][]){
    for (int i=0 ; i<row ; i++){
@@ -80,70 +79,14 @@ char big(char c){
 
 void time_passed(){
 
-   while(win !== n*n){
+   while(win != n*n){
       sleep(1) ;
       game.time++ ;
    }
    
 }
+
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -167,9 +110,10 @@ typedef struct {
    int number_of_moves;
 } player;
 
-typedef struct {
+typedef struct{
+
    short int n;
-   char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+   char **array_of_row_edges;
    char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
    char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
    double elapsed_time;
@@ -179,7 +123,7 @@ typedef struct {
    player player_2;
    short int previous_sum;
 
-} game;
+}game;
 
 typedef struct {
    game array[MAX_SIZE_OF_STACK];

@@ -10,6 +10,7 @@
 Create_thread()
 
 int main(){
+printf("Welcome to Dots & Boxes game\n") ;
 do{
 
 print_menu() ;
@@ -33,12 +34,12 @@ while(win != n*n){
     /**nour hyn2l el wr2a
 
 
-
 //print options
 printf("test") ;
-
 */
-}
-}
 
+}
+}while(!quit)
+
+}
 //print options

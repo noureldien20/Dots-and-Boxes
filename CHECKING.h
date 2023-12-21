@@ -18,9 +18,10 @@ void check_edges(){   //no errors
    for (i=0 ; i<n ; i++){
       for (j=0 ; j<n ; j++){
          if (row_edges[i][j]!='0' && row_edges[i+1][j]!='0' &&
-             col_edges[i][j]!='0' && col_edges[i][j+1] !='0'){
+             col_edges[i][j]!='0' && col_edges[i][j+1] !='0' &&
+             boxes[i][j] == '0'){
            
-           boxes[i][j] = turn ;
+            boxes[i][j] = turn ;
          }
       }
    }

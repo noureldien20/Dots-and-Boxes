@@ -84,7 +84,7 @@ void print_grid(short int n){
 }
 
 void print_menu(){
-   printf("Welcome to Dots & Boxes game\n") ;
+   
    printf("To Start game [Press S]\n");
    printf("To load previous game [Press L]\n");
    printf("To display Top 10 players [Press T]\n");
@@ -100,11 +100,11 @@ void print_menu(){
    }else if(lower(o) =='e'){
       exit(1) ;
    }else{
+
       if(lower(o)!='s'){
          print_menu() ;
       }else{
-         printf("Enter size : ") ;
-         //input size valid
+         input_size() ;
          declare_arrays(n) ;
       }
 

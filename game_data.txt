@@ -1,0 +1,15 @@
+typedtypedef struct game
+{
+    double elapsed_time;
+    int turn;
+}game;
+
+typedef struct Player 
+{
+    char name[50];
+    int score;
+    int number_of_moves;
+}Player;
+
+Player A;
+Player B;
