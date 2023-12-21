@@ -118,22 +118,3 @@ void printTopPlayers()
     // Free dynamically allocated memory
     free(players);
 }
-
-
-int main() 
-{
-    while(1)
-    {
-        Player winner;
-
-        printf("enter name:");
-        scanf("%s", winner.name);
-
-        printf("enter score:");
-        scanf("%d", &winner.score);
-
-        Winner(&winner);
-
-        printTopPlayers();
-    }
-}
