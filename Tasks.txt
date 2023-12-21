@@ -3,19 +3,10 @@ Nour
 print el data bta3t el l3ba // done
 
 print options
-<<<<<<< HEAD
-undo and redo
-
-nour hyn2l el wr2a
-
-win function
-switch fn
-=======
 undo and redo   // done
 /**nour hyn2l el wr2a
 win funciton  //done but called number of completed boxes
 switch fn  // done
->>>>>>> 0f23d2c30d21e85e4e1b669ac0c404cc92c1e5ee
 
 
 Ahmed
