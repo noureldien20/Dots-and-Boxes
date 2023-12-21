@@ -113,3 +113,23 @@ void print_menu(){
 }
 
 #endif
+
+
+
+
+
+
+
+
+
+
+//DURING GAME PRINTING
+void display_stats()
+{
+    printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ? current_game.player_1.name : current_game.player_2.name); //modify the condition
+    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
+    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
+    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
+    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+    //we still need to print the time
+}

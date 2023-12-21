@@ -168,22 +168,22 @@ typedef struct {
 } player;
 
 typedef struct {
-   short int n;
-   char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-   char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-   char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-   double elapsed_time;
-   char turn;
-   int number_of_remaining_boxes;
-   player player_1;
-   player player_2;
-   short int previous_sum;
+    short int n;
+    char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    double elapsed_time;
+    char turn;
+    int number_of_remaining_boxes;
+    player player_1;
+    player player_2;
+    int previous_sum;
 
 } game;
 
 typedef struct {
-   game array[MAX_SIZE_OF_STACK];
-   int top;
+    game array[MAX_SIZE_OF_STACK];
+    int top;
 } Stack;
 
 Stack undo_stack;
