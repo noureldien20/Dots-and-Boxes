@@ -4,6 +4,24 @@
 #include <stdio.h>
 #include "Basic Var. and Func.h"
 
+
+unsigned short int absolute(unsigned short int x){
+    if(x<0){
+        return -1*x ;
+    }else{
+        return x ;
+    }
+}
+
+unsigned short int min(unsigned short int x,unsigned short int y){
+    if(x<y){
+        return x ;
+    }else{
+        return y ;
+    }
+}
+
+
 void input_size(){
 
    char temp[20] = {'\0'} ;
@@ -37,7 +55,7 @@ void input_size(){
 unsigned short int check_node(char x){
    if (
        (int)x <= 57 && (int)x >= 49 && // integer
-       (int)x<=(n+49) //positive & less than size
+       (int)x<(n+49) //positive & less than size
        ){
          return 1;
        }else{
@@ -65,13 +83,13 @@ void input_nodes(){
 
       if(!
          (r1==r2 || c1==c2) &&   //nodes are adjacent
-         (abs(r1-r2)==1 || abs(c1-c2)==1)  //short line not long line
+         (absolute(r1-r2)==1 || absolute(c1-c2==1)) //short line not long line
          ){
            printf("Invalid input\n") ;
            input_nodes() ;
 
-      }else if(row_edges[r1-1][min(c1,c2)-1]!='0' && r1==r2 ||
-               col_edges[min(r1,r2)-1][c1-1]!='0' && c1==c2){
+      }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+               col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2){
                   
          printf("Invalid input\n") ;
          input_nodes() ;

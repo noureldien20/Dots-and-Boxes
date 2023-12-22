@@ -43,7 +43,7 @@ void print_horizontal(short int r,short int n,char row_edges[][n]){
       }else if(row_edges[r-1][i] == '2'){
          printf(green"%s",line) ;
       }else{
-         printf("\t") ;
+         printf("       ") ;
       }
    }
    printf(white"+\n") ;

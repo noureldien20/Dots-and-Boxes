@@ -121,7 +121,7 @@ printf("size = %hu\n",n) ;
 }*/
 
 #include <stdio.h>
-unsigned short int abs(unsigned short int x){
+unsigned short int absolute(unsigned short int x){
     if(x<0){
         return -1*x ;
     }else{
@@ -183,7 +183,7 @@ void input_nodes(){
 
       if(!
          (r1==r2 || c1==c2) &&   //nodes are adjacent
-         (abs(r1-r2)==1 || abs(c1-c2)==1)  //short line not long line
+         (absolute(r1-r2)==1 || absolute(c1-c2)==1)  //short line not long line
          ){
            printf("Invalid input\n") ;
            input_nodes() ;

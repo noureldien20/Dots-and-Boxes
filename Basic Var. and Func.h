@@ -29,7 +29,7 @@ char **row_edges ;  //2D array of the edges of rows  ( of size [n+1][n])
 char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
-char turn ;
+char turn = '1' ;
 unsigned long t ;
 
 // mode indicator
@@ -86,13 +86,6 @@ void time_passed(){
  */
 }
 
-#endif
-
-
-
-
-
-
 
 
 
@@ -132,3 +125,7 @@ typedef struct {
 Stack undo_stack;
 Stack redo_stack;
 game current_game;
+
+
+
+#endif

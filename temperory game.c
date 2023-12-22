@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define MAX_SIZE_OF_STACK 30
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
