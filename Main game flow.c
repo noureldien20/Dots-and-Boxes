@@ -4,14 +4,14 @@
 #include "Basic Var. and Func.h"
 #include "INPUT.h"
 #include "Display.h"
-//#include <pthread.h>
+#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  *********************************/
-Create_thread()
+Create_thread() ;
 
 int main(){
 printf("Welcome to Dots & Boxes game\n") ;
-do{
+while(1){
 
 print_menu() ;
 
@@ -29,7 +29,7 @@ while(number_of_filled_boxes() != n*n){
     input_edge() ;
     check_edges() ;
     print_grid() ;
-
+    input_nodes() ;
     display_stats();
     /**nour hyn2l el wr2a
 
@@ -40,9 +40,3 @@ printf("test") ;
 }
 }
 }
-
-}
-}while(!quit)
-
-}
-//print options

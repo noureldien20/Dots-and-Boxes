@@ -86,12 +86,20 @@ void print_grid(short int n){
 void print_menu(){
    
    printf("To Start game [Press S]\n");
-   printf("To load previous game [Press L]\n");
-   printf("To display Top 10 players [Press T]\n");
+   printf("To Load previous game [Press L]\n");
+   printf("To show Top 10 players [Press T]\n");
    printf("To Exit game [Press E]\n");
 
-   char o ;
-   scanf("%c",&o) ;
+   char temp[20] ;
+   scanf("%s",temp) ;
+
+   if(temp[1]!='\0'){
+      printf("Invalid input\n") ;
+      print_menu() ;
+   }else{
+      char o = temp[0] ;
+   }
+
    if(lower(o) == 'l'){
       // function to load from file
    }else if(lower(o) == 't'){
@@ -112,24 +120,21 @@ void print_menu(){
    
 }
 
-#endif
-
-
-
-
-
-
-
 
 
 
 //DURING GAME PRINTING
-void display_stats()
-{
-    printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ? current_game.player_1.name : current_game.player_2.name); //modify the condition
-    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
-    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
-    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
-    //we still need to print the time
+void print_status(){
+
+   printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ?
+   current_game.player_1.name : current_game.player_2.name) ; //modify the condition
+
+   printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
+   printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
+   printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
+   printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+   printf("%d : %d\n",time/60 , time%60) ;
+
 }
+
+#endif
