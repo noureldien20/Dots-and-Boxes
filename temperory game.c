@@ -460,7 +460,7 @@ unsigned short int check_node(char x){
          return 0 ;}
 }
 
-unsigned short int absolute(unsigned short int x){
+short int absolute(short int x){
     if(x<0){
         return -1*x ;
     }else{
