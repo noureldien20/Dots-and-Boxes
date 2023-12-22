@@ -7,6 +7,8 @@ undo and redo   // done
 /**nour hyn2l el wr2a
 win funciton  //done but called number of completed boxes
 switch fn  // done
+update stats funciton
+
 
 
 Ahmed

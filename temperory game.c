@@ -55,7 +55,7 @@ char **row_edges ;
 char **col_edges ;
 char **boxes ;
 char **dfs ;
-char turn ;
+char turn = '1';
 //time_t time ;
 
 char **create_array(short int row,short int col){
@@ -80,7 +80,7 @@ void zero_2D_array(short int row,short int col,char **arr){
    {
         for (int j=0 ; j<col ; j++)
         {
-            arr[i][j] = '0' ; 
+            arr[i][j] = '\0' ; 
         }
    }
 }
@@ -147,7 +147,7 @@ void print_vertical(short int c){
    }
 }
 
-void print_grid(unsigned short int n){
+void print_grid(){
    short int j ;
    for(j=1 ; j<=n ; j++)
    {
@@ -187,9 +187,9 @@ void check_edges(){   //no errors
    short int i,j ;
    for (i=0 ; i<n ; i++){
       for (j=0 ; j<n ; j++){
-         if (row_edges[i][j]!='0' && row_edges[i+1][j]!='0' &&
-             col_edges[i][j]!='0' && col_edges[i][j+1] !='0' &&
-             boxes[i][j] == '0'){
+         if (row_edges[i][j]!='\0' && row_edges[i+1][j]!='\0' &&
+             col_edges[i][j]!='\0' && col_edges[i][j+1] !='\0' &&
+             boxes[i][j] == '\0'){
            
             boxes[i][j] = turn ;
          }
@@ -197,64 +197,26 @@ void check_edges(){   //no errors
    }
 }
 
-short int check_box(short int i,short int j){
-   short int n_zeros = 0 ;
-   if(boxes[i][j] != '0'){
+int number_of_filled_boxes() 
+{
+    int count = 0;
 
-      if(row_edges[i][j] == '0'){n_zeros++ ; }
-      if(row_edges[i][j+1] == '0'){n_zeros++ ; }
-      if(col_edges[i][j] == '0'){n_zeros++ ; }
-      if(col_edges[i+1][j] == '0'){n_zeros++ ; }
-
-      if(row_edges[i][j] == '0' && n_zeros==1){
-         row_edges[i][j] == turn ;
-      }
-      if(row_edges[i][j+1] == '0' && n_zeros==1){
-         row_edges[i][j+1] == turn ;
-      }
-      if(col_edges[i][j] == '0' && n_zeros==1){
-         col_edges[i][j] == turn ;
-      }
-      if(col_edges[i+1][j] == '0' && n_zeros==1){
-         row_edges[i+1][j] == turn ;
-      }
-
-      if(n_zeros==1){
-         boxes[i][j] == turn ;
-         return 1 ;
-      }else{
-         return 0 ;
-      }
-   
-   }
-}
-
-void DFS(short int a,short int b){
-   if (check_box(a,b)){
-
-      if(dfs[a-1][b]=='0' && a-1<n && b<n){
-         DFS(a-1,b) ;  // go up
-         dfs[a-1][b] = '1' ;
-      }
-      if(dfs[a+1][b]=='0' && a+1<n && b<n){
-         DFS(a+1,b) ;  // go down
-         dfs[a+1][b] = '1' ;
-      }
-      if(dfs[a][b-1]=='0' && a<n && b-1<n){
-         DFS(a,b-1) ;  // go <--- left
-         dfs[a][b-1] = '1' ;
-      }
-      if(dfs[a][b+1]=='0' && a+1<n && b+1<n){
-         DFS(a,b+1) ;  // go ---> right
-         dfs[a][b+1] = '1' ;
-      }
-   
-   }
+    for (int i = 0; i < current_game.size; ++i) 
+    {
+        for (int j = 0; j < current_game.size; ++j) 
+        {
+            if (current_game.array_of_boxes[i][j] == '1' || current_game.array_of_boxes[i][j] == '2')
+            {
+                count++;
+            }
+        }
+    }
+    return count;
 }
 
 void display_stats()
 {
-    printf("Current turn: %s\n", current_game.turn == 1 ? current_game.player_1.name : current_game.player_2.name);
+    printf("Next turn: %s\n", turn == '1' ? current_game.player_1.name : current_game.player_2.name);
     printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
     printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
@@ -403,7 +365,7 @@ void input_size(){
     if(!
     (r1==r2 || c1==c2) &&   //nodes are adjacent
     (r1<=n && r2<=n && c1<=n && c2<=n) && // board has this index
-    (abs(r1-r2)==1 || abs(c1-c2)==1) &&  //short line not long line
+    (absolute(r1-r2)==1 || absolute(c1-c2)==1) &&  //short line not long line
     (r1>0 && r2>0 && c1>0 && c2>0) //positve
     ){
         printf("Not valid\nEnter valid input : ") ;
@@ -478,33 +440,86 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
     *current = peek(undo_stack);
 }
 
-int number_of_filled_boxes() 
-{
-    int count = 0;
-
-    for (int i = 0; i < current_game.size; ++i) 
-    {
-        for (int j = 0; j < current_game.size; ++j) 
-        {
-            if (current_game.array_of_boxes[i][j] == '1' || current_game.array_of_boxes[i][j] == '2') 
-            {
-                count++;
-            }
-        }
-    }
-
-    return count;
-}
-
 void switch_turn()
 {
     if(number_of_filled_boxes() == current_game.previous_sum)
     {
-        printf("entered fn ");
         empty_both_stacks();
-        current_game.turn = (current_game.turn == '1') ? '2' : '1';
+        turn = (turn == '1') ? '2' : '1';
     }
     current_game.previous_sum = number_of_filled_boxes();
+}
+
+unsigned short int check_node(char x){
+   if (
+       (int)x <= 57 && (int)x >= 49 && // integer
+       (int)x< (n+49) //positive & less than size
+       ){
+         return 1;
+       }else{
+         return 0 ;}
+}
+
+unsigned short int absolute(unsigned short int x){
+    if(x<0){
+        return -1*x ;
+    }else{
+        return x ;
+    }
+}
+
+unsigned short int min(unsigned short int x,unsigned short int y){
+    if(x<y){
+        return x ;
+    }else{
+        return y ;
+    }
+}
+
+void input_nodes(){
+
+   unsigned short int r1,r2,c1,c2;
+   printf("Enter 2 dots (row,row , column,column) : ") ;
+
+   char temp[20] = {'\0'} ;
+   scanf("%s",temp) ;
+
+   if( !(check_node(temp[0]) && check_node(temp[1]) &&
+      check_node(temp[2]) && check_node(temp[3])) ){
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }
+
+   if(temp[4]=='\0'){
+
+        r1 = (unsigned short int)temp[0]-48 ; r2 = (unsigned short int)temp[1]-48 ;
+        c1 = (unsigned short int)temp[2]-48 ; c2 = (unsigned short int)temp[3]-48 ;
+
+        if(!((r1==r2 || c1==c2) && ((absolute(r1-r2)==1) || (absolute(c1-c2)==1))))
+        {
+            printf("Invalid input\n") ;
+            input_nodes() ;
+
+        }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+                col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
+                {
+
+            printf("Invalid input\n") ;
+            input_nodes() ;
+        }else{
+
+            if(r1==r2){
+                row_edges[r1-1][min(c1,c2)-1] = turn ;
+            }else{
+                col_edges[min(r1,r2)-1][c1-1] = turn ;
+            }
+
+      }
+
+   }else{
+      printf("Invalid input\n") ;
+      input_nodes() ;
+   }
 }
 
 void print_menu(){
@@ -566,15 +581,18 @@ int main()
     printf("Welcome to Dots & Boxes game\n");
     while(1)
     {
-        print_menu() ;
+        print_menu();
 
-       // while(number_of_filled_boxes() != n*n)
-       // {   
-            printf("Player 1 name: %s\n", current_game.player_1.name);
-            printf("Player 2 name: %s\n", current_game.player_2.name);
+        print_grid();
 
-            //flow of the game
-       // }
-       // print_grid(n) ;
+       while(number_of_filled_boxes() != n*n)
+        {   
+            input_nodes();
+            check_edges();
+            print_grid();
+            switch_turn();
+            display_stats();
+            //print options
+        }
     }
 }
