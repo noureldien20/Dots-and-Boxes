@@ -21,7 +21,7 @@
 //#include <pthread.h>
 
 typedef struct {
-   char name[MAX_NAME_LENGHT];
+   char name[MAX_NAME_LENGHT + 1];
    int score;
    int number_of_moves;
 } player;
@@ -251,7 +251,6 @@ void DFS(short int a,short int b){
    }
 }
 
-//DURING GAME PRINTING
 void display_stats()
 {
     printf("Current turn: %s\n", current_game.turn == 1 ? current_game.player_1.name : current_game.player_2.name);
@@ -507,6 +506,26 @@ void switch_turn()
     current_game.previous_sum = number_of_filled_boxes();
 }
 
+void clear_input_buffer() 
+{
+    char c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+void input_name(char *playerName) 
+{
+    printf("Enter player name (up to %d characters): ", MAX_NAME_LENGHT);
+    
+    fgets(playerName, MAX_NAME_LENGHT + 1, stdin);
+
+    // Remove the newline character at the end (if present)
+    size_t len = strlen(playerName);
+    if (len > 0 && playerName[len - 1] == '\n') 
+    {
+        playerName[len - 1] = '\0';
+    }
+}
+
 void print_menu(){
     
    printf("To Start game [Press S]\n");
@@ -514,45 +533,47 @@ void print_menu(){
    printf("To display Top 10 players [Press T]\n");
    printf("To Exit game [Press E]\n");
 
-   char o ;
-   scanf("%c",&o) ;
+   char o;
+   scanf(" %c",&o);
 
    if(small(o) == 'l')
    {
       // function to load from file
    }
-   else if( small(o) == 't')
+   else if(small(o) == 't')
    {
         printTopPlayers();
         print_menu() ;
    }
-   else if( small(o) =='e')
+   else if(small(o) == 'e')
    {
         exit(1) ;
    }
    else
    {
-        if( small(o)!='s')
+        if(small(o) != 's')
         {
-            print_menu() ;
+            print_menu();
         }
         else
         {
-            input_size() ;
+            input_size();
             current_game.size = n;
-            declare_arrays(n) ;
-            printf("Enter [0] to play Vs human\n") ;
-            printf("Enter [1] to play Vs computer\n") ;
+            declare_arrays(n);
+
+            printf("Enter [0] to play Vs human\n");
+            printf("Enter [1] to play Vs computer\n");
 
             //function to input mode 
             current_game.mode = 0;
-            //printf("Enter name of player 1 : ") ;
-            //function to input name
-
-            /*if (!current_game.mode)
+            input_name(current_game.player_1.name);
+            // Clear the input buffer
+            clear_input_buffer();
+            
+            if(current_game.mode == 0)
             {
-                printf("Enter name of player 2 : ") ;
-            }*/
+                input_name(current_game.player_2.name);
+            }
 
         }
     }
@@ -565,10 +586,13 @@ int main()
     {
         print_menu() ;
 
-        while(number_of_filled_boxes() != n*n)
-        {
+       // while(number_of_filled_boxes() != n*n)
+       // {   
+            printf("Player 1 name: %s\n", current_game.player_1.name);
+            printf("Player 2 name: %s\n", current_game.player_2.name);
+
             //flow of the game
-        }
-        print_grid(n) ;
+       // }
+       // print_grid(n) ;
     }
 }
