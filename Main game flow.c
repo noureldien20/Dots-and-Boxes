@@ -3,11 +3,12 @@
 #include <time.h>
 #include "Basic Var. and Func.h"
 #include "INPUT.h"
+#include "CHECKING.h"
 #include "Display.h"
 #include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  *********************************/
-Create_thread() ;
+//Create_thread() ;
 
 int main(){
 printf("Welcome to Dots & Boxes game\n") ;
@@ -19,24 +20,31 @@ printf("Enter [0] to play Vs human\n") ;
 printf("Enter [1] to play Vs computer\n") ;
 //function to input mode 
 printf("Enter name of player 1 : ") ;
-if (!mode){
+
+/*if (!mode){
     printf("Enter name of player 2 : ") ;
-}
+}*/
 
 print_grid() ;
 
 while(number_of_filled_boxes() != n*n){
-    input_edge() ;
-    check_edges() ;
-    print_grid() ;
+    
     input_nodes() ;
-    display_stats();
-    /**nour hyn2l el wr2a
+
+    if(check_edges()){
+        //Make DFS
+        //do not switch turn
+    }else{
+        //switch turn    
+    }
+    print_grid() ;
+    
+    print_status(); // print(turn , moves , scores , number of remaining boxes , time passed)
+
+    //print options
+}
 
 
-//print options
-printf("test") ;
-*/
 }
-}
+
 }

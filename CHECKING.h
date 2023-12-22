@@ -1,5 +1,5 @@
 #ifndef CHECKING_H
-# define CHECKING_H
+#define CHECKING_H
 
 #include <stdio.h>
 #include "Basic Var. and Func.h"
@@ -13,7 +13,13 @@ boxes ---> 2D array of access of boxes and who close every box ( of size[n][n] )
 number of dots  = (n+1)(n+1)
 **/
 
-void check_edges(){   //no errors
+// [INDICATOR]  row ---> 1  ,  column ---> 2
+// n_empty = (n_edges/2) - 2
+
+unsigned short int n_edges ; //number of filled edges in chain
+unsigned short int n_empty ; //number of empty edges in chain
+
+short int check_edges(){   //no errors
    short int i,j ;
    for (i=0 ; i<n ; i++){
       for (j=0 ; j<n ; j++){
@@ -22,7 +28,7 @@ void check_edges(){   //no errors
              boxes[i][j] == '0'){
            
             boxes[i][j] = turn ;
-            //dfs
+            return 1 ;
          }
       }
    }
@@ -60,27 +66,35 @@ short int check_box(short int i,short int j){
    }
 }
 
-void DFS(short int a,short int b){
-   if (check_box(a,b)){
-
-      if(dfs[a-1][b]=='0' && a-1<n && b<n){
-         DFS(a-1,b) ;  // go up
-         dfs[a-1][b] = '1' ;
-      }
-      if(dfs[a+1][b]=='0' && a+1<n && b<n){
-         DFS(a+1,b) ;  // go down
-         dfs[a+1][b] = '1' ;
-      }
-      if(dfs[a][b-1]=='0' && a<n && b-1<n){
-         DFS(a,b-1) ;  // go <--- left
-         dfs[a][b-1] = '1' ;
-      }
-      if(dfs[a][b+1]=='0' && a+1<n && b+1<n){
-         DFS(a,b+1) ;  // go ---> right
-         dfs[a][b+1] = '1' ;
-      }
-   
+unsigned short int trace_vertical(){
+   unsigned short int a,b;
+   while(col_edges[a][b]!='0' && col_edges[a][b+1]!='0'){
+      n_edges+=2 ;
+      dfs[a][b] = turn ;
+      a++ ;
    }
+
+   
+   return //index of the empty edge ;
+}
+
+unsigned short int trace_horizontal(){
+   unsigned short int a,b;
+   while(row_edges[a][b]!='0' && row_edges[a+1][b]!='0'){
+      n_edges+=2 ;
+      dfs[a][b] = turn ;
+      b++ ;
+   }
+
+
+   return //index of the empty edge ;
+}
+
+void DFS(unsigned short int indicator,unsigned short int i,unsigned short int j){
+   zero_2D_array(n,n,dfs) ;
+   n_edges = 4 ; n_empty = 
+
+
 }
 
 

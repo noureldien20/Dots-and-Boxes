@@ -74,7 +74,7 @@ void print_vertical(short int c,short int n,char col_edges[][n+1]){
    }
 }
 
-void print_grid(short int n){
+void print_grid(){
    short int j ;
    for(j=1 ; j<=n ; j++){
       print_horizontal(j,n,row_edges) ;
@@ -91,25 +91,26 @@ void print_menu(){
    printf("To Exit game [Press E]\n");
 
    char temp[20] ;
+   char op ;
    scanf("%s",temp) ;
 
    if(temp[1]!='\0'){
       printf("Invalid input\n") ;
       print_menu() ;
    }else{
-      char o = temp[0] ;
+      op = temp[0] ;
    }
 
-   if(lower(o) == 'l'){
+   if(lower(op) == 'l'){
       // function to load from file
-   }else if(lower(o) == 't'){
+   }else if(lower(op) == 't'){
       //function to print top 10
       print_menu() ;
-   }else if(lower(o) =='e'){
+   }else if(lower(op) =='e'){
       exit(1) ;
    }else{
 
-      if(lower(o)!='s'){
+      if(lower(op)!='s'){
          print_menu() ;
       }else{
          input_size() ;
@@ -124,9 +125,9 @@ void print_menu(){
 
 
 //DURING GAME PRINTING
-void print_status(){
+/*void print_status(){
 
-   printf("Current turn: %s\n", current_game.turn == 1/*1 and 2 or a and b*/ ?
+   printf("Current turn: %s\n", current_game.turn == 11 and 2 or a and b ?
    current_game.player_1.name : current_game.player_2.name) ; //modify the condition
 
    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
@@ -135,6 +136,6 @@ void print_status(){
    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
    printf("%d : %d\n",time/60 , time%60) ;
 
-}
+}*/
 
 #endif

@@ -30,7 +30,7 @@ char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn ;
-time_t time ;
+unsigned long t ;
 
 // mode indicator
 short int mode ;  // 1 --> computer
@@ -53,7 +53,7 @@ void print_array_2D(short int row,short int col,char **arr){
 
 char **create_array(short int row,short int col){
    char **arr = (char**)calloc((row),sizeof(char*)) ;
-   
+
    for(short int i=0 ; i<row ; i++){
       arr[i] = (char*)calloc(col, sizeof(char));
    }
@@ -79,11 +79,11 @@ char big(char c){
 
 void time_passed(){
 
-   while(win != n*n){
+   /*while(win != n*n){
       sleep(1) ;
       game.time++ ;
    }
-   
+ */
 }
 
 #endif
@@ -108,9 +108,9 @@ typedef struct {
    char name[MAX_NAME_LENGHT];
    int score;
    int number_of_moves;
-} player;
+}player;
 
-typedef struct {
+typedef struct{
     short int n;
     char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
     char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
@@ -127,7 +127,7 @@ typedef struct {
 typedef struct {
     game array[MAX_SIZE_OF_STACK];
     int top;
-} Stack;
+}Stack;
 
 Stack undo_stack;
 Stack redo_stack;
