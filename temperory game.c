@@ -3,7 +3,7 @@
 #include <string.h>
 #define MAX_SIZE_OF_STACK 30
 #define MAX_PLAYERS_TO_PRINT 10
-#define MAX_NAME_LENGHT 20
+#define MAX_NAME_LENGHT 40
 #define MAX_SIZE_OF_ARRAY 10
 #define red "\e[0;31m"
 #define green "\e[0;32m"
@@ -506,26 +506,6 @@ void switch_turn()
     current_game.previous_sum = number_of_filled_boxes();
 }
 
-void clear_input_buffer() 
-{
-    char c;
-    while ((c = getchar()) != '\n' && c != EOF);
-}
-
-void input_name(char *playerName) 
-{
-    printf("Enter player name (up to %d characters): ", MAX_NAME_LENGHT);
-    
-    fgets(playerName, MAX_NAME_LENGHT + 1, stdin);
-
-    // Remove the newline character at the end (if present)
-    size_t len = strlen(playerName);
-    if (len > 0 && playerName[len - 1] == '\n') 
-    {
-        playerName[len - 1] = '\0';
-    }
-}
-
 void print_menu(){
     
    printf("To Start game [Press S]\n");
@@ -565,14 +545,15 @@ void print_menu(){
             printf("Enter [1] to play Vs computer\n");
 
             //function to input mode 
-            current_game.mode = 0;
-            input_name(current_game.player_1.name);
-            // Clear the input buffer
-            clear_input_buffer();
+            //current_game.mode = 0;
+            
+            printf("Enter player 1 name: ");
+            scanf("%s", &current_game.player_1.name);
             
             if(current_game.mode == 0)
             {
-                input_name(current_game.player_2.name);
+                printf("Enter player 2 name: ");
+                scanf("%s", &current_game.player_2.name);
             }
 
         }
