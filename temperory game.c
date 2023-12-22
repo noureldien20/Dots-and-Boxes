@@ -3,7 +3,7 @@
 #include <string.h>
 #define MAX_SIZE_OF_STACK 30
 #define MAX_PLAYERS_TO_PRINT 10
-#define MAX_NAME_LENGHT 20
+#define MAX_NAME_LENGHT 40
 #define MAX_SIZE_OF_ARRAY 10
 #define red "\e[0;31m"
 #define green "\e[0;32m"
@@ -21,7 +21,7 @@
 //#include <pthread.h>
 
 typedef struct {
-   char name[MAX_NAME_LENGHT];
+   char name[MAX_NAME_LENGHT + 1];
    int score;
    int number_of_moves;
 } player;
@@ -251,7 +251,6 @@ void DFS(short int a,short int b){
    }
 }
 
-//DURING GAME PRINTING
 void display_stats()
 {
     printf("Current turn: %s\n", current_game.turn == 1 ? current_game.player_1.name : current_game.player_2.name);
@@ -514,45 +513,48 @@ void print_menu(){
    printf("To display Top 10 players [Press T]\n");
    printf("To Exit game [Press E]\n");
 
-   char o ;
-   scanf("%c",&o) ;
+   char o;
+   scanf(" %c",&o);
 
    if(small(o) == 'l')
    {
       // function to load from file
    }
-   else if( small(o) == 't')
+   else if(small(o) == 't')
    {
         printTopPlayers();
         print_menu() ;
    }
-   else if( small(o) =='e')
+   else if(small(o) == 'e')
    {
         exit(1) ;
    }
    else
    {
-        if( small(o)!='s')
+        if(small(o) != 's')
         {
-            print_menu() ;
+            print_menu();
         }
         else
         {
-            input_size() ;
+            input_size();
             current_game.size = n;
-            declare_arrays(n) ;
-            printf("Enter [0] to play Vs human\n") ;
-            printf("Enter [1] to play Vs computer\n") ;
+            declare_arrays(n);
+
+            printf("Enter [0] to play Vs human\n");
+            printf("Enter [1] to play Vs computer\n");
 
             //function to input mode 
-            current_game.mode = 0;
-            //printf("Enter name of player 1 : ") ;
-            //function to input name
-
-            /*if (!current_game.mode)
+            //current_game.mode = 0;
+            
+            printf("Enter player 1 name: ");
+            scanf("%s", &current_game.player_1.name);
+            
+            if(current_game.mode == 0)
             {
-                printf("Enter name of player 2 : ") ;
-            }*/
+                printf("Enter player 2 name: ");
+                scanf("%s", &current_game.player_2.name);
+            }
 
         }
     }
@@ -565,10 +567,13 @@ int main()
     {
         print_menu() ;
 
-        while(number_of_filled_boxes() != n*n)
-        {
+       // while(number_of_filled_boxes() != n*n)
+       // {   
+            printf("Player 1 name: %s\n", current_game.player_1.name);
+            printf("Player 2 name: %s\n", current_game.player_2.name);
+
             //flow of the game
-        }
-        print_grid(n) ;
+       // }
+       // print_grid(n) ;
     }
 }
