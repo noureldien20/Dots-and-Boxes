@@ -495,7 +495,7 @@ void input_nodes(){
         r1 = (unsigned short int)temp[0]-48 ; r2 = (unsigned short int)temp[1]-48 ;
         c1 = (unsigned short int)temp[2]-48 ; c2 = (unsigned short int)temp[3]-48 ;
 
-        if(!((r1==r2 || c1==c2) && ((absolute(r1-r2)==1) || (absolute(c1-c2)==1))))
+        if( !((r1==r2 || c1==c2) && ((absolute(r1-r2)==1) || (absolute(c1-c2)==1))) )
         {
             printf("Invalid input\n") ;
             input_nodes() ;
@@ -529,10 +529,11 @@ void print_menu(){
    printf("To display Top 10 players [Press T]\n");
    printf("To Exit game [Press E]\n");
 
-   char o;
-   scanf(" %c",&o);
+   char temp[20] ;
+   char op ;
+   scanf("%s",temp) ;
 
-   if(small(o) == 'l')
+   if(small() == 'l')
    {
       // function to load from file
    }
