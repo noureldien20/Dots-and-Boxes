@@ -66,6 +66,7 @@ short int check_box(short int i,short int j){
    }
 }
 
+
 unsigned short int trace_vertical(){
    unsigned short int a,b;
    while(col_edges[a][b]!='0' && col_edges[a][b+1]!='0'){
@@ -74,25 +75,24 @@ unsigned short int trace_vertical(){
       a++ ;
    }
 
-   
+
    return //index of the empty edge ;
 }
 
 unsigned short int trace_horizontal(){
    unsigned short int a,b;
-   while(row_edges[a][b]!='0' && row_edges[a+1][b]!='0'){
+   while(row_edges[a][b]!='0' && row_edges[a+1][b]!='0' && ){
       n_edges+=2 ;
       dfs[a][b] = turn ;
       b++ ;
    }
-
 
    return //index of the empty edge ;
 }
 
 void DFS(unsigned short int indicator,unsigned short int i,unsigned short int j){
    zero_2D_array(n,n,dfs) ;
-   n_edges = 4 ; n_empty = 
+   n_edges = 4 ; n_empty = 0;
 
 
 }
