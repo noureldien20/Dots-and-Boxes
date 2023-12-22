@@ -101,16 +101,16 @@ void print_menu(){
       op = temp[0] ;
    }
 
-   if(lower(op) == 'l'){
+   if(small(op) == 'l'){
       // function to load from file
-   }else if(lower(op) == 't'){
+   }else if(small(op) == 't'){
       //function to print top 10
       print_menu() ;
-   }else if(lower(op) =='e'){
+   }else if(small(op) =='e'){
       exit(1) ;
    }else{
 
-      if(lower(op)!='s'){
+      if(small(op)!='s'){
          print_menu() ;
       }else{
          input_size() ;

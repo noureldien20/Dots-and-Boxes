@@ -533,22 +533,29 @@ void print_menu(){
    char op ;
    scanf("%s",temp) ;
 
-   if(small() == 'l')
+   if(temp[1]!='\0'){
+      printf("Invalid input\n") ;
+      print_menu() ;
+   }else{
+      op = temp[0] ;
+   }
+
+   if(small(op) == 'l')
    {
       // function to load from file
    }
-   else if(small(o) == 't')
+   else if(small(op) == 't')
    {
         printTopPlayers();
         print_menu() ;
    }
-   else if(small(o) == 'e')
+   else if(small(op) =='e')
    {
         exit(1) ;
    }
    else
    {
-        if(small(o) != 's')
+        if(small(op)!='s')
         {
             print_menu();
         }
