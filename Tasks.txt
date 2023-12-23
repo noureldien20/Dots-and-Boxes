@@ -12,6 +12,5 @@ update stats funciton
 
 
 Ahmed
+
 dfs 
-checking inputs
-(size input , names input , nodes input , )

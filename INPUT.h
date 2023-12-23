@@ -5,7 +5,7 @@
 #include "Basic Var. and Func.h"
 
 
-unsigned short int absolute(unsigned short int x){
+short int absolute(short int x){
     if(x<0){
         return -1*x ;
     }else{
@@ -109,7 +109,7 @@ void input_nodes(){
    }
 }
 
-input_options(){
+void input_options(){
 
 }
 

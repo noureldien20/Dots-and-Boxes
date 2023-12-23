@@ -18,7 +18,7 @@ print_menu() ;
 
 printf("Enter [0] to play Vs human\n") ;
 printf("Enter [1] to play Vs computer\n") ;
-//function to input mode 
+//function to input mode
 printf("Enter name of player 1 : ") ;
 
 /*if (!mode){
@@ -28,17 +28,17 @@ printf("Enter name of player 1 : ") ;
 print_grid() ;
 
 while(number_of_filled_boxes() != n*n){
-    
+
     input_nodes() ;
 
     if(check_edges()){
         //Make DFS
         //do not switch turn
     }else{
-        //switch turn    
+        //switch turn
     }
     print_grid() ;
-    
+
     print_status(); // print(turn , moves , scores , number of remaining boxes , time passed)
 
     //print options

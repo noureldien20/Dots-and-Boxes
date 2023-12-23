@@ -119,102 +119,120 @@ input_size() ;
 //printf("%d",*temp) ;
 printf("size = %hu\n",n) ;
 }*/
-/**
+
+
 #include <stdio.h>
-unsigned short int absolute(unsigned short int x){
-    if(x<0){
-        return -1*x ;
-    }else{
-        return x ;
-    }
-}
-
-unsigned short int min(unsigned short int x,unsigned short int y){
-    if(x<y){
-        return x ;
-    }else{
-        return y ;
-    }
-}
-
-unsigned short int n = 3 ;
-
-unsigned short int check_node(char x){
-   if (
-       (int)x <= 57 && (int)x >= 49 && // integer
-       (int)x<=(n+49) //positive & less than size
-       ){
-         return 1;
-       }else{
-         return 0 ;}
-}
 
 char row_edges[4][3] = {
-    {'1','0','0'},
-    {'2','1','0'},
-    {'1','0','2'},
-    {'0','2','1'}
+    {'2','2','0'},
+    {'0','0','0'},
+    {'0','0','0'},
+    {'2','1','1'}
 };
 char col_edges[3][4] = {
-    {'1','2','1','0'},
-    {'1','0','2','0'},
-    {'1','2','0','1'}
+    {'1','1','1','0'},
+    {'2','1','1','0'},
+    {'2','1','2','0'}
 };
-char turn = '1';
+char dfs[3][3] = {'\0'} ;
 
-void input_nodes(){
+char turn = '1'; unsigned short int n = 3;
 
-   unsigned short int r1,r2,c1,c2;
-   printf("Enter 2 dots (row,row , column,column) : ") ;
+short int n_edges=3 ; //number of filled edges in chain
+short int n_empty=1 ; //number of empty edges in chain
+unsigned short int indexes[2] = {0,0} ;
+short int director = 1 ;  // [director]  up or right ---> 1 , down or left ---> -1
 
-   char temp[20] = {'\0'} ;
-   scanf("%s",temp) ;
+void trace_vertical(unsigned short int a,unsigned short int b,short int d){
 
-   if( !(check_node(temp[0]) && check_node(temp[1]) &&
-      check_node(temp[2]) && check_node(temp[3])) ){
-         printf("Invalid input\n") ;
-         input_nodes() ;
+   while(col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0' && a<n && a>=0){
+      n_edges+=2 ;
+       //printf("\n%d\n",n_edges) ;
+      dfs[a][b] = turn ;
+      a = a-d ;
+
+      if(row_edges[a-d][b]!='\0'){
+         n_edges++ ;
+         director = 0 ;
+         dfs[a][b] = turn ;
+         //printf("%d",director) ;
+         break ;
+      }
+      n_empty++ ;
+   }
+
+   if(director){
+      //printf("test");
+      if(col_edges[a][b]!='\0'){
+         n_edges++;
+         director = 1 ;
+         n_empty++ ;
+      }else if(col_edges[a][b+1]!='\0'){
+         n_edges++;
+         director = -1 ;
+         n_empty++ ;
+      }else{ //No chain
+         director = 0;
+         n_empty++ ;
       }
 
-   if(temp[4]=='\0'){
-
-      r1 = (unsigned short int)temp[0]-48 ; r2 = (unsigned short int)temp[1]-48 ;
-      c1 = (unsigned short int)temp[2]-48 ; c2 = (unsigned short int)temp[3]-48 ;
-
-      if(!
-         (r1==r2 || c1==c2) &&   //nodes are adjacent
-         (absolute(r1-r2)==1 || absolute(c1-c2)==1)  //short line not long line
-         ){
-           printf("Invalid input\n") ;
-           input_nodes() ;
-
-      }else if(row_edges[r1-1][min(c1,c2)-1]!='0' && r1==r2 ||
-               col_edges[min(r1,r2)-1][c1-1]!='0' && c1==c2){
-
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }else{
-
-        if(r1==r2){
-            row_edges[r1-1][min(c1,c2)-1] = turn ;
-        }else{
-            col_edges[min(r1,r2)-1][c1-1] = turn ;
-        }
-
-      }
-
-   }else{
-      printf("Invalid input\n") ;
-      input_nodes() ;
    }
 }
-int main(){
 
-input_nodes() ;
+/**unsigned short int trace_horizontal(){
+   unsigned short int a,b;
+   while(row_edges[a][b]!='\0' && row_edges[a+1][b]!='\0'){
+      n_edges+=2 ;
+      dfs[a][b] = turn ;
+      b++ ;
+   }
 
 }*/
 
+void DFS(unsigned short int i,unsigned short int j){
+   indexes[0] = i ; indexes[1] = j;
+   //zero_2D_array(n,n,dfs) ;
+   while(director){
+      //trace_horizontal();
+      trace_vertical(indexes[0],indexes[1],-1) ;
+      //printf("test");
+   }
 
+   if(n_empty == (n_edges/2) - 2){
+      printf("\n%d %d\n",n_edges,n_empty) ;
+      printf("chain\n") ;
+      //make dfs equal to row_edges, col_edges, boxes
+   }else{
+      printf("not chain\n") ;
+      printf("\n%d %d\n",n_edges,n_empty) ;
+      n_edges = 0 ;
+      n_empty = 0 ;
+
+   }
+
+}
+
+
+int main(){
+void print_array_2D(short int row,short int col,char arr[][col]){
+   for (short int i=0 ; i<row ; i++){
+      for (short int j=0 ; j<col ; j++){
+      if(arr[i][j]=='\0'){
+         printf("%c",'0');
+      }
+      printf("%c ",arr[i][j]);
+      }
+      printf("\n");
+   }
+}
+
+
+DFS(2,0);printf("\n") ;
+
+print_array_2D(3,3,dfs) ;
+}
+
+/**
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -398,7 +416,7 @@ char big(char c){
       game.time++ ;
    }
 
-}*/
+}
 
 void check_edges(){   //no errors
    short int i,j ;
@@ -597,7 +615,7 @@ void input_size(){
         }
 
     }
-}*/
+}
 
 game peek(Stack* stack)
 {
@@ -714,7 +732,7 @@ void input_nodes(){
 
         if( !((r1==r2 || c1==c2) && ((absolute(r1-r2)==1) || (absolute(c1-c2)==1))) )
         {
-            printf("Invalid input*******\n") ;
+            printf("Invalid input\n") ;
             input_nodes() ;
 
         }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
@@ -820,4 +838,7 @@ int main()
             //print options
         }
     }
-}
+}*/
+
+
+

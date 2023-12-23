@@ -33,7 +33,7 @@ void print_boxes_color(short int c,short int i){
    }
 }
 
-void print_horizontal(short int r,short int n,char row_edges[][n]){
+void print_horizontal(short int r){
    short int i ;   ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
       printf(white"+") ;
@@ -49,7 +49,7 @@ void print_horizontal(short int r,short int n,char row_edges[][n]){
    printf(white"+\n") ;
 }
 
-void print_vertical(short int c,short int n,char col_edges[][n+1]){
+void print_vertical(short int c){
    short int i ;
    for(int j=0; j<3 ;j++){
       for(i=0 ; i<n ; i++){
@@ -77,10 +77,10 @@ void print_vertical(short int c,short int n,char col_edges[][n+1]){
 void print_grid(){
    short int j ;
    for(j=1 ; j<=n ; j++){
-      print_horizontal(j,n,row_edges) ;
-      print_vertical(j,n,col_edges) ;
+      print_horizontal(j) ;
+      print_vertical(j) ;
    }
-   print_horizontal(j,n,row_edges) ;
+   print_horizontal(j) ;
 }
 
 void print_menu(){

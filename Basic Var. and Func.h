@@ -38,7 +38,7 @@ short int mode ;  // 1 --> computer
 void zero_2D_array(short int row,short int col,char **arr){
    for (int i=0 ; i<row ; i++){
       for (int j=0 ; j<col ; j++){
-         arr[i][j] = '0' ; }
+         arr[i][j] = '\0' ; }
    }
 }
 
