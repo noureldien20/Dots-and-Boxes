@@ -49,6 +49,7 @@ typedef struct {
 Stack undo_stack;
 Stack redo_stack;
 game current_game;
+FILE* file;
 
 unsigned short int n ;
 char **row_edges ;
@@ -220,11 +221,11 @@ void display_stats()
     printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
     printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+    printf("Remaining Boxes: %d\n\n", current_game.number_of_remaining_boxes);
     //we still need to print the time
 }
 
-void Winner(player *winner) 
+/*void Winner(player *winner) 
 {
     FILE *file = fopen("player_data.txt", "a+");
 
@@ -325,7 +326,7 @@ void printTopPlayers()
 
     // Free dynamically allocated memory
     free(players);
-}
+}*/
 
 void input_size(){
 
@@ -446,6 +447,7 @@ void switch_turn()
     {
         empty_both_stacks();
         turn = (turn == '1') ? '2' : '1';
+        current_game.turn = turn;
     }
     current_game.previous_sum = number_of_filled_boxes();
 }
@@ -522,8 +524,222 @@ void input_nodes(){
    }
 }
 
-void print_menu(){
-    
+// Serialize and save the player to a binary file
+void savePlayer(const player* player) {
+    FILE* file = fopen("player_data.bin", "ab");  // "ab" for append in binary mode
+
+    if (file == NULL) {
+        printf("Error opening or creating the file.\n");
+        return;
+    }
+
+    fwrite(player, sizeof(player), 1, file);
+
+    fclose(file);
+}
+
+// Deserialize and load players from a binary file
+player* loadPlayers(int* numPlayers) {
+    FILE* file = fopen("player_data.bin", "rb");
+
+    if (file == NULL) {
+        printf("Error opening the file.\n");
+        exit(1);
+    }
+
+    player* players = NULL;
+    *numPlayers = 0;
+
+    player tempPlayer;
+
+    while (fread(&tempPlayer, sizeof(player), 1, file) == 1) {
+        players = realloc(players, (*numPlayers + 1) * sizeof(player));
+
+        if (players == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(1);
+        }
+
+        players[(*numPlayers)++] = tempPlayer;
+    }
+
+    fclose(file);
+
+    return players;
+}
+
+// Serialize and save the winner to the file
+void Winner(player* winner) {
+    player* players;
+    int numPlayers;
+
+    // Load existing players from the file
+    players = loadPlayers(&numPlayers);
+
+    int found = 0;
+
+    // Search for the player in the array
+    for (int i = 0; i < numPlayers; i++) {
+        if (strcmp(players[i].name, winner->name) == 0) {
+            found = 1;
+
+            if (winner->score > players[i].score) {
+                players[i].score = winner->score;
+            }
+            break;
+        }
+    }
+
+    if (!found) {
+        // Add the winner to the array
+        players = realloc(players, (numPlayers + 1) * sizeof(player));
+
+        if (players == NULL) {
+            printf("Memory allocation failed.\n");
+            exit(1);
+        }
+
+        players[numPlayers++] = *winner;
+    }
+
+    // Save the updated players to the file
+    FILE* file = fopen("player_data.bin", "wb");
+    if (file != NULL) {
+        fwrite(players, sizeof(player), numPlayers, file);
+        fclose(file);
+    } else {
+        printf("Error opening the file for saving.\n");
+    }
+
+    // Free dynamically allocated memory
+    free(players);
+}
+
+// Function to serialize and save the game to a binary file
+int saveGame(const game* gamePtr) {
+    file = fopen("saved_game.bin", "wb");
+    if (file != NULL) {
+        // Serialize the game struct
+        fwrite(gamePtr, sizeof(game), 1, file);
+        fclose(file);
+        printf("Game saved successfully.\n");
+        return 1;
+    } else {
+        fprintf(stderr, "Unable to open file for saving.\n");
+        return 0;
+    }
+}
+
+// Function to deserialize and load the game from a binary file
+void loadGame(game* gamePtr) 
+{
+    file = fopen("saved_game.bin", "rb");
+    if (file != NULL) 
+    {
+        // Get the size of the file
+        fseek(file, 0, SEEK_END);
+        long fileSize = ftell(file);
+        fseek(file, 0, SEEK_SET);
+
+        // Deserialize the game struct
+        char* buffer = (char*)malloc(fileSize);
+        fread(buffer, fileSize, 1, file);
+        memcpy(gamePtr, buffer, sizeof(game));
+        free(buffer);
+
+        fclose(file);
+        printf("Game loaded successfully.\n");
+    } 
+    else 
+    {
+        fprintf(stderr, "Unable to open file for loading.\n");
+    }
+}
+
+// Display the top players and their scores
+void printTopPlayers() {
+    player* players;
+    int numPlayers;
+
+    // Load existing players from the file
+    players = loadPlayers(&numPlayers);
+
+    // Sort the players based on score
+    for (int i = 0; i < numPlayers - 1; i++) {
+        for (int j = i + 1; j < numPlayers; j++) {
+            if (players[j].score > players[i].score) {
+                player temp = players[i];
+                players[i] = players[j];
+                players[j] = temp;
+            }
+        }
+    }
+
+    printf("Top %d Players:\n", numPlayers);
+
+    int numPlayersToPrint = (numPlayers < MAX_PLAYERS_TO_PRINT) ? numPlayers : MAX_PLAYERS_TO_PRINT;
+
+    for (int i = 0; i < numPlayersToPrint; i++) {
+        printf("%d. %s - %d\n", i + 1, players[i].name, players[i].score);
+    }
+
+    // Free dynamically allocated memory
+    free(players);
+}
+/*The savePlayer function serializes and saves a single player to the binary file in append mode ("ab").
+The loadPlayers function deserializes and loads all players from the binary file. It returns a dynamic array of Player structs and updates the numPlayers variable.
+The Winner function uses loadPlayers to get the existing players, updates the information for the winner, and then saves the updated players back to the file.
+The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.*/
+
+void print_options()
+{
+    printf("To Make a new move [Press N]\n");
+    printf("To Undo [Press U]\n");
+    printf("To Redo [Press R]\n");
+    printf("To Save game [Press S]\n");
+    printf("To Exit game [Press Q]\n");
+
+    char temp[20] ;
+    char op ;
+    scanf("%s",temp) ;
+
+    if(temp[1]!='\0')
+    {
+        printf("Invalid input\n");
+        print_options();
+    }else
+    {
+        op = small(temp[0]);
+    }
+    if(op == 'u')
+    {
+        undo(&undo_stack, &redo_stack, &current_game);
+    }
+    else if(op == 'r')
+    {
+        redo(&undo_stack, &redo_stack, &current_game);
+    }
+    else if(op =='s')
+    {
+        saveGame(&current_game);
+    }
+    else if(op =='q')
+    {
+        exit(1);
+    }
+    else if(op =='n')
+    {
+        return;
+    }
+    else
+    {
+        printf("Invalid input\n");
+        print_options();
+    }
+}
+
+void print_menu()
+{
    printf("To Start game [Press S]\n");
    printf("To load previous game [Press L]\n");
    printf("To display Top 10 players [Press T]\n");
@@ -533,28 +749,28 @@ void print_menu(){
    char op ;
    scanf("%s",temp) ;
 
-   if(temp[1]!='\0'){
-      printf("Invalid input\n") ;
-      print_menu() ;
-   }else{
-      op = temp[0] ;
-   }
+    if(temp[1]!='\0'){
+        printf("Invalid input\n") ;
+        print_menu() ;
+    }else{
+        op = temp[0] ;
+    }
 
-   if(small(op) == 'l')
-   {
-      // function to load from file
-   }
-   else if(small(op) == 't')
-   {
+    if(small(op) == 'l')
+    {
+        loadGame(&current_game);
+    }
+    else if(small(op) == 't')
+    {
         printTopPlayers();
         print_menu() ;
-   }
-   else if(small(op) =='e')
-   {
+    }
+    else if(small(op) =='e')
+    {
         exit(1) ;
-   }
-   else
-   {
+    }
+    else
+    {
         if(small(op)!='s')
         {
             print_menu();
@@ -600,7 +816,7 @@ int main()
             print_grid();
             switch_turn();
             display_stats();
-            //print options
+            print_options();
         }
     }
 }
