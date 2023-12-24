@@ -6,6 +6,7 @@
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
 #define MAX_SIZE_OF_ARRAY 10
+#define MAX_GRID_SIZE 39
 #define red "\e[0;31m"
 #define green "\e[0;32m"
 #define yellow "\e[0;33m"
@@ -39,7 +40,7 @@ typedef struct {
     player player_2;
     int previous_sum;
     short int mode; // 1 --> computer
-}game;
+} game;
 
 typedef struct {
     game array[MAX_SIZE_OF_STACK];
@@ -58,6 +59,16 @@ char **boxes ;
 char **dfs ;
 char turn = '1';
 //time_t time ;
+
+void clearInputBuffer() 
+{
+    int c;
+
+    while ((c = getchar()) != '\n' && c != EOF) 
+    {
+        // Keep reading characters until newline or end of file
+    }
+}
 
 char **create_array(short int row,short int col){
    char **arr = (char **)calloc(row, sizeof(char *)) ;
@@ -113,14 +124,22 @@ void print_horizontal(short int r){
    printf(white"+\n") ;
 }
 
-void print_boxes_color(short int c,short int i){
-   if (boxes[c-1][i]=='1'){
-      printf(back_cyan"       ") ;
-   }else if(boxes[c-1][i]=='2'){
-      printf(back_green"       ") ;
-   }else{
-      printf("       ") ;
-   }
+void print_boxes_color(short int c,short int i)
+{
+    if (boxes[c-1][i] == '1')
+    {
+        printf(back_cyan"       ");
+        current_game.player_1.score++;
+    }
+    else if(boxes[c-1][i] == '2')
+    {
+        printf(back_green"       ");
+        current_game.player_2.score++;
+    }
+    else
+    {
+        printf("       ");
+    }
 }
 
 void print_vertical(short int c){
@@ -148,31 +167,54 @@ void print_vertical(short int c){
    }
 }
 
-void print_grid(){
-   short int j ;
-   for(j=1 ; j<=n ; j++)
-   {
-        print_horizontal(j) ;
-        print_vertical(j) ;
-   }
-   print_horizontal(j) ;
+void print_grid()
+{
+    printf("\n");
+
+    short int j ;
+
+    for(j = 1 ; j <= n ; j++)
+    {
+        print_horizontal(j);
+        print_vertical(j);
+    }
+
+    print_horizontal(j);
+
+    printf("\n");
 }
 
-void free_array(short int row, char **arr) {
-    for (short int i = 0; i < row; i++) {
+void free_array(short int row, char **arr) 
+{
+    for(short int i = 0; i < row; i++) 
+    {
         free(arr[i]);
     }
     free(arr);
 }
 
-char small(char c){
-   if (c>=65 && c<=90){ return c+32 ; }
-   else{return c ;}
+char small(char c)
+{
+    if(c>=65 && c<=90)
+    { 
+        return c+32;
+    }
+    else
+    {
+        return c ;
+    }
 }
 
-char big(char c){
-   if (c>=97 && c<=122){ return c-32 ; }
-   else{return c ;}
+char big(char c)
+{
+    if (c >= 97 && c <= 122)
+    { 
+        return c-32 ; 
+    }
+    else
+    {
+        return c ;
+    }
 }
 
 /*void time_passed(){
@@ -184,18 +226,22 @@ char big(char c){
    
 }*/
 
-void check_edges(){   //no errors
-   short int i,j ;
-   for (i=0 ; i<n ; i++){
-      for (j=0 ; j<n ; j++){
-         if (row_edges[i][j]!='\0' && row_edges[i+1][j]!='\0' &&
-             col_edges[i][j]!='\0' && col_edges[i][j+1] !='\0' &&
-             boxes[i][j] == '\0'){
-           
-            boxes[i][j] = turn ;
-         }
-      }
-   }
+void check_edges()
+{
+    short int i,j ;
+
+    for (i=0 ; i<n ; i++)
+    {
+        for (j=0 ; j<n ; j++)
+        {
+            if (row_edges[i][j]!='\0' && row_edges[i+1][j]!='\0' &&
+                col_edges[i][j]!='\0' && col_edges[i][j+1] !='\0' &&
+                boxes[i][j] == '\0')
+            {
+                boxes[i][j] = turn ;
+            }
+        }
+    }
 }
 
 int number_of_filled_boxes() 
@@ -206,7 +252,7 @@ int number_of_filled_boxes()
     {
         for (int j = 0; j < current_game.size; ++j) 
         {
-            if (current_game.array_of_boxes[i][j] == '1' || current_game.array_of_boxes[i][j] == '2')
+            if (boxes[i][j] != '\0')
             {
                 count++;
             }
@@ -217,7 +263,7 @@ int number_of_filled_boxes()
 
 void display_stats()
 {
-    printf("Next turn: %s\n", turn == '1' ? current_game.player_1.name : current_game.player_2.name);
+    printf("\nNext turn: %s\n", turn == '1' ? current_game.player_1.name : current_game.player_2.name);
     printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
     printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
@@ -328,34 +374,41 @@ void printTopPlayers()
     free(players);
 }*/
 
-void input_size(){
+void input_size()
+{
 
-   char temp[20] = {'\0'} ;
-   unsigned short int arr[2] = {0,0};
+    char temp[5] = {'\0'};
+    unsigned short int arr[2] = {0,0};
 
-   printf("Enter size of grid [MAX 29] : ") ;
-   scanf("%s",temp) ;
+    printf("Enter size of grid [MAX %d]: ", MAX_GRID_SIZE) ;
+    scanf("%1s",temp);
 
-   if(
-      ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
-      (int)temp[0] <= 50 && (int)temp[0] >= 49 && temp[1]!='\0' )
-      &&(
-         (int)temp[1] <= 57 && (int)temp[1] >= 48 || temp[1] == '\0'
+    if(
+    ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
+    (int)temp[0] <= 50 && (int)temp[0] >= 49 && temp[1]!='\0' )
+    &&(
+        (int)temp[1] <= 57 && (int)temp[1] >= 48 || temp[1] == '\0'
         ) && (temp[2]=='\0')
-     ){
-      arr[0] = (unsigned short int)temp[0] - 48 ;
+    )
+    {
+        arr[0] = (unsigned short int)temp[0] - 48 ;
 
-      if (temp[1]!='\0'){
-         arr[1] = (unsigned short int)temp[1] - 48 ;
-         n = arr[1] + (arr[0]*10) ;
-      }else{
-         n = arr[0] ;
-      }
-
-   }else{
-      printf("Invalid input\n") ;
-      input_size() ;
-   }
+        if (temp[1]!='\0')
+        {
+            arr[1] = (unsigned short int)temp[1] - 48 ;
+            n = arr[1] + (arr[0]*10) ;
+        }
+        else
+        {
+            n = arr[0] ;
+        }
+    }
+    else
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
+        input_size() ;
+    }
 }
 
 /*void input_nodes(){
@@ -443,92 +496,127 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
 
 void switch_turn()
 {
+    if (turn == '1') 
+    {
+        current_game.player_1.number_of_moves++;
+    } 
+    else 
+    {
+        current_game.player_2.number_of_moves++;
+    }
+
     if(number_of_filled_boxes() == current_game.previous_sum)
     {
         empty_both_stacks();
         turn = (turn == '1') ? '2' : '1';
         current_game.turn = turn;
     }
-    current_game.previous_sum = number_of_filled_boxes();
+    current_game.number_of_remaining_boxes =  (current_game.size * current_game.size) - number_of_filled_boxes();
 }
 
-unsigned short int check_node(char x){
-   if (
-       (int)x <= 57 && (int)x >= 49 && // integer
-       (int)x< (n+49) //positive & less than size
-       ){
-         return 1;
-       }else{
-         return 0 ;}
-}
-
-short int absolute(short int x){
-    if(x<0){
-        return -1*x ;
-    }else{
-        return x ;
+unsigned short int check_node(char x)
+{
+    //if((int)x <= 57 && (int)x >= 49 && (int)x < (n + 49))
+    if(x <= '9' && x >= '1' && x < (n + '1'))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
     }
 }
 
-unsigned short int min(unsigned short int x,unsigned short int y){
-    if(x<y){
+/*short int absolute(short int x)
+{
+    if(x<0)
+    {
+        return -1 * x;
+    }
+    else
+    {
+        return x;
+    }
+}
+
+unsigned short int min(unsigned short int x,unsigned short int y)
+{
+    if(x<y)
+    {
         return x ;
-    }else{
+    }
+    else
+    {
         return y ;
     }
+}*/
+
+int min(int a, int b) 
+{
+    return (a < b) ? a : b;
 }
 
-void input_nodes(){
+void input_nodes()
+{
+    unsigned short int r1,r2,c1,c2;
+    printf("Enter 2 dots (row,row,col,col): ");
 
-   unsigned short int r1,r2,c1,c2;
-   printf("Enter 2 dots (row,row , column,column) : ") ;
+    char temp[10] = {'\0'};
+    scanf("%4s",temp);
 
-   char temp[20] = {'\0'} ;
-   scanf("%s",temp) ;
+    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
+        input_nodes() ;
+    }
 
-   if( !(check_node(temp[0]) && check_node(temp[1]) &&
-      check_node(temp[2]) && check_node(temp[3])) ){
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }
+    if(temp[4] =='\0')
+    {
+        r1 = (unsigned short int)temp[0] - '0' ; 
+        r2 = (unsigned short int)temp[1] - '0' ;
+        c1 = (unsigned short int)temp[2] - '0' ; 
+        c2 = (unsigned short int)temp[3] - '0' ;
 
-   if(temp[4]=='\0'){
-
-        r1 = (unsigned short int)temp[0]-48 ; r2 = (unsigned short int)temp[1]-48 ;
-        c1 = (unsigned short int)temp[2]-48 ; c2 = (unsigned short int)temp[3]-48 ;
-
-        if( !((r1==r2 || c1==c2) && ((absolute(r1-r2)==1) || (absolute(c1-c2)==1))) )
+        if( !((r1 == r2 || c1 == c2) && ((abs(r1 - r2) == 1) || (abs(c1 - c2) == 1))))
         {
-            printf("Invalid input\n") ;
+            printf("Invalid input\n");
+            clearInputBuffer();
             input_nodes() ;
-
-        }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-                col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
-                {
-
-            printf("Invalid input\n") ;
+        }
+        else if(row_edges[r1 - 1][min(c1,c2) - 1] != '\0' && (r1 == r2) || col_edges[min(r1,r2)-1][c1 - 1] != '\0' && (c1 == c2))
+        {
+            printf("Invalid input\n");
+            clearInputBuffer();
             input_nodes() ;
-        }else{
-
-            if(r1==r2){
-                row_edges[r1-1][min(c1,c2)-1] = turn ;
-            }else{
-                col_edges[min(r1,r2)-1][c1-1] = turn ;
+        }
+        else
+        {
+            if(r1 == r2)
+            {
+                row_edges[r1 - 1][min(c1,c2) - 1] = turn ;
             }
-
-      }
-
-   }else{
-      printf("Invalid input\n") ;
-      input_nodes() ;
-   }
+            else
+            {
+                col_edges[min(r1,r2) - 1][c1 - 1] = turn ;
+            }
+        }
+    }
+    else
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
+        input_nodes();
+    }
 }
 
 // Serialize and save the player to a binary file
-void savePlayer(const player* player) {
+void savePlayer(const player* player) 
+{
     FILE* file = fopen("player_data.bin", "ab");  // "ab" for append in binary mode
 
-    if (file == NULL) {
+    if (file == NULL) 
+    {
         printf("Error opening or creating the file.\n");
         return;
     }
@@ -539,10 +627,12 @@ void savePlayer(const player* player) {
 }
 
 // Deserialize and load players from a binary file
-player* loadPlayers(int* numPlayers) {
+player* loadPlayers(int* numPlayers) 
+{
     FILE* file = fopen("player_data.bin", "rb");
 
-    if (file == NULL) {
+    if (file == NULL) 
+    {
         printf("Error opening the file.\n");
         exit(1);
     }
@@ -552,10 +642,12 @@ player* loadPlayers(int* numPlayers) {
 
     player tempPlayer;
 
-    while (fread(&tempPlayer, sizeof(player), 1, file) == 1) {
+    while (fread(&tempPlayer, sizeof(player), 1, file) == 1) 
+    {
         players = realloc(players, (*numPlayers + 1) * sizeof(player));
 
-        if (players == NULL) {
+        if (players == NULL) 
+        {
             printf("Memory allocation failed.\n");
             exit(1);
         }
@@ -569,7 +661,8 @@ player* loadPlayers(int* numPlayers) {
 }
 
 // Serialize and save the winner to the file
-void Winner(player* winner) {
+void Winner(player* winner) 
+{
     player* players;
     int numPlayers;
 
@@ -579,22 +672,27 @@ void Winner(player* winner) {
     int found = 0;
 
     // Search for the player in the array
-    for (int i = 0; i < numPlayers; i++) {
-        if (strcmp(players[i].name, winner->name) == 0) {
+    for (int i = 0; i < numPlayers; i++) 
+    {
+        if (strcmp(players[i].name, winner->name) == 0) 
+        {
             found = 1;
 
-            if (winner->score > players[i].score) {
+            if (winner->score > players[i].score) 
+            {
                 players[i].score = winner->score;
             }
             break;
         }
     }
 
-    if (!found) {
+    if (!found) 
+    {
         // Add the winner to the array
         players = realloc(players, (numPlayers + 1) * sizeof(player));
 
-        if (players == NULL) {
+        if (players == NULL) 
+        {
             printf("Memory allocation failed.\n");
             exit(1);
         }
@@ -604,10 +702,13 @@ void Winner(player* winner) {
 
     // Save the updated players to the file
     FILE* file = fopen("player_data.bin", "wb");
-    if (file != NULL) {
+    if (file != NULL) 
+    {
         fwrite(players, sizeof(player), numPlayers, file);
         fclose(file);
-    } else {
+    } 
+    else 
+    {
         printf("Error opening the file for saving.\n");
     }
 
@@ -616,19 +717,24 @@ void Winner(player* winner) {
 }
 
 // Function to serialize and save the game to a binary file
-int saveGame(const game* gamePtr) {
+int saveGame(const game* gamePtr) 
+{
     file = fopen("saved_game.bin", "wb");
-    if (file != NULL) {
+    if (file != NULL) 
+    {
         // Serialize the game struct
         fwrite(gamePtr, sizeof(game), 1, file);
         fclose(file);
         printf("Game saved successfully.\n");
         return 1;
-    } else {
+    } 
+    else 
+    {
         fprintf(stderr, "Unable to open file for saving.\n");
         return 0;
     }
 }
+//saveGame(&myGame, "saved_game.bin")
 
 // Function to deserialize and load the game from a binary file
 void loadGame(game* gamePtr) 
@@ -657,7 +763,8 @@ void loadGame(game* gamePtr)
 }
 
 // Display the top players and their scores
-void printTopPlayers() {
+void printTopPlayers() 
+{
     player* players;
     int numPlayers;
 
@@ -665,9 +772,12 @@ void printTopPlayers() {
     players = loadPlayers(&numPlayers);
 
     // Sort the players based on score
-    for (int i = 0; i < numPlayers - 1; i++) {
-        for (int j = i + 1; j < numPlayers; j++) {
-            if (players[j].score > players[i].score) {
+    for(int i = 0; i < numPlayers - 1; i++) 
+    {
+        for(int j = i + 1; j < numPlayers; j++) 
+        {
+            if(players[j].score > players[i].score) 
+            {
                 player temp = players[i];
                 players[i] = players[j];
                 players[j] = temp;
@@ -679,7 +789,8 @@ void printTopPlayers() {
 
     int numPlayersToPrint = (numPlayers < MAX_PLAYERS_TO_PRINT) ? numPlayers : MAX_PLAYERS_TO_PRINT;
 
-    for (int i = 0; i < numPlayersToPrint; i++) {
+    for(int i = 0; i < numPlayersToPrint; i++)
+    {
         printf("%d. %s - %d\n", i + 1, players[i].name, players[i].score);
     }
 
@@ -698,14 +809,16 @@ void print_options()
     printf("To Redo [Press R]\n");
     printf("To Save game [Press S]\n");
     printf("To Exit game [Press Q]\n");
+    printf("Option: ");
 
-    char temp[20] ;
+    char temp[5] ;
     char op ;
-    scanf("%s",temp) ;
+    scanf("%1s",temp) ;
 
     if(temp[1]!='\0')
     {
         printf("Invalid input\n");
+        clearInputBuffer();
         print_options();
     }else
     {
@@ -734,7 +847,26 @@ void print_options()
     else
     {
         printf("Invalid input\n");
+        clearInputBuffer();
         print_options();
+    }
+}
+
+void inputGameMode() 
+{
+    int mode;
+
+    printf("Enter game mode [0 for human vs human, 1 for human vs computer]: ");
+
+    if (scanf("%d", &mode) != 1 || (mode != 0 && mode != 1)) 
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
+        inputGameMode();
+    }
+    else 
+    {
+        current_game.mode = mode;
     }
 }
 
@@ -744,15 +876,20 @@ void print_menu()
    printf("To load previous game [Press L]\n");
    printf("To display Top 10 players [Press T]\n");
    printf("To Exit game [Press E]\n");
+   printf("Option: ");
 
-   char temp[20] ;
+   char temp[5] ;
    char op ;
-   scanf("%s",temp) ;
+   scanf("%1s",temp) ;
 
-    if(temp[1]!='\0'){
-        printf("Invalid input\n") ;
+    if(temp[1]!='\0')
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
         print_menu() ;
-    }else{
+    }
+    else
+    {
         op = temp[0] ;
     }
 
@@ -763,7 +900,8 @@ void print_menu()
     else if(small(op) == 't')
     {
         printTopPlayers();
-        print_menu() ;
+        clearInputBuffer();
+        print_menu();
     }
     else if(small(op) =='e')
     {
@@ -773,6 +911,7 @@ void print_menu()
     {
         if(small(op)!='s')
         {
+            clearInputBuffer();
             print_menu();
         }
         else
@@ -781,21 +920,18 @@ void print_menu()
             current_game.size = n;
             declare_arrays(n);
 
-            printf("Enter [0] to play Vs human\n");
-            printf("Enter [1] to play Vs computer\n");
-
-            //function to input mode 
-            //current_game.mode = 0;
+            inputGameMode();
             
             printf("Enter player 1 name: ");
-            scanf("%s", &current_game.player_1.name);
+            scanf("%40s", &current_game.player_1.name);
+            clearInputBuffer();
             
             if(current_game.mode == 0)
             {
                 printf("Enter player 2 name: ");
-                scanf("%s", &current_game.player_2.name);
+                scanf("%40s", &current_game.player_2.name);
+                clearInputBuffer();
             }
-
         }
     }
 }
@@ -803,14 +939,15 @@ void print_menu()
 int main()
 {
     printf("Welcome to Dots & Boxes game\n");
+
     while(1)
     {
         print_menu();
-
         print_grid();
 
-       while(number_of_filled_boxes() != n*n)
-        {   
+        while(number_of_filled_boxes() != n*n)
+        {
+            current_game.previous_sum = number_of_filled_boxes();
             input_nodes();
             check_edges();
             print_grid();
