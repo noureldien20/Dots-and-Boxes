@@ -526,95 +526,45 @@ void input_nodes()
 {
     unsigned short int r1,r2,c1,c2;
 
-    if(current_game.mode == 0)
+    printf("Enter 2 dots (row,row,col,col): ");
+
+    char temp[10] = {'\0'};
+    scanf("%4s",temp);
+
+    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
     {
-        printf("Enter 2 dots (row,row,col,col): ");
+        printf("Invalid input1\n");
+        clearInputBuffer();
+        input_nodes() ;
+    }
 
-        char temp[10] = {'\0'};
-        scanf("%4s",temp);
+    if(temp[4] =='\0')
+    {
+        r1 = (unsigned short int)temp[0] - '0' ; 
+        r2 = (unsigned short int)temp[1] - '0' ;
+        c1 = (unsigned short int)temp[2] - '0' ; 
+        c2 = (unsigned short int)temp[3] - '0' ;
 
-        if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
+        if(!
+            (r1==r2 || c1==c2) &&   //nodes are adjacent
+            (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
+            )
         {
-            printf("Invalid input1\n");
-            clearInputBuffer();
+            printf("Invalid input2\n") ;
             input_nodes() ;
         }
-
-        if(temp[4] =='\0')
-        {
-            r1 = (unsigned short int)temp[0] - '0' ; 
-            r2 = (unsigned short int)temp[1] - '0' ;
-            c1 = (unsigned short int)temp[2] - '0' ; 
-            c2 = (unsigned short int)temp[3] - '0' ;
-
-            if(!
-                (r1==r2 || c1==c2) &&   //nodes are adjacent
-                (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
-                )
-            {
-                printf("Invalid input2\n") ;
-                input_nodes() ;
-            }
-            else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-                col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
-            {   
-                printf("Invalid input3\n") ;
-                input_nodes() ;
-            }
-        }
-        else
-        {
-            printf("Invalid input4\n");
-            clearInputBuffer();
-            input_nodes();
+        else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+            col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
+        {   
+            printf("Invalid input3\n") ;
+            input_nodes() ;
         }
     }
     else
     {
-        if(turn == '1')
-        {
-            printf("Enter 2 dots (row,row,col,col): ");
-
-            char temp[10] = {'\0'};
-            scanf("%4s",temp);
-
-            if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
-            {
-                printf("Invalid input1\n");
-                clearInputBuffer();
-                input_nodes() ;
-            }
-
-            if(temp[4] =='\0')
-            {
-                r1 = (unsigned short int)temp[0] - '0' ; 
-                r2 = (unsigned short int)temp[1] - '0' ;
-                c1 = (unsigned short int)temp[2] - '0' ; 
-                c2 = (unsigned short int)temp[3] - '0' ;
-
-                if(!
-                    (r1==r2 || c1==c2) &&   //nodes are adjacent
-                    (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
-                    )
-                {
-                    printf("Invalid input2\n") ;
-                    input_nodes() ;
-                }
-                else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-                    col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
-                {   
-                    printf("Invalid input3\n") ;
-                    input_nodes() ;
-                }
-            }
-        }
-        else
-        {
-            r1 = (get_random() % current_game.size) + 1;
-            r2 = (get_random() % current_game.size) + 1;
-            c1 = (get_random() % current_game.size) + 1;
-            c2 = (get_random() % current_game.size) + 1;
-        }
+        printf("Invalid input4\n");
+        clearInputBuffer();
+        input_nodes();
     }
 
     if(r1 == r2)
@@ -975,6 +925,24 @@ int main()
             switch_turn();
             display_stats();
             print_options();
+        }
+    }
+}
+
+//el function ely enta 3ayzha ya zmyly
+void generate_edges(char input_array[n][n]) 
+{
+    for(int i = 0 ; i < n + 1 ; i++)
+    {
+        for(int j = 0 ; j < n  ; j++)
+        {
+            if(input_array[i][j] == '1')
+            {
+                row_edges[i][j] = turn;
+                row_edges[i + 1][j] = turn;
+                col_edges[i][j] = turn;
+                col_edges[i][j + 1] = turn;
+            }
         }
     }
 }
