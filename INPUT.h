@@ -78,13 +78,15 @@ void input_nodes(){
 
    if(temp[4]=='\0'){
 
-      r1 = (unsigned short int)temp[0]-48 ; r2 = (unsigned short int)temp[1]-48 ;
-      c1 = (unsigned short int)temp[2]-48 ; c2 = (unsigned short int)temp[3]-48 ;
+      r1 = (unsigned short int)temp[0]-48 ;
+      r2 = (unsigned short int)temp[1]-48 ;
+      c1 = (unsigned short int)temp[2]-48 ;
+      c2 = (unsigned short int)temp[3]-48 ;
 
-      if(!
+      if(!(
          (r1==r2 || c1==c2) &&   //nodes are adjacent
-         (absolute(r1-r2)==1 || absolute(c1-c2==1)) //short line not long line
-         ){
+         (absolute(r1-r2)==1 || absolute(c1-c2)==1) //short line not long line
+         )){
            printf("Invalid input\n") ;
            input_nodes() ;
 
@@ -109,7 +111,34 @@ void input_nodes(){
    }
 }
 
-void input_options(){
+short int AI_input(){
+   /* precendence in input edges
+   1. edges that will fill a box (box have 3 filled edges)
+   2. edges in boxes that have 1 edge & make a chain
+   3. edges in boxes that have 1 edge
+   4. edges in a box that has zero edges filled [random] */  
+
+   for(int i=0 ; i<n ; i++){ //box have 3 edges
+      for(int j=0 ; j<n ; j++){
+         if(boxes[i][j]=='\0'){
+            
+            if(row_edges[i][j]=='\0' && row_edges[i+1][j]!='\0' && col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
+               row_edges[i][j] = turn ; return 1 ;
+            }
+            if(row_edges[i][j]!='\0' && row_edges[i+1][j]=='\0' && col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
+               row_edges[i+1][j] = turn ; return 1 ;
+            }
+            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' && col_edges[i][j]=='\0' && col_edges[i][j+1]!='\0'){
+               col_edges[i][j] = turn ; return 1 ;
+            }
+            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' && col_edges[i][j]!='\0' && col_edges[i][j+1]=='\0'){
+               col_edges[i][j+1] = turn ; return 1 ;
+            }
+
+         }
+      }
+   }
+
 
 }
 

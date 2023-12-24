@@ -124,96 +124,134 @@ printf("size = %hu\n",n) ;
 #include <stdio.h>
 
 char row_edges[4][3] = {
-    {'2','2','0'},
-    {'0','0','0'},
-    {'0','0','0'},
-    {'2','1','1'}
+    {'1','2','2'},
+    {'2','1','\0'},
+    {'\0','\0','\0'},
+    {'\0','\0','1'}
 };
 char col_edges[3][4] = {
-    {'1','1','1','0'},
-    {'2','1','1','0'},
-    {'2','1','2','0'}
+    {'1','\0','\0','2'},
+    {'\0','\0','2','2'},
+    {'\0','\0','1','1'}
 };
+
 char dfs[3][3] = {'\0'} ;
 
 char turn = '1'; unsigned short int n = 3;
 
-short int n_edges=3 ; //number of filled edges in chain
-short int n_empty=1 ; //number of empty edges in chain
-unsigned short int indexes[2] = {0,0} ;
-short int director = 1 ;  // [director]  up or right ---> 1 , down or left ---> -1
+short int n_edges = 3 ; //number of filled edges in chain
+short int n_empty = 1 ; //number of empty edges in chain
+short int indexes[2] = {0,0} ;
+short int director=2 ;  // [director]  up ---> 1 , down ---> -1
+// [director]  right ---> 2 , left ---> -2
 
-void trace_vertical(unsigned short int a,unsigned short int b,short int d){
-
-   while(col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0' && a<n && a>=0){
+void trace_vertical(short int a,short int b){
+   //printf("In vertical \n") ;
+   while(a<n && a>=0 && col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0'){
       n_edges+=2 ;
-       //printf("\n%d\n",n_edges) ;
       dfs[a][b] = turn ;
-      a = a-d ;
 
-      if(row_edges[a-d][b]!='\0'){
+      if(row_edges[a+1][b]!='\0'){
          n_edges++ ;
          director = 0 ;
          dfs[a][b] = turn ;
-         //printf("%d",director) ;
          break ;
       }
+
+      a = a-director ;
       n_empty++ ;
    }
 
    if(director){
-      //printf("test");
-      if(col_edges[a][b]!='\0'){
-         n_edges++;
-         director = 1 ;
-         n_empty++ ;
-      }else if(col_edges[a][b+1]!='\0'){
-         n_edges++;
-         director = -1 ;
-         n_empty++ ;
+
+      if(col_edges[a][b] == '\0' && row_edges[a][b]!='\0'){
+         n_edges+=2 ; n_empty++ ;
+         director = -2 ;
+         indexes[0] = a ; indexes[1] = b ;
+
+      }else if(col_edges[a][b+1] =='\0' && row_edges[a][b]!='\0'){
+         n_edges+=2 ; n_empty++ ;
+         director = 2 ;
+         indexes[0] = a+1 ; indexes[1] = b+1 ;
+
       }else{ //No chain
-         director = 0;
+         director = 0 ;
          n_empty++ ;
       }
 
    }
 }
 
-/**unsigned short int trace_horizontal(){
-   unsigned short int a,b;
-   while(row_edges[a][b]!='\0' && row_edges[a+1][b]!='\0'){
+void trace_horizontal(short int a,short int b){
+   director = director / 2 ;
+   while(b<n && b>=0 && row_edges[a][b]!='\0' && row_edges[a+1][b]!='\0'){
       n_edges+=2 ;
       dfs[a][b] = turn ;
-      b++ ;
+
+      if(col_edges[a][b+1]!='\0'){
+         n_edges++ ;
+         director = 0 ;
+         dfs[a][b] = turn ;
+         break ;
+      }
+
+      b = b+director ;
+      n_empty++ ;
    }
 
-}*/
+   if(director){
+
+      if(row_edges[a][b] == '\0' && col_edges[a][b+1]!='\0'){
+         n_edges+=2 ; n_empty++ ;
+         director = 1 ;
+         indexes[0] = a ; indexes[1] = b ;
+
+      }else if(row_edges[a+1][b] =='\0' && col_edges[a][b+1]!='\0'){
+         n_edges+=2 ; n_empty++ ;
+         director = -1 ;
+         indexes[0] = a+1 ; indexes[1] = b ;
+
+      }else{ //No chain
+         director = 0 ;
+         n_empty++ ;
+      }
+
+   }
+}
 
 void DFS(unsigned short int i,unsigned short int j){
-   indexes[0] = i ; indexes[1] = j;
-   //zero_2D_array(n,n,dfs) ;
+   indexes[0] = i ; indexes[1] = j ;
+   //i,j are indexes of the last edge that make the first box of the chain filled 
+   //printf("%d\n",director);
    while(director){
-      //trace_horizontal();
-      trace_vertical(indexes[0],indexes[1],-1) ;
-      //printf("test");
+      printf("%d\n",director) ;
+      if(director == 1){
+         trace_vertical(indexes[0],indexes[1]) ;
+
+      }else if(director == -1){
+         trace_vertical(indexes[0],indexes[1]) ;
+
+      }else if(director == 2){
+         trace_horizontal(indexes[0],indexes[1]) ;
+
+      }else{  // director == -2
+         trace_horizontal(indexes[0],indexes[1]) ;
+      }
+
    }
 
    if(n_empty == (n_edges/2) - 2){
-      printf("\n%d %d\n",n_edges,n_empty) ;
       printf("chain\n") ;
       //make dfs equal to row_edges, col_edges, boxes
    }else{
       printf("not chain\n") ;
-      printf("\n%d %d\n",n_edges,n_empty) ;
-      n_edges = 0 ;
-      n_empty = 0 ;
+      //n_edges = 3 ;
+      //n_empty = 1 ;
 
    }
-
+   //zero_2D_array(n,n,dfs) ;
 }
 
-
-int main(){
 void print_array_2D(short int row,short int col,char arr[][col]){
    for (short int i=0 ; i<row ; i++){
       for (short int j=0 ; j<col ; j++){
@@ -227,8 +265,10 @@ void print_array_2D(short int row,short int col,char arr[][col]){
 }
 
 
-DFS(2,0);printf("\n") ;
+int main(){
 
+DFS(0,1);printf("\n") ;
+printf("%d %d\n",n_edges,n_empty) ;
 print_array_2D(3,3,dfs) ;
 }
 

@@ -19,7 +19,7 @@ short int n_edges = 3 ; //number of filled edges in chain
 short int n_empty = 1 ; //number of empty edges in chain
 short int indexes[2] = {0,0} ;
 short int director ;  // [director]  up ---> 1 , down ---> -1
-// [director]   right --> 2 , left --> -2
+// [director]  right ---> 2 , left ---> -2
 
 short int check_edges(){   //no errors
    short int i,j ;
@@ -70,38 +70,69 @@ short int check_box(short int i,short int j){
 }
 
 
-short int n_edges=3 ; //number of filled edges in chain
-short int n_empty=1 ; //number of empty edges in chain
-short int indexes[2] = {0,0} ;
-short int director ;  // [director]  up or right ---> 1 , down or left ---> -1
-
 void directing(){
 }
 
 void trace_vertical(short int a,short int b){
 
-   while(col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0' && a<n && a>=0){
+   while(a<n && a>=0 && col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0'){
       n_edges+=2 ;
       dfs[a][b] = turn ;
-      a = a-director ;
 
-      if(row_edges[a-director][b]!='\0'){
+      if(row_edges[a][b]!='\0'){
          n_edges++ ;
          director = 0 ;
          dfs[a][b] = turn ;
          break ;
       }
+
+      a = a-director ;
       n_empty++ ;
    }
 
    if(director){
 
       if(col_edges[a][b] == '\0' && row_edges[a][b]!='\0'){
-         n_edges++;
-         director = 1 ;
+         n_edges+=2 ;
+         director = -2 ;
          n_empty++ ;
       }else if(col_edges[a][b+1] =='\0' && row_edges[a][b]!='\0'){
-         n_edges++;
+         n_edges+=2 ;
+         director = 2 ;
+         n_empty++ ;
+      }else{ //No chain
+         director = 0 ;
+         n_empty++ ;
+      }
+
+   }
+}
+
+void trace_horizontal(short int a,short int b){
+   director = director / 2 ;
+   while(b<n && b>=0 && row_edges[a][b]!='\0' && row_edges[a+1][b]!='\0'){
+      n_edges+=2 ;
+      dfs[a][b] = turn ;
+
+      if(col_edges[a][b+1]!='\0'){
+         n_edges++ ;
+         director = 0 ;
+         dfs[a][b] = turn ;
+         break ;
+      }
+
+      b = b+director ;
+      n_empty++ ;
+   }
+
+   if(director){
+
+      if(row_edges[a][b] == '\0' && col_edges[a][b]!='\0'){
+         n_edges+=2 ;
+         director = 1 ;
+         n_empty++ ;
+      }else if(row_edges[a+1][b] =='\0' && col_edges[a][b]!='\0'){
+         n_edges+=2 ;
          director = -1 ;
          n_empty++ ;
       }else{ //No chain
@@ -112,24 +143,22 @@ void trace_vertical(short int a,short int b){
    }
 }
 
-unsigned short int trace_horizontal(){
-   unsigned short int a,b;
-   while(row_edges[a][b]!='\0' && row_edges[a+1][b]!='\0'){
-      n_edges+=2 ;
-      dfs[a][b] = turn ;
-      b++ ;
-   }
-
-}
-
 void DFS(unsigned short int i,unsigned short int j){
    indexes[0] = i ; indexes[1] = j ;
+   //i,j are indexes of the last edge that make the first box of the chain filled 
    
    while(director){
 
-      if(director = 1 || director == -1){
+      if(director == 1){
+         trace_vertical(indexes[0]-1,indexes[1]) ;
+
+      }else if(director == -1){
          trace_vertical(indexes[0],indexes[1]) ;
-      }else{  //director = 2 || director == -2
+
+      }else if(director == 2){
+         trace_horizontal(indexes[0],indexes[1]) ;
+
+      }else{  // director == -2
          trace_horizontal(indexes[0],indexes[1]) ;
       }
 

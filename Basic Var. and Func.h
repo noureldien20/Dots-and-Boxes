@@ -6,15 +6,15 @@
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
-#define red "\e[0;31m"
-#define green "\e[0;32m"
-#define yellow "\e[0;33m"
-#define blue "\e[0;34m"
-#define cyan "\e[0;36m"
-#define white "\e[0;37m"
-#define back_cyan "\e[46m"
-#define back_green "\e[42m"
-#define back_white "\e[47m"
+#define red "\e[0;91m"
+#define green "\e[0;92m"
+#define yellow "\e[0;93m"
+#define blue "\e[0;94m"
+#define cyan "\e[0;96m"
+#define white "\e[0;97m"
+#define back_cyan "\e[106m"
+#define back_green "\e[102m"
+#define back_white "\e[107m"
 
 #define Ctrl_Z '\x1A'
 #define Ctrl_R '\x12'
@@ -30,7 +30,7 @@ char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn = '1' ;
-unsigned long t ;
+unsigned int t ;
 
 // mode indicator
 short int mode ;  // 1 --> computer
@@ -78,17 +78,15 @@ char big(char c){
 }
 
 void time_passed(){
-
-   /*while(win != n*n){
+   while(1){
       sleep(1) ;
-      game.time++ ;
+      t++ ;
    }
- */
 }
 
 
 
-
+/*
 #define MAX_SIZE_OF_STACK 30
 
 #define MAX_PLAYERS_TO_PRINT 10
@@ -126,6 +124,6 @@ Stack undo_stack;
 Stack redo_stack;
 game current_game;
 
-
+*/
 
 #endif

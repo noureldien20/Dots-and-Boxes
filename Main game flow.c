@@ -8,9 +8,12 @@
 #include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  *********************************/
-//Create_thread() ;
 
 int main(){
+
+pthread_t time_thread ;
+pthread_create(&time_thread, NULL, time_passed, NULL) ;
+
 printf("Welcome to Dots & Boxes game\n") ;
 while(1){
 
@@ -46,5 +49,4 @@ while(number_of_filled_boxes() != n*n){
 
 
 }
-
 }

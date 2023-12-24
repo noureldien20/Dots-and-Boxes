@@ -8,15 +8,15 @@
 #define MAX_NAME_LENGHT 40
 #define MAX_SIZE_OF_ARRAY 10
 #define MAX_GRID_SIZE 39
-#define red "\e[0;31m"
-#define green "\e[0;32m"
-#define yellow "\e[0;33m"
-#define blue "\e[0;34m"
-#define cyan "\e[0;36m"
-#define white "\e[0;37m"
-#define back_cyan "\e[46m"
-#define back_green "\e[42m"
-#define back_white "\e[47m"
+#define red "\e[0;91m"
+#define green "\e[0;92m"
+#define yellow "\e[0;93m"
+#define blue "\e[0;94m"
+#define cyan "\e[0;96m"
+#define white "\e[0;97m"
+#define back_cyan "\e[106m"
+#define back_green "\e[102m"
+#define back_white "\e[107m"
 //#define Ctrl+Z '\x1A'
 //#define Ctrl+R '\x12'
 //#define Ctrl+S '\x13'
@@ -530,7 +530,8 @@ void switch_turn()
 unsigned short int check_node(char x)
 {
     //if((int)x <= 57 && (int)x >= 49 && (int)x < (n + 49))
-    if(x <= '9' && x >= '1' && x < (n + '1'))
+
+    if(x <= '9' && x >= '1' && x <= (n + '1'))
     {
         return 1;
     }
@@ -594,7 +595,7 @@ void input_nodes()
             c1 = (unsigned short int)temp[2] - '0' ; 
             c2 = (unsigned short int)temp[3] - '0' ;
 
-            if( !((r1 == r2 || c1 == c2) && ((abs(r1 - r2) == 1) || (abs(c1 - c2) == 1))))
+            if( !((r1 == r2 || c1 == c2) && ((abs(r1 - r2) == 1) || (abs(c1 - c2) == 1))) )
             {
                 printf("Invalid input\n");
                 clearInputBuffer();
@@ -635,11 +636,11 @@ void input_nodes()
 
     if(r1 == r2)
     {
-        row_edges[r1 - 1][min(c1,c2) - 1] = turn ;
+        row_edges[r1-1][min(c1,c2)-1] = turn ;
     }
     else
     {
-        col_edges[min(r1,r2) - 1][c1 - 1] = turn ;
+        col_edges[min(r1,r2)-1][c1-1] = turn ;
     }
 }
 
@@ -831,8 +832,10 @@ void printTopPlayers()
     free(players);
 }
 /*The savePlayer function serializes and saves a single player to the binary file in append mode ("ab").
-The loadPlayers function deserializes and loads all players from the binary file. It returns a dynamic array of Player structs and updates the numPlayers variable.
-The Winner function uses loadPlayers to get the existing players, updates the information for the winner, and then saves the updated players back to the file.
+The loadPlayers function deserializes and loads all players from the binary file. It returns a dynamic array of
+Player structs and updates the numPlayers variable.
+The Winner function uses loadPlayers to get the existing players, updates the information for the winner,
+and then saves the updated players back to the file.
 The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.*/
 
 void print_options()
@@ -889,7 +892,7 @@ void inputGameMode()
 {
     int mode;
 
-    printf("Enter game mode [0 for human vs human, 1 for human vs computer]: ");
+    printf("Enter game mode\n[0 for human vs human, 1 for human vs computer] : ");
 
     if (scanf("%d", &mode) != 1 || (mode != 0 && mode != 1)) 
     {
