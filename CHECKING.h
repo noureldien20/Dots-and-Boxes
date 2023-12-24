@@ -15,10 +15,11 @@ number of dots  = (n+1)(n+1)
 
 // n_empty = (n_edges/2) - 2
 
-short int n_edges=3 ; //number of filled edges in chain
-short int n_empty=1 ; //number of empty edges in chain
+short int n_edges = 3 ; //number of filled edges in chain
+short int n_empty = 1 ; //number of empty edges in chain
 short int indexes[2] = {0,0} ;
-short int director ;  // [director]  up or right ---> 1 , down or left ---> -1
+short int director ;  // [director]  up ---> 1 , down ---> -1
+// [director]   right --> 2 , left --> -2
 
 short int check_edges(){   //no errors
    short int i,j ;
@@ -71,17 +72,20 @@ short int check_box(short int i,short int j){
 
 short int n_edges=3 ; //number of filled edges in chain
 short int n_empty=1 ; //number of empty edges in chain
-unsigned short int indexes[2] = {0,0} ;
+short int indexes[2] = {0,0} ;
 short int director ;  // [director]  up or right ---> 1 , down or left ---> -1
 
-void trace_vertical(unsigned short int a,unsigned short int b,short int d){
+void directing(){
+}
+
+void trace_vertical(short int a,short int b){
 
    while(col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0' && a<n && a>=0){
       n_edges+=2 ;
       dfs[a][b] = turn ;
-      a = a-d ;
+      a = a-director ;
 
-      if(row_edges[a-d][b]!='\0'){
+      if(row_edges[a-director][b]!='\0'){
          n_edges++ ;
          director = 0 ;
          dfs[a][b] = turn ;
@@ -91,16 +95,17 @@ void trace_vertical(unsigned short int a,unsigned short int b,short int d){
    }
 
    if(director){
-      if(col_edges[a][b]!='\0'){
+
+      if(col_edges[a][b] == '\0' && row_edges[a][b]!='\0'){
          n_edges++;
          director = 1 ;
          n_empty++ ;
-      }else if(col_edges[a][b+1]!='\0'){
+      }else if(col_edges[a][b+1] =='\0' && row_edges[a][b]!='\0'){
          n_edges++;
          director = -1 ;
          n_empty++ ;
       }else{ //No chain
-         director = 0;
+         director = 0 ;
          n_empty++ ;
       }
 
@@ -118,11 +123,16 @@ unsigned short int trace_horizontal(){
 }
 
 void DFS(unsigned short int i,unsigned short int j){
-   indexes[0] = i ; indexes[1] = j;
-   //zero_2D_array(n,n,dfs) ;
+   indexes[0] = i ; indexes[1] = j ;
+   
    while(director){
-      //trace_horizontal();
-      trace_vertical(indexes[0],indexes[1],-1) ;
+
+      if(director = 1 || director == -1){
+         trace_vertical(indexes[0],indexes[1]) ;
+      }else{  //director = 2 || director == -2
+         trace_horizontal(indexes[0],indexes[1]) ;
+      }
+
    }
 
    if(n_empty == (n_edges/2) - 2){
@@ -130,11 +140,12 @@ void DFS(unsigned short int i,unsigned short int j){
       //make dfs equal to row_edges, col_edges, boxes
    }else{
       printf("not chain\n") ;
-      n_edges = 0 ;
-      n_empty = 0 ;
+      n_edges = 3 ;
+      n_empty = 1 ;
 
    }
 
+   //zero_2D_array(n,n,dfs) ;
 }
 
 
