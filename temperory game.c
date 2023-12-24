@@ -6,7 +6,6 @@
 #define MAX_SIZE_OF_STACK 30
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
-#define MAX_SIZE_OF_ARRAY 10
 #define MAX_GRID_SIZE 39
 #define red "\e[0;31m"
 #define green "\e[0;32m"
@@ -31,9 +30,9 @@ typedef struct {
 
 typedef struct {
     unsigned short int size;
-    char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    char array_of_row_edges[MAX_GRID_SIZE][MAX_GRID_SIZE];
+    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE];
+    char array_of_boxes[MAX_GRID_SIZE][MAX_GRID_SIZE];
     double elapsed_time;
     char turn;
     int number_of_remaining_boxes;
@@ -413,31 +412,6 @@ void input_size()
     }
 }
 
-/*void input_nodes(){
-    int c1,r1,r2,c2 ;
-    scanf("%d",&e1) ;
-    scanf("%d",&e2) ;
-    
-    if(!
-    (r1==r2 || c1==c2) &&   //nodes are adjacent
-    (r1<=n && r2<=n && c1<=n && c2<=n) && // board has this index
-    (absolute(r1-r2)==1 || absolute(c1-c2)==1) &&  //short line not long line
-    (r1>0 && r2>0 && c1>0 && c2>0) //positve
-    ){
-        printf("Not valid\nEnter valid input : ") ;
-        input_edge() ;
-    
-    }else{
-
-        if(r1==r2){
-            row_edges[r1-1][min(c1,c2)-1] = turn ;
-        }else{
-            col_edges[min(r1,r2)-1][c1-1] = turn ;
-        }
-
-    }
-}*/
-
 game peek(Stack* stack)
 {
     return stack->array[stack->top];
@@ -527,6 +501,7 @@ void switch_turn()
         }
     }
     current_game.number_of_remaining_boxes =  (current_game.size * current_game.size) - temp;
+    current_game.turn = turn;
 }
 
 unsigned short int check_node(char x)
@@ -586,17 +561,6 @@ void input_nodes()
                 printf("Invalid input3\n") ;
                 input_nodes() ;
             }
-            /*else
-            {
-                if(r1 == r2)
-                {
-                    row_edges[r1 - 1][min(c1,c2) - 1] = turn ;
-                }
-                else
-                {
-                    col_edges[min(r1,r2) - 1][c1 - 1] = turn ;
-                }
-            }*/
         }
         else
         {
@@ -607,10 +571,50 @@ void input_nodes()
     }
     else
     {
-        r1 = (get_random() % current_game.size) + 1;
-        r2 = (get_random() % current_game.size) + 1;
-        c1 = (get_random() % current_game.size) + 1;
-        c2 = (get_random() % current_game.size) + 1;
+        if(turn == '1')
+        {
+            printf("Enter 2 dots (row,row,col,col): ");
+
+            char temp[10] = {'\0'};
+            scanf("%4s",temp);
+
+            if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
+            {
+                printf("Invalid input1\n");
+                clearInputBuffer();
+                input_nodes() ;
+            }
+
+            if(temp[4] =='\0')
+            {
+                r1 = (unsigned short int)temp[0] - '0' ; 
+                r2 = (unsigned short int)temp[1] - '0' ;
+                c1 = (unsigned short int)temp[2] - '0' ; 
+                c2 = (unsigned short int)temp[3] - '0' ;
+
+                if(!
+                    (r1==r2 || c1==c2) &&   //nodes are adjacent
+                    (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
+                    )
+                {
+                    printf("Invalid input2\n") ;
+                    input_nodes() ;
+                }
+                else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+                    col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
+                {   
+                    printf("Invalid input3\n") ;
+                    input_nodes() ;
+                }
+            }
+        }
+        else
+        {
+            r1 = (get_random() % current_game.size) + 1;
+            r2 = (get_random() % current_game.size) + 1;
+            c1 = (get_random() % current_game.size) + 1;
+            c2 = (get_random() % current_game.size) + 1;
+        }
     }
 
     if(r1 == r2)
