@@ -129,6 +129,7 @@ char row_edges[4][3] = {
     {'\0','\0','\0'},
     {'\0','\0','1'}
 };
+
 char col_edges[3][4] = {
     {'1','\0','\0','2'},
     {'\0','\0','2','2'},
@@ -267,9 +268,10 @@ void print_array_2D(short int row,short int col,char arr[][col]){
 
 int main(){
 
-DFS(0,1);printf("\n") ;
+DFS(0,1) ; printf("\n") ;
 printf("%d %d\n",n_edges,n_empty) ;
 print_array_2D(3,3,dfs) ;
+
 }
 
 /**

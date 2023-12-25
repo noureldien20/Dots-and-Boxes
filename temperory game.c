@@ -6,7 +6,6 @@
 #define MAX_SIZE_OF_STACK 30
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
-#define MAX_SIZE_OF_ARRAY 10
 #define MAX_GRID_SIZE 39
 #define red "\e[0;91m"
 #define green "\e[0;92m"
@@ -31,9 +30,9 @@ typedef struct {
 
 typedef struct {
     unsigned short int size;
-    char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
+    char array_of_row_edges[MAX_GRID_SIZE][MAX_GRID_SIZE];
+    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE];
+    char array_of_boxes[MAX_GRID_SIZE][MAX_GRID_SIZE];
     double elapsed_time;
     char turn;
     int number_of_remaining_boxes;
@@ -142,12 +141,10 @@ void print_boxes_color(short int c,short int i)
     if (boxes[c-1][i] == '1')
     {
         printf(back_cyan"       ");
-        current_game.player_1.score++;
     }
     else if(boxes[c-1][i] == '2')
     {
         printf(back_green"       ");
-        current_game.player_2.score++;
     }
     else
     {
@@ -229,15 +226,6 @@ char big(char c)
         return c ;
     }
 }
-
-/*void time_passed(){
-
-   while(win != n*n){
-      sleep(1) ;
-      game.time++ ;
-   }
-   
-}*/
 
 void check_edges()
 {
@@ -424,31 +412,6 @@ void input_size()
     }
 }
 
-/*void input_nodes(){
-    int c1,r1,r2,c2 ;
-    scanf("%d",&e1) ;
-    scanf("%d",&e2) ;
-    
-    if(!
-    (r1==r2 || c1==c2) &&   //nodes are adjacent
-    (r1<=n && r2<=n && c1<=n && c2<=n) && // board has this index
-    (absolute(r1-r2)==1 || absolute(c1-c2)==1) &&  //short line not long line
-    (r1>0 && r2>0 && c1>0 && c2>0) //positve
-    ){
-        printf("Not valid\nEnter valid input : ") ;
-        input_edge() ;
-    
-    }else{
-
-        if(r1==r2){
-            row_edges[r1-1][min(c1,c2)-1] = turn ;
-        }else{
-            col_edges[min(r1,r2)-1][c1-1] = turn ;
-        }
-
-    }
-}*/
-
 game peek(Stack* stack)
 {
     return stack->array[stack->top];
@@ -509,6 +472,8 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
 
 void switch_turn()
 {
+    int temp = number_of_filled_boxes();
+
     if (turn == '1') 
     {
         current_game.player_1.number_of_moves++;
@@ -518,13 +483,25 @@ void switch_turn()
         current_game.player_2.number_of_moves++;
     }
 
-    if(number_of_filled_boxes() == current_game.previous_sum)
+    if(temp == current_game.previous_sum)
     {
         empty_both_stacks();
         turn = (turn == '1') ? '2' : '1';
         current_game.turn = turn;
     }
-    current_game.number_of_remaining_boxes =  (current_game.size * current_game.size) - number_of_filled_boxes();
+    else
+    {
+        if (turn == '1') 
+        {
+            current_game.player_1.score = temp - current_game.previous_sum;
+        } 
+        else 
+        {
+            current_game.player_2.score = temp - current_game.previous_sum;
+        }
+    }
+    current_game.number_of_remaining_boxes =  (current_game.size * current_game.size) - temp;
+    current_game.turn = turn;
 }
 
 unsigned short int check_node(char x)
@@ -540,30 +517,6 @@ unsigned short int check_node(char x)
         return 0;
     }
 }
-
-/*short int absolute(short int x)
-{
-    if(x<0)
-    {
-        return -1 * x;
-    }
-    else
-    {
-        return x;
-    }
-}
-
-unsigned short int min(unsigned short int x,unsigned short int y)
-{
-    if(x<y)
-    {
-        return x ;
-    }
-    else
-    {
-        return y ;
-    }
-}*/
 
 int min(int a, int b) 
 {
@@ -583,7 +536,7 @@ void input_nodes()
 
         if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
         {
-            printf("Invalid input\n");
+            printf("Invalid input1\n");
             clearInputBuffer();
             input_nodes() ;
         }
@@ -595,43 +548,78 @@ void input_nodes()
             c1 = (unsigned short int)temp[2] - '0' ; 
             c2 = (unsigned short int)temp[3] - '0' ;
 
+<<<<<<< HEAD
             if( !((r1 == r2 || c1 == c2) && ((abs(r1 - r2) == 1) || (abs(c1 - c2) == 1))) )
+=======
+            if(!
+                (r1==r2 || c1==c2) &&   //nodes are adjacent
+                (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
+                )
+>>>>>>> a0f18c49e41fbd37591ddb126084491f5c28dcdd
             {
-                printf("Invalid input\n");
-                clearInputBuffer();
+                printf("Invalid input2\n") ;
                 input_nodes() ;
             }
-            else if(row_edges[r1 - 1][min(c1,c2) - 1] != '\0' && (r1 == r2) || col_edges[min(r1,r2)-1][c1 - 1] != '\0' && (c1 == c2))
-            {
-                printf("Invalid input\n");
-                clearInputBuffer();
+            else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+                col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
+            {   
+                printf("Invalid input3\n") ;
                 input_nodes() ;
             }
-            /*else
-            {
-                if(r1 == r2)
-                {
-                    row_edges[r1 - 1][min(c1,c2) - 1] = turn ;
-                }
-                else
-                {
-                    col_edges[min(r1,r2) - 1][c1 - 1] = turn ;
-                }
-            }*/
         }
         else
         {
-            printf("Invalid input\n");
+            printf("Invalid input4\n");
             clearInputBuffer();
             input_nodes();
         }
     }
     else
     {
-        r1 = (get_random() % current_game.size) + 1;
-        r2 = (get_random() % current_game.size) + 1;
-        c1 = (get_random() % current_game.size) + 1;
-        c2 = (get_random() % current_game.size) + 1;
+        if(turn == '1')
+        {
+            printf("Enter 2 dots (row,row,col,col): ");
+
+            char temp[10] = {'\0'};
+            scanf("%4s",temp);
+
+            if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
+            {
+                printf("Invalid input1\n");
+                clearInputBuffer();
+                input_nodes() ;
+            }
+
+            if(temp[4] =='\0')
+            {
+                r1 = (unsigned short int)temp[0] - '0' ; 
+                r2 = (unsigned short int)temp[1] - '0' ;
+                c1 = (unsigned short int)temp[2] - '0' ; 
+                c2 = (unsigned short int)temp[3] - '0' ;
+
+                if(!
+                    (r1==r2 || c1==c2) &&   //nodes are adjacent
+                    (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
+                    )
+                {
+                    printf("Invalid input2\n") ;
+                    input_nodes() ;
+                }
+                else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+                    col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
+                {   
+                    printf("Invalid input3\n") ;
+                    input_nodes() ;
+                }
+            }
+        }
+        else
+        {
+            r1 = (get_random() % current_game.size) + 1;
+            r2 = (get_random() % current_game.size) + 1;
+            c1 = (get_random() % current_game.size) + 1;
+            c2 = (get_random() % current_game.size) + 1;
+        }
     }
 
     if(r1 == r2)

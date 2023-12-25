@@ -112,6 +112,7 @@ void input_nodes(){
 }
 
 short int AI_input(){
+   
    /* precendence in input edges
    1. edges that will fill a box (box have 3 filled edges)
    2. edges in boxes that have 1 edge & make a chain
