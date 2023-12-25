@@ -2,7 +2,7 @@
 #define DISPLAY_H
 
 #include <stdio.h>
-#include "Basic Var. and Func.h"
+#include "Basic Var and Func.h"
              
 #define line "-------"
 

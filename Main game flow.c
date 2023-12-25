@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "Basic Var. and Func.h"
+#include "Basic Var and Func.h"
 #include "INPUT.h"
 #include "CHECKING.h"
 #include "Display.h"
@@ -15,9 +15,15 @@ pthread_t time_thread ;
 pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
 printf("Welcome to Dots & Boxes game\n") ;
-while(1){
+//while(1){
 
-print_menu() ;
+int any,any_2;
+scanf("%d",&any_2);
+printf("%d\n",t);
+scanf("%d",&any);
+printf("%d",t);
+
+/*print_menu() ;
 
 printf("Enter [0] to play Vs human\n") ;
 printf("Enter [1] to play Vs computer\n") ;
@@ -28,9 +34,9 @@ printf("Enter name of player 1 : ") ;
     printf("Enter name of player 2 : ") ;
 }*/
 
-print_grid() ;
+//print_grid() ;
 
-while(number_of_filled_boxes() != n*n){
+/*while(number_of_filled_boxes() != n*n){
 
     input_nodes() ;
 
@@ -45,8 +51,8 @@ while(number_of_filled_boxes() != n*n){
     print_status(); // print(turn , moves , scores , number of remaining boxes , time passed)
 
     //print options
-}
+}*/
 
 
-}
+//}
 }

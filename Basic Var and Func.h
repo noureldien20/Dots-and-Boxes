@@ -1,5 +1,5 @@
-#ifndef BASIC_VAR._AND_FUNC_H
-#define BASIC_VAR._AND_FUNC_H
+#ifndef BASIC_VAR_AND_FUNC_H
+#define BASIC_VAR_AND_FUNC_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +30,7 @@ char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn = '1' ;
-unsigned int t ;
+unsigned int t = 0 ;
 
 // mode indicator
 short int mode ;  // 1 --> computer
@@ -78,13 +78,12 @@ char big(char c){
 }
 
 void time_passed(){
+   
    while(1){
       sleep(1) ;
       t++ ;
    }
 }
-
-
 
 /*
 #define MAX_SIZE_OF_STACK 30
