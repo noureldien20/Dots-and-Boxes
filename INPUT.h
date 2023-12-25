@@ -126,7 +126,7 @@ void input_nodes(){ //bta3t ahmed
 
 }
 
-short int AI_input(){
+void AI_input(){
    
    /* precendence in input edges
    1. edges that will fill a box (box have 3 filled edges)
@@ -138,17 +138,21 @@ short int AI_input(){
       for(int j=0 ; j<n ; j++){
          if(boxes[i][j]=='\0'){
             
-            if(row_edges[i][j]=='\0' && row_edges[i+1][j]!='\0' && col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
-               row_edges[i][j] = turn ; return 1 ;
+            if(row_edges[i][j]=='\0' && row_edges[i+1][j]!='\0' &&
+               col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
+               row_edges[i][j] = turn ; return ;
             }
-            if(row_edges[i][j]!='\0' && row_edges[i+1][j]=='\0' && col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
-               row_edges[i+1][j] = turn ; return 1 ;
+            if(row_edges[i][j]!='\0' && row_edges[i+1][j]=='\0' &&
+               col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
+               row_edges[i+1][j] = turn ; return ;
             }
-            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' && col_edges[i][j]=='\0' && col_edges[i][j+1]!='\0'){
-               col_edges[i][j] = turn ; return 1 ;
+            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' &&
+               col_edges[i][j]=='\0' && col_edges[i][j+1]!='\0'){
+               col_edges[i][j] = turn ; return ;
             }
-            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' && col_edges[i][j]!='\0' && col_edges[i][j+1]=='\0'){
-               col_edges[i][j+1] = turn ; return 1 ;
+            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' &&
+               col_edges[i][j]!='\0' && col_edges[i][j+1]=='\0'){
+               col_edges[i][j+1] = turn ; return ;
             }
 
          }

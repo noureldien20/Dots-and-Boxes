@@ -17,12 +17,6 @@ pthread_create(&time_thread, NULL, time_passed, NULL) ;
 printf("Welcome to Dots & Boxes game\n") ;
 //while(1){
 
-int any,any_2;
-scanf("%d",&any_2);
-printf("%d\n",t);
-scanf("%d",&any);
-printf("%d",t);
-
 /*print_menu() ;
 
 printf("Enter [0] to play Vs human\n") ;

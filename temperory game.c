@@ -99,7 +99,7 @@ void declare_arrays(short int n){
    row_edges = create_array(n+1,n) ;
    col_edges = create_array(n,n+1) ;
    boxes = create_array(n,n) ;
-   //dfs = create_array(n,n) ;
+   dfs = create_array(n,n) ;
 }
 
 void zero_2D_array(short int row,short int col,char **arr){
