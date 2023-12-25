@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <pthread.h>
 
-#define MAX_SIZE_OF_STACK 30
+#define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
-#define MAX_GRID_SIZE 39
+#define MAX_GRID_SIZE 10
+
 #define red "\e[0;91m"
 #define green "\e[0;92m"
 #define yellow "\e[0;93m"
@@ -16,12 +18,12 @@
 #define back_cyan "\e[106m"
 #define back_green "\e[102m"
 #define back_white "\e[107m"
-//#define Ctrl+Z '\x1A'
-//#define Ctrl+R '\x12'
-//#define Ctrl+S '\x13'
-#define line "-------"
-//#include <pthread.h>
 
+//#define Ctrl_Z '\x1A'
+//#define Ctrl_R '\x12'
+//#define Ctrl_S '\x13'
+
+#define line "-------"
 typedef struct {
    char name[MAX_NAME_LENGHT + 1];
    int score;
@@ -30,8 +32,8 @@ typedef struct {
 
 typedef struct {
     unsigned short int size;
-    char array_of_row_edges[MAX_GRID_SIZE][MAX_GRID_SIZE];
-    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE];
+    char array_of_row_edges[MAX_GRID_SIZE+1][MAX_GRID_SIZE];
+    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE+1];
     char array_of_boxes[MAX_GRID_SIZE][MAX_GRID_SIZE];
     double elapsed_time;
     char turn;
@@ -58,6 +60,8 @@ char **col_edges ;
 char **boxes ;
 char **dfs ;
 char turn = '1';
+unsigned int t = 0 ;
+
 //time_t time ;
 
 unsigned int get_random() 
@@ -381,7 +385,7 @@ void input_size()
     unsigned short int arr[2] = {0,0};
 
     printf("Enter size of grid [MAX %d]: ", MAX_GRID_SIZE) ;
-    scanf("%1s",temp);
+    scanf("%2s",temp);
 
     if(
     ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
@@ -492,11 +496,11 @@ void switch_turn()
     {
         if (turn == '1') 
         {
-            current_game.player_1.score = temp - current_game.previous_sum;
+            current_game.player_1.score += temp - current_game.previous_sum;
         } 
         else 
         {
-            current_game.player_2.score = temp - current_game.previous_sum;
+            current_game.player_2.score += temp - current_game.previous_sum;
         }
     }
     current_game.number_of_remaining_boxes =  (current_game.size * current_game.size) - temp;
@@ -542,6 +546,7 @@ void input_nodes(){ //bta3t ahmed
       check_node(temp[2]) && check_node(temp[3])) ){
          printf("Invalid input\n") ;
          input_nodes() ;
+         return;
       }
 
    if(temp[4]=='\0'){
@@ -581,8 +586,58 @@ void input_nodes(){ //bta3t ahmed
    }else{
       printf("Invalid input\n") ;
       input_nodes() ;
+   if(temp[4]!='\0'){ // check there is 4 inputs only
+        printf("Invalid input\n") ;
+        input_nodes() ;
+        return;
    }
+
+    r1 = (unsigned short int)temp[0]-48 ;
+    r2 = (unsigned short int)temp[1]-48 ;
+    c1 = (unsigned short int)temp[2]-48 ;
+    c2 = (unsigned short int)temp[3]-48 ;
+
+    if(r1>n+1 || r2>n+1 || c1>n+1 || c2>n+1){
+        printf("Invalid input\n") ;
+        input_nodes() ;
+        return;
+    }
+
+    if(
+        !(r1==r2 || c1==c2) ||   //nodes are adjacent
+        !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
+        ){
+        printf("Invalid input\n") ;
+        input_nodes() ;
+        return;
+    }
+
+    if(r1==r2){
+        printf("in this\n") ;
+        if(row_edges[r1-1][min(c1,c2)-1]!='\0'){
+            printf("Invalid input\n") ;
+            input_nodes() ;
+            return;
+        }
+    }
+
+    if(c1==c2){
+        if(col_edges[min(r1,r2)-1][c1-1]!='\0'){          
+            printf("Invalid input\n") ;
+            input_nodes() ;
+            return;
+        }
+    }
+
+
+    if(r1==r2){
+        row_edges[r1-1][min(c1,c2)-1] = turn ;
+    }else{ //c1==c2
+        col_edges[min(r1,r2)-1][c1-1] = turn ;
+    }
+
 }
+
 // Serialize and save the player to a binary file
 void savePlayer(const player* player) 
 {
@@ -991,6 +1046,14 @@ void print_menu()
         }
 }
 
+void time_passed(){
+   
+   while(1){
+      sleep(1) ;
+      t++ ;
+   }
+}
+
 int main()
 {
     printf("Welcome to Dots & Boxes game\n");
@@ -998,6 +1061,10 @@ int main()
     while(1)
     {
         print_menu();
+
+        pthread_t time_thread ;
+        pthread_create(&time_thread, NULL, time_passed, NULL) ;
+
         print_grid();
 
         while(number_of_filled_boxes() != n*n)
@@ -1013,18 +1080,19 @@ int main()
 }
 
 //el function ely enta 3ayzha ya zmyly
-void generate_edges(char input_array[n][n]) 
+void generate_edges() 
 {
-    for(int i = 0 ; i < n + 1 ; i++)
+    for(int i = 0 ; i < n ; i++)
     {
         for(int j = 0 ; j < n  ; j++)
         {
-            if(input_array[i][j] == '1')
+            if(dfs[i][j] == '1')
             {
                 row_edges[i][j] = turn;
                 row_edges[i + 1][j] = turn;
                 col_edges[i][j] = turn;
                 col_edges[i][j + 1] = turn;
+                boxes[i][j] == turn ;
             }
         }
     }
