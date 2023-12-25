@@ -558,7 +558,7 @@ void input_nodes(){ //bta3t ahmed
 
       if(
          !(r1==r2 || c1==c2) ||   //nodes are adjacent
-         !(absolute(r1-r2)==1 || absolute(c1-c2)==1) //short line not long line
+         !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
          ){
            printf("Invalid input\n") ;
            input_nodes() ;
