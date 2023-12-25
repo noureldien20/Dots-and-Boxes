@@ -377,7 +377,6 @@ void printTopPlayers()
 
 void input_size()
 {
-
     char temp[5] = {'\0'};
     unsigned short int arr[2] = {0,0};
 
@@ -504,7 +503,7 @@ void switch_turn()
     current_game.turn = turn;
 }
 
-unsigned short int check_node(char x)
+/*unsigned short int check_node(char x)
 {
     //if((int)x <= 57 && (int)x >= 49 && (int)x < (n + 49))
 
@@ -516,122 +515,74 @@ unsigned short int check_node(char x)
     {
         return 0;
     }
-}
+}*/
 
 int min(int a, int b) 
 {
     return (a < b) ? a : b;
 }
 
-void input_nodes()
-{
-    unsigned short int r1,r2,c1,c2;
-
-    if(current_game.mode == 0)
-    {
-        printf("Enter 2 dots (row,row,col,col): ");
-
-        char temp[10] = {'\0'};
-        scanf("%4s",temp);
-
-        if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
-        {
-            printf("Invalid input1\n");
-            clearInputBuffer();
-            input_nodes() ;
-        }
-
-        if(temp[4] =='\0')
-        {
-            r1 = (unsigned short int)temp[0] - '0' ; 
-            r2 = (unsigned short int)temp[1] - '0' ;
-            c1 = (unsigned short int)temp[2] - '0' ; 
-            c2 = (unsigned short int)temp[3] - '0' ;
-
-<<<<<<< HEAD
-            if( !((r1 == r2 || c1 == c2) && ((abs(r1 - r2) == 1) || (abs(c1 - c2) == 1))) )
-=======
-            if(!
-                (r1==r2 || c1==c2) &&   //nodes are adjacent
-                (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
-                )
->>>>>>> a0f18c49e41fbd37591ddb126084491f5c28dcdd
-            {
-                printf("Invalid input2\n") ;
-                input_nodes() ;
-            }
-            else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-                col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
-            {   
-                printf("Invalid input3\n") ;
-                input_nodes() ;
-            }
-        }
-        else
-        {
-            printf("Invalid input4\n");
-            clearInputBuffer();
-            input_nodes();
-        }
-    }
-    else
-    {
-        if(turn == '1')
-        {
-            printf("Enter 2 dots (row,row,col,col): ");
-
-            char temp[10] = {'\0'};
-            scanf("%4s",temp);
-
-            if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
-            {
-                printf("Invalid input1\n");
-                clearInputBuffer();
-                input_nodes() ;
-            }
-
-            if(temp[4] =='\0')
-            {
-                r1 = (unsigned short int)temp[0] - '0' ; 
-                r2 = (unsigned short int)temp[1] - '0' ;
-                c1 = (unsigned short int)temp[2] - '0' ; 
-                c2 = (unsigned short int)temp[3] - '0' ;
-
-                if(!
-                    (r1==r2 || c1==c2) &&   //nodes are adjacent
-                    (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
-                    )
-                {
-                    printf("Invalid input2\n") ;
-                    input_nodes() ;
-                }
-                else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-                    col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
-                {   
-                    printf("Invalid input3\n") ;
-                    input_nodes() ;
-                }
-            }
-        }
-        else
-        {
-            r1 = (get_random() % current_game.size) + 1;
-            r2 = (get_random() % current_game.size) + 1;
-            c1 = (get_random() % current_game.size) + 1;
-            c2 = (get_random() % current_game.size) + 1;
-        }
-    }
-
-    if(r1 == r2)
-    {
-        row_edges[r1-1][min(c1,c2)-1] = turn ;
-    }
-    else
-    {
-        col_edges[min(r1,r2)-1][c1-1] = turn ;
-    }
+unsigned short int check_node(char x){
+   if ((int)x <= 57 && (int)x >= 49){ // integer
+         return 1;
+       }else{
+         return 0 ;
+      }
 }
 
+void input_nodes(){ //bta3t ahmed
+
+   unsigned short int r1,r2,c1,c2;
+   printf("Enter 2 dots (row,row , column,column) : ") ;
+
+   char temp[20] = {'\0'} ;
+   scanf("%s",temp) ;
+
+   if( !(check_node(temp[0]) && check_node(temp[1]) &&
+      check_node(temp[2]) && check_node(temp[3])) ){
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }
+
+   if(temp[4]=='\0'){
+
+      r1 = (unsigned short int)temp[0]-48 ;
+      r2 = (unsigned short int)temp[1]-48 ;
+      c1 = (unsigned short int)temp[2]-48 ;
+      c2 = (unsigned short int)temp[3]-48 ;
+      
+      if(r1>=n+1 || r2>=n+1 || c1>=n+1 || c2>=n+1){
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }
+
+      if(
+         !(r1==r2 || c1==c2) ||   //nodes are adjacent
+         !(absolute(r1-r2)==1 || absolute(c1-c2)==1) //short line not long line
+         ){
+           printf("Invalid input\n") ;
+           input_nodes() ;
+
+      }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+               col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2){
+                  
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }else{
+
+        if(r1==r2){
+            row_edges[r1-1][min(c1,c2)-1] = turn ;
+        }else{
+            col_edges[min(r1,r2)-1][c1-1] = turn ;
+        }
+
+      }
+
+   }else{
+      printf("Invalid input\n") ;
+      input_nodes() ;
+   }
+}
 // Serialize and save the player to a binary file
 void savePlayer(const player* player) 
 {
@@ -826,13 +777,15 @@ The Winner function uses loadPlayers to get the existing players, updates the in
 and then saves the updated players back to the file.
 The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.*/
 
+//void input_nodes();
+
 void print_options()
 {
-    printf("To Make a new move [Press N]\n");
+    printf("To Make a move [Press M]\n");
     printf("To Undo [Press U]\n");
     printf("To Redo [Press R]\n");
     printf("To Save game [Press S]\n");
-    printf("To Exit game [Press Q]\n");
+    printf("To Exit game [Press E]\n");
     printf("Option: ");
 
     char temp[5] ;
@@ -848,25 +801,31 @@ void print_options()
     {
         op = small(temp[0]);
     }
+    
     if(op == 'u')
     {
         undo(&undo_stack, &redo_stack, &current_game);
+        clearInputBuffer();
+        input_nodes();
     }
     else if(op == 'r')
     {
         redo(&undo_stack, &redo_stack, &current_game);
+        clearInputBuffer();
+        input_nodes();
     }
     else if(op =='s')
     {
         saveGame(&current_game);
     }
-    else if(op =='q')
+    else if(op =='e')
     {
         exit(1);
     }
-    else if(op =='n')
+    else if(op =='m')
     {
-        return;
+        clearInputBuffer();
+        input_nodes();
     }
     else
     {
@@ -876,92 +835,160 @@ void print_options()
     }
 }
 
+/*void input_nodes()
+{
+    unsigned short int r1,r2,c1,c2;
+
+    printf("Enter 2 dots (row,row,col,col), for options [Press O]: ");
+
+    char temp[10] = {'\0'};
+    scanf("%4s",temp);
+
+    if(temp[0] == 'o' || temp[0] == 'O')
+    {
+        clearInputBuffer();
+        print_options();
+    }
+
+    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
+    {
+        printf("Invalid input1\n");
+        clearInputBuffer();
+        input_nodes() ;
+    }
+
+    if(temp[4] =='\0')
+    {
+        r1 = (unsigned short int)temp[0] - '0' ; 
+        r2 = (unsigned short int)temp[1] - '0' ;
+        c1 = (unsigned short int)temp[2] - '0' ; 
+        c2 = (unsigned short int)temp[3] - '0' ;
+
+        if(!
+            (r1==r2 || c1==c2) &&   //nodes are adjacent
+            (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
+            )
+        {
+            printf("Invalid input2\n") ;
+            clearInputBuffer();
+            input_nodes() ;
+        }
+        else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
+            col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
+        {   
+            printf("Invalid input3\n") ;
+            clearInputBuffer();
+            input_nodes() ;
+        }
+    }
+    else
+    {
+        printf("Invalid input4\n");
+        clearInputBuffer();
+        input_nodes();
+    }
+
+    if(r1 == r2)
+    {
+        row_edges[r1 - 1][min(c1,c2) - 1] = turn ;
+    }
+    else
+    {
+        col_edges[min(r1,r2) - 1][c1 - 1] = turn ;
+    }
+}*/
+
+
 void inputGameMode() 
 {
-    int mode;
+    char temp[3];
 
     printf("Enter game mode\n[0 for human vs human, 1 for human vs computer] : ");
+    printf("Enter game mode ['0' for human vs human, '1' for human vs computer]: ");
 
-    if (scanf("%d", &mode) != 1 || (mode != 0 && mode != 1)) 
+    if (scanf("%1s", temp) != 1 || (strcmp(temp, "0") != 0 && strcmp(temp, "1") != 0)) 
     {
         printf("Invalid input\n");
         clearInputBuffer();
         inputGameMode();
-    }
+    } 
     else 
     {
-        current_game.mode = mode;
+        current_game.mode = temp[0] - '0';
     }
 }
 
 void print_menu()
 {
-   printf("To Start game [Press S]\n");
-   printf("To load previous game [Press L]\n");
-   printf("To display Top 10 players [Press T]\n");
-   printf("To Exit game [Press E]\n");
-   printf("Option: ");
+    printf("To Start game [Press S]\n");
+    printf("To load previous game [Press L]\n");
+    printf("To display Top 10 players [Press T]\n");
+    printf("To Exit game [Press E]\n");
+    printf("Option: ");
 
-   char temp[5] ;
-   char op ;
-   scanf("%1s",temp) ;
+    char temp[5] ;
+    char op ;
+    scanf("%1s",temp);
 
-    if(temp[1]!='\0')
-    {
-        printf("Invalid input\n");
-        clearInputBuffer();
-        print_menu() ;
-    }
-    else
-    {
-        op = temp[0] ;
-    }
-
-    if(small(op) == 'l')
-    {
-        loadGame(&current_game);
-    }
-    else if(small(op) == 't')
-    {
-        printTopPlayers();
-        clearInputBuffer();
-        print_menu();
-    }
-    else if(small(op) =='e')
-    {
-        exit(1) ;
-    }
-    else
-    {
-        if(small(op)!='s')
+        if(temp[1]!='\0')
         {
+            printf("Invalid input\n");
             clearInputBuffer();
-            print_menu();
+            print_menu() ;
         }
         else
         {
-            input_size();
-            current_game.size = n;
-            declare_arrays(n);
+            op = temp[0] ;
+        }
 
-            inputGameMode();
-            
-            printf("Enter player 1 name: ");
-            scanf("%40s", &current_game.player_1.name);
+        if(small(op) == 'l')
+        {
+            loadGame(&current_game);
+        }
+        else if(small(op) == 't')
+        {
+            printTopPlayers();
             clearInputBuffer();
-            
-            if(current_game.mode == 0)
+            print_menu();
+        }
+        else if(small(op) =='e')
+        {
+            exit(1) ;
+        }
+        else
+        {
+            if(small(op)!='s')
             {
-                printf("Enter player 2 name: ");
-                scanf("%40s", &current_game.player_2.name);
                 clearInputBuffer();
+                print_menu();
             }
             else
             {
-                strcpy(current_game.player_2.name , "computer");
+                clearInputBuffer();
+                input_size();
+                current_game.size = n;
+                declare_arrays(n);
+
+                clearInputBuffer();
+
+                inputGameMode();
+                
+                printf("Enter player 1 name: ");
+                clearInputBuffer();
+                scanf("%40s", &current_game.player_1.name);
+                
+                if(current_game.mode == 0)
+                {
+                    printf("Enter player 2 name: ");
+                    clearInputBuffer();
+                    scanf("%40s", &current_game.player_2.name);
+                }
+                else
+                {
+                    strcpy(current_game.player_2.name , "computer");
+                }
             }
         }
-    }
 }
 
 int main()
@@ -981,7 +1008,24 @@ int main()
             print_grid();
             switch_turn();
             display_stats();
-            print_options();
+        }
+    }
+}
+
+//el function ely enta 3ayzha ya zmyly
+void generate_edges(char input_array[n][n]) 
+{
+    for(int i = 0 ; i < n + 1 ; i++)
+    {
+        for(int j = 0 ; j < n  ; j++)
+        {
+            if(input_array[i][j] == '1')
+            {
+                row_edges[i][j] = turn;
+                row_edges[i + 1][j] = turn;
+                col_edges[i][j] = turn;
+                col_edges[i][j + 1] = turn;
+            }
         }
     }
 }

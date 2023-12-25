@@ -53,13 +53,11 @@ void input_size(){
 }
 
 unsigned short int check_node(char x){
-   if (
-       (int)x <= 57 && (int)x >= 49 && // integer
-       (int)x<(n+49) //positive & less than size
-       ){
+   if ((int)x <= 57 && (int)x >= 49){ // integer
          return 1;
        }else{
-         return 0 ;}
+         return 0 ;
+      }
 }
 
 void input_nodes(){
@@ -82,11 +80,16 @@ void input_nodes(){
       r2 = (unsigned short int)temp[1]-48 ;
       c1 = (unsigned short int)temp[2]-48 ;
       c2 = (unsigned short int)temp[3]-48 ;
+      
+      if(r1>=n+1 || r2>=n+1 || c1>=n+1 || c2>=n+1){
+         printf("Invalid input\n") ;
+         input_nodes() ;
+      }
 
-      if(!(
-         (r1==r2 || c1==c2) &&   //nodes are adjacent
-         (absolute(r1-r2)==1 || absolute(c1-c2)==1) //short line not long line
-         )){
+      if(
+         !(r1==r2 || c1==c2) ||   //nodes are adjacent
+         !(absolute(r1-r2)==1 || absolute(c1-c2)==1) //short line not long line
+         ){
            printf("Invalid input\n") ;
            input_nodes() ;
 

@@ -21,6 +21,22 @@ short int indexes[2] = {0,0} ;
 short int director ;  // [director]  up ---> 1 , down ---> -1
 // [director]  right ---> 2 , left ---> -2
 
+//el function ely enta 3ayzha ya zmyly
+void generate_edges(){
+    for(int i = 0 ; i < n  ; i++){
+        for(int j = 0 ; j < n  ; j++){
+            if(dfs[i][j] == '1'){
+               
+               row_edges[i][j] = turn;
+               row_edges[i + 1][j] = turn;
+               col_edges[i][j] = turn;
+               col_edges[i][j + 1] = turn;
+               boxes[i][j] = turn ;
+            }
+        }
+    }
+}
+
 short int check_edges(){   //no errors
    short int i,j ;
    for (i=0 ; i<n ; i++){
