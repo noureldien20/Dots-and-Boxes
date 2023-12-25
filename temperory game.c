@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 #define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
 #define MAX_GRID_SIZE 10
-
 #define red "\e[0;91m"
 #define green "\e[0;92m"
 #define yellow "\e[0;93m"
@@ -18,19 +17,20 @@
 #define back_cyan "\e[106m"
 #define back_green "\e[102m"
 #define back_white "\e[107m"
-
-//#define Ctrl_Z '\x1A'
-//#define Ctrl_R '\x12'
-//#define Ctrl_S '\x13'
+#define Ctrl_Z '\x1A'
+#define Ctrl_R '\x12'
+#define Ctrl_S '\x13'
 
 #define line "-------"
-typedef struct {
+typedef struct 
+{
    char name[MAX_NAME_LENGHT + 1];
    int score;
    int number_of_moves;
 } player;
 
-typedef struct {
+typedef struct 
+{
     unsigned short int size;
     char array_of_row_edges[MAX_GRID_SIZE+1][MAX_GRID_SIZE];
     char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE+1];
@@ -44,7 +44,8 @@ typedef struct {
     short int mode; // 1 --> computer
 } game;
 
-typedef struct {
+typedef struct 
+{
     game array[MAX_SIZE_OF_STACK];
     int top;
 } Stack;
@@ -59,21 +60,19 @@ char **row_edges ;
 char **col_edges ;
 char **boxes ;
 char **dfs ;
-char turn = '1';
+char turn;
 unsigned int t = 0 ;
 
 //time_t time ;
 
-unsigned int get_random() 
+void reset_variables_to_zeros()
 {
-    static int initialized = 0;
-    if (!initialized) 
-    {
-        srand((unsigned int)time(NULL));
-        initialized = 1;
-    }
-
-    return rand();
+    turn = '1';
+    current_game.player_1.number_of_moves = 0;
+    current_game.player_2.number_of_moves = 0;
+    current_game.player_1.score = 0;
+    current_game.player_2.score = 0;
+    empty_both_stacks();
 }
 
 void clearInputBuffer() 
@@ -272,7 +271,7 @@ void display_stats()
     printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
     printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes: %d\n\n", current_game.number_of_remaining_boxes);
+    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
     //we still need to print the time
 }
 
@@ -503,30 +502,17 @@ void switch_turn()
             current_game.player_2.score += temp - current_game.previous_sum;
         }
     }
-    current_game.number_of_remaining_boxes =  (current_game.size * current_game.size) - temp;
+    current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
     current_game.turn = turn;
 }
-
-/*unsigned short int check_node(char x)
-{
-    //if((int)x <= 57 && (int)x >= 49 && (int)x < (n + 49))
-
-    if(x <= '9' && x >= '1' && x <= (n + '1'))
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}*/
 
 int min(int a, int b) 
 {
     return (a < b) ? a : b;
 }
 
-unsigned short int check_node(char x){
+unsigned short int check_node(char x)
+{
    if ((int)x <= 57 && (int)x >= 49){ // integer
          return 1;
        }else{
@@ -534,71 +520,40 @@ unsigned short int check_node(char x){
       }
 }
 
-void input_nodes(){ //bta3t ahmed
+void print_options();
 
-   unsigned short int r1,r2,c1,c2;
-   printf("Enter 2 dots (row,row , column,column) : ") ;
+void input_nodes()
+{ //bta3t ahmed
+    unsigned short int r1,r2,c1,c2;
+    printf("Enter 2 dots (row,row,col,col), for options [Press o]: ");
 
-   char temp[20] = {'\0'} ;
-   scanf("%s",temp) ;
+    char temp[10] = {'\0'};
+    scanf("%4s",temp);
 
-   if( !(check_node(temp[0]) && check_node(temp[1]) &&
-      check_node(temp[2]) && check_node(temp[3])) ){
-         printf("Invalid input\n") ;
-         input_nodes() ;
-         return;
-      }
+    if(temp[0] == 'o' || temp[0] == 'O')
+    {
+        clearInputBuffer();
+        print_options();
+        return;
+    }
 
-   if(temp[4]=='\0'){
-
-      r1 = (unsigned short int)temp[0]-48 ;
-      r2 = (unsigned short int)temp[1]-48 ;
-      c1 = (unsigned short int)temp[2]-48 ;
-      c2 = (unsigned short int)temp[3]-48 ;
-      
-      if(r1>=n+1 || r2>=n+1 || c1>=n+1 || c2>=n+1){
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }
-
-      if(
-         !(r1==r2 || c1==c2) ||   //nodes are adjacent
-         !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
-         ){
-           printf("Invalid input\n") ;
-           input_nodes() ;
-
-      }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-               col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2){
-                  
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }else{
-
-        if(r1==r2){
-            row_edges[r1-1][min(c1,c2)-1] = turn ;
-        }else{
-            col_edges[min(r1,r2)-1][c1-1] = turn ;
-        }
-
-      }
-
-   }else{
-      printf("Invalid input\n") ;
-      input_nodes() ;
-   if(temp[4]!='\0'){ // check there is 4 inputs only
+    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
+    {
         printf("Invalid input\n") ;
+        clearInputBuffer();
         input_nodes() ;
         return;
-   }
+    }
 
-    r1 = (unsigned short int)temp[0]-48 ;
-    r2 = (unsigned short int)temp[1]-48 ;
-    c1 = (unsigned short int)temp[2]-48 ;
-    c2 = (unsigned short int)temp[3]-48 ;
+    r1 = (unsigned short int)temp[0] - 48 ;
+    r2 = (unsigned short int)temp[1] - 48 ;
+    c1 = (unsigned short int)temp[2] - 48 ;
+    c2 = (unsigned short int)temp[3] - 48 ;
 
-    if(r1>n+1 || r2>n+1 || c1>n+1 || c2>n+1){
+    if(r1>n+1 || r2>n+1 || c1>n+1 || c2>n+1)
+    {
         printf("Invalid input\n") ;
+        clearInputBuffer();
         input_nodes() ;
         return;
     }
@@ -606,36 +561,44 @@ void input_nodes(){ //bta3t ahmed
     if(
         !(r1==r2 || c1==c2) ||   //nodes are adjacent
         !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
-        ){
+        )
+    {
         printf("Invalid input\n") ;
+        clearInputBuffer();
         input_nodes() ;
         return;
     }
 
-    if(r1==r2){
-        printf("in this\n") ;
-        if(row_edges[r1-1][min(c1,c2)-1]!='\0'){
+    if(r1==r2)
+    {
+        if(row_edges[r1-1][min(c1,c2)-1]!='\0')
+        {
             printf("Invalid input\n") ;
+            clearInputBuffer();
             input_nodes() ;
             return;
         }
     }
 
-    if(c1==c2){
-        if(col_edges[min(r1,r2)-1][c1-1]!='\0'){          
-            printf("Invalid input\n") ;
+    if(c1==c2)
+    {
+        if(col_edges[min(r1,r2)-1][c1-1]!='\0')
+        {          
+            printf("Invalid input\n");
+            clearInputBuffer();
             input_nodes() ;
             return;
         }
     }
 
-
-    if(r1==r2){
+    if(r1==r2)
+    {
         row_edges[r1-1][min(c1,c2)-1] = turn ;
-    }else{ //c1==c2
+    }
+    else
+    { //c1==c2
         col_edges[min(r1,r2)-1][c1-1] = turn ;
     }
-
 }
 
 // Serialize and save the player to a binary file
@@ -832,8 +795,6 @@ The Winner function uses loadPlayers to get the existing players, updates the in
 and then saves the updated players back to the file.
 The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.*/
 
-//void input_nodes();
-
 void print_options()
 {
     printf("To Make a move [Press M]\n");
@@ -852,6 +813,7 @@ void print_options()
         printf("Invalid input\n");
         clearInputBuffer();
         print_options();
+        return;
     }else
     {
         op = small(temp[0]);
@@ -862,16 +824,19 @@ void print_options()
         undo(&undo_stack, &redo_stack, &current_game);
         clearInputBuffer();
         input_nodes();
+        return;
     }
     else if(op == 'r')
     {
         redo(&undo_stack, &redo_stack, &current_game);
         clearInputBuffer();
         input_nodes();
+        return;
     }
     else if(op =='s')
     {
         saveGame(&current_game);
+        return;
     }
     else if(op =='e')
     {
@@ -881,85 +846,22 @@ void print_options()
     {
         clearInputBuffer();
         input_nodes();
+        return;
     }
     else
     {
         printf("Invalid input\n");
         clearInputBuffer();
         print_options();
+        return;
     }
 }
-
-/*void input_nodes()
-{
-    unsigned short int r1,r2,c1,c2;
-
-    printf("Enter 2 dots (row,row,col,col), for options [Press O]: ");
-
-    char temp[10] = {'\0'};
-    scanf("%4s",temp);
-
-    if(temp[0] == 'o' || temp[0] == 'O')
-    {
-        clearInputBuffer();
-        print_options();
-    }
-
-    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])))
-    {
-        printf("Invalid input1\n");
-        clearInputBuffer();
-        input_nodes() ;
-    }
-
-    if(temp[4] =='\0')
-    {
-        r1 = (unsigned short int)temp[0] - '0' ; 
-        r2 = (unsigned short int)temp[1] - '0' ;
-        c1 = (unsigned short int)temp[2] - '0' ; 
-        c2 = (unsigned short int)temp[3] - '0' ;
-
-        if(!
-            (r1==r2 || c1==c2) &&   //nodes are adjacent
-            (abs(r1-r2)==1 || abs(c1-c2==1)) //short line not long line
-            )
-        {
-            printf("Invalid input2\n") ;
-            clearInputBuffer();
-            input_nodes() ;
-        }
-        else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-            col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2)
-        {   
-            printf("Invalid input3\n") ;
-            clearInputBuffer();
-            input_nodes() ;
-        }
-    }
-    else
-    {
-        printf("Invalid input4\n");
-        clearInputBuffer();
-        input_nodes();
-    }
-
-    if(r1 == r2)
-    {
-        row_edges[r1 - 1][min(c1,c2) - 1] = turn ;
-    }
-    else
-    {
-        col_edges[min(r1,r2) - 1][c1 - 1] = turn ;
-    }
-}*/
-
 
 void inputGameMode() 
 {
     char temp[3];
 
-    printf("Enter game mode\n[0 for human vs human, 1 for human vs computer] : ");
-    printf("Enter game mode ['0' for human vs human, '1' for human vs computer]: ");
+    printf("Enter game mode [0 for human vs human, 1 for human vs computer] : ");
 
     if (scanf("%1s", temp) != 1 || (strcmp(temp, "0") != 0 && strcmp(temp, "1") != 0)) 
     {
@@ -990,6 +892,7 @@ void print_menu()
             printf("Invalid input\n");
             clearInputBuffer();
             print_menu() ;
+            return;
         }
         else
         {
@@ -1005,6 +908,7 @@ void print_menu()
             printTopPlayers();
             clearInputBuffer();
             print_menu();
+            return;
         }
         else if(small(op) =='e')
         {
@@ -1016,12 +920,14 @@ void print_menu()
             {
                 clearInputBuffer();
                 print_menu();
+                return;
             }
             else
             {
                 clearInputBuffer();
                 input_size();
                 current_game.size = n;
+
                 declare_arrays(n);
 
                 clearInputBuffer();
@@ -1046,12 +952,13 @@ void print_menu()
         }
 }
 
-void time_passed(){
-   
-   while(1){
-      sleep(1) ;
-      t++ ;
-   }
+void time_passed()
+{
+    while(1)
+    {
+        sleep(1) ;
+        t++;
+    }
 }
 
 int main()
@@ -1062,8 +969,8 @@ int main()
     {
         print_menu();
 
-        pthread_t time_thread ;
-        pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        //pthread_t time_thread ;
+        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
 
