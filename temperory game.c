@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//#include <threads.h>
+#include <pthread.h>
 
 #define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10
@@ -954,6 +954,7 @@ int main()
         while(number_of_filled_boxes() != n*n)
         {
             current_game.previous_sum = number_of_filled_boxes();
+            clearInputBuffer();
             input_nodes();
             check_edges();
             print_grid();
