@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 #define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10

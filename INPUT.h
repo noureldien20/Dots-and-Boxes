@@ -2,7 +2,7 @@
 #define INPUT_H
 
 #include <stdio.h>
-#include "Basic Var. and Func.h"
+#include "Basic Var and Func.h"
 
 
 short int absolute(short int x){
@@ -60,58 +60,73 @@ unsigned short int check_node(char x){
       }
 }
 
-void input_nodes(){
+void input_nodes(){ //bta3t ahmed
+    unsigned short int r1,r2,c1,c2;
+    printf("Enter 2 dots (row,row,col,col), for options [Press o]: ");
 
-   unsigned short int r1,r2,c1,c2;
-   printf("Enter 2 dots (row,row , column,column) : ") ;
+    char temp[10] = {'\0'};
+    scanf("%4s",temp);
 
-   char temp[20] = {'\0'} ;
-   scanf("%s",temp) ;
+    if(temp[0] == 'o' || temp[0] == 'O'){
+        clearInputBuffer();
+        print_options();
+        return;
+    }
 
-   if( !(check_node(temp[0]) && check_node(temp[1]) &&
-      check_node(temp[2]) && check_node(temp[3])) ){
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }
+    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3]))){
+        printf("Invalid input\n") ;
+        clearInputBuffer();
+        input_nodes() ;
+        return;
+    }
 
-   if(temp[4]=='\0'){
+    r1 = (unsigned short int)temp[0] - 48 ;
+    r2 = (unsigned short int)temp[1] - 48 ;
+    c1 = (unsigned short int)temp[2] - 48 ;
+    c2 = (unsigned short int)temp[3] - 48 ;
 
-      r1 = (unsigned short int)temp[0]-48 ;
-      r2 = (unsigned short int)temp[1]-48 ;
-      c1 = (unsigned short int)temp[2]-48 ;
-      c2 = (unsigned short int)temp[3]-48 ;
-      
-      if(r1>=n+1 || r2>=n+1 || c1>=n+1 || c2>=n+1){
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }
+    if(r1>n+1 || r2>n+1 || c1>n+1 || c2>n+1){
+        printf("Invalid input\n") ;
+        clearInputBuffer();
+        input_nodes() ;
+        return;
+    }
 
-      if(
-         !(r1==r2 || c1==c2) ||   //nodes are adjacent
-         !(absolute(r1-r2)==1 || absolute(c1-c2)==1) //short line not long line
-         ){
-           printf("Invalid input\n") ;
-           input_nodes() ;
+    if(
+        !(r1==r2 || c1==c2) ||   //nodes are adjacent
+        !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
+        ){
+        printf("Invalid input\n") ;
+        clearInputBuffer();
+        input_nodes() ;
+        return;
+    }
 
-      }else if(row_edges[r1-1][min(c1,c2)-1]!='\0' && r1==r2 ||
-               col_edges[min(r1,r2)-1][c1-1]!='\0' && c1==c2){
-                  
-         printf("Invalid input\n") ;
-         input_nodes() ;
-      }else{
-
-        if(r1==r2){
-            row_edges[r1-1][min(c1,c2)-1] = turn ;
-        }else{
-            col_edges[min(r1,r2)-1][c1-1] = turn ;
+    if(r1==r2){
+        if(row_edges[r1-1][min(c1,c2)-1]!='\0')
+        {
+            printf("Invalid input\n") ;
+            clearInputBuffer();
+            input_nodes() ;
+            return;
         }
+    }
 
-      }
+    if(c1==c2){
+        if(col_edges[min(r1,r2)-1][c1-1]!='\0'){         
+            printf("Invalid input\n");
+            clearInputBuffer();
+            input_nodes() ;
+            return;
+        }
+    }
 
-   }else{
-      printf("Invalid input\n") ;
-      input_nodes() ;
-   }
+    if(r1==r2){
+        row_edges[r1-1][min(c1,c2)-1] = turn ;
+    }
+    else{ //c1==c2
+        col_edges[min(r1,r2)-1][c1-1] = turn ;
+    }
 }
 
 void AI_input(){
@@ -147,7 +162,7 @@ void AI_input(){
       }
    }
 
-
+   
 }
 
 

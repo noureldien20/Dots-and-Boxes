@@ -2,7 +2,7 @@
 #define CHECKING_H
 
 #include <stdio.h>
-#include "Basic Var. and Func.h"
+#include "Basic Var and Func.h"
 
 /******************************** بسم الله الرحمن الرحيم  **************************************/
 
@@ -89,13 +89,20 @@ short int check_box(short int i,short int j){
 void directing(){
 }
 
-void trace_vertical(short int a,short int b){
+short int n_edges = 3 ; //number of filled edges in chain
+short int n_empty = 1 ; //number of empty edges in chain
+short int indexes[2] = {0,0} ;
+short int director = -2 ;  // [director]  up ---> 1 , down ---> -1
+// [director]  right ---> 2 , left ---> -2
+// sign = 0 (director = 1 , -2)
+// sign = 1 (director = -1 , 2)
 
+void trace_vertical(short int a,short int b,unsigned int sign){
    while(a<n && a>=0 && col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0'){
       n_edges+=2 ;
       dfs[a][b] = turn ;
 
-      if(row_edges[a][b]!='\0'){
+      if(row_edges[a+sign][b]!='\0'){
          n_edges++ ;
          director = 0 ;
          dfs[a][b] = turn ;
@@ -107,15 +114,16 @@ void trace_vertical(short int a,short int b){
    }
 
    if(director){
-
-      if(col_edges[a][b] == '\0' && row_edges[a][b]!='\0'){
-         n_edges+=2 ;
+      if(col_edges[a][b] == '\0' && row_edges[a+sign][b]!='\0'){
+         n_edges+=2 ; n_empty++ ;
          director = -2 ;
-         n_empty++ ;
-      }else if(col_edges[a][b+1] =='\0' && row_edges[a][b]!='\0'){
-         n_edges+=2 ;
+         indexes[0] = a ; indexes[1] = b ;
+         dfs[a][b] = turn ;
+      }else if(col_edges[a][b+1] =='\0' && row_edges[a+sign][b]!='\0'){
+         n_edges+=2 ; n_empty++ ;
          director = 2 ;
-         n_empty++ ;
+         indexes[0] = a ; indexes[1] = b+1 ;
+         dfs[a][b] = turn ;
       }else{ //No chain
          director = 0 ;
          n_empty++ ;
@@ -124,13 +132,13 @@ void trace_vertical(short int a,short int b){
    }
 }
 
-void trace_horizontal(short int a,short int b){
+void trace_horizontal(short int a,short int b,unsigned int sign){
    director = director / 2 ;
    while(b<n && b>=0 && row_edges[a][b]!='\0' && row_edges[a+1][b]!='\0'){
       n_edges+=2 ;
       dfs[a][b] = turn ;
 
-      if(col_edges[a][b+1]!='\0'){
+      if(col_edges[a][b+sign]!='\0'){ 
          n_edges++ ;
          director = 0 ;
          dfs[a][b] = turn ;
@@ -143,14 +151,17 @@ void trace_horizontal(short int a,short int b){
 
    if(director){
 
-      if(row_edges[a][b] == '\0' && col_edges[a][b]!='\0'){
-         n_edges+=2 ;
+      if(row_edges[a][b] == '\0' && col_edges[a][b+sign]!='\0'){
+         n_edges+=2 ; n_empty++ ;
          director = 1 ;
-         n_empty++ ;
-      }else if(row_edges[a+1][b] =='\0' && col_edges[a][b]!='\0'){
-         n_edges+=2 ;
+         indexes[0] = a ; indexes[1] = b ;
+         dfs[a][b] = turn ;
+      }else if(row_edges[a+1][b] =='\0' && col_edges[a][b+sign]!='\0'){
+         n_edges+=2 ; n_empty++ ;
          director = -1 ;
-         n_empty++ ;
+         indexes[0] = a+1 ; indexes[1] = b ;
+         dfs[a][b] = turn ;
+
       }else{ //No chain
          director = 0 ;
          n_empty++ ;
@@ -166,33 +177,29 @@ void DFS(unsigned short int i,unsigned short int j){
    while(director){
 
       if(director == 1){
-         trace_vertical(indexes[0]-1,indexes[1]) ;
+         trace_vertical(indexes[0]-1,indexes[1],0) ;
 
       }else if(director == -1){
-         trace_vertical(indexes[0],indexes[1]) ;
+         trace_vertical(indexes[0],indexes[1],1) ;
 
       }else if(director == 2){
-         trace_horizontal(indexes[0],indexes[1]) ;
+         trace_horizontal(indexes[0],indexes[1],1) ;
 
       }else{  // director == -2
-         trace_horizontal(indexes[0],indexes[1]) ;
+         trace_horizontal(indexes[0],indexes[1]-1,0) ;
       }
 
    }
 
    if(n_empty == (n_edges/2) - 2){
-      printf("chain\n") ;
+      generate_edges();
       //make dfs equal to row_edges, col_edges, boxes
-   }else{
-      printf("not chain\n") ;
-      n_edges = 3 ;
-      n_empty = 1 ;
-
    }
 
-   //zero_2D_array(n,n,dfs) ;
+   n_edges = 3 ;
+   n_empty = 1 ;
+   zero_2D_array(n,n,dfs) ;
 }
-
 
 
 
