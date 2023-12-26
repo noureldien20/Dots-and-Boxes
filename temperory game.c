@@ -3,12 +3,13 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
+//#include <threads.h>
 
 #define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
 #define MAX_GRID_SIZE 10
-#define red "\e[0;91m"
+/*#define red "\e[0;91m"
 #define green "\e[0;92m"
 #define yellow "\e[0;93m"
 #define blue "\e[0;94m"
@@ -19,7 +20,16 @@
 #define back_white "\e[107m"
 #define Ctrl_Z '\x1A'
 #define Ctrl_R '\x12'
-#define Ctrl_S '\x13'
+#define Ctrl_S '\x13'*/
+#define RESET "\x1b[0m"
+#define white "\x1b[97m"      // High-intensity white
+#define cyan "\x1b[96m"       // High-intensity cyan
+#define back_cyan "\x1b[106m" // High-intensity cyan background
+#define green "\x1b[95m"    // High-intensity magenta 
+//how esmo magenta bas ana sameto green 3ashan ma abowazsh fe elcode we tedrabny
+#define back_green "\x1b[105m" // High-intensity magenta background
+
+
 
 #define line "-------"
 typedef struct 
@@ -35,13 +45,13 @@ typedef struct
     char array_of_row_edges[MAX_GRID_SIZE+1][MAX_GRID_SIZE];
     char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE+1];
     char array_of_boxes[MAX_GRID_SIZE][MAX_GRID_SIZE];
-    double elapsed_time;
+    unsigned int elapsed_time;
     char turn;
     int number_of_remaining_boxes;
     player player_1;
     player player_2;
     int previous_sum;
-    short int mode; // 1 --> computer
+    unsigned short int mode; // 1 --> computer
 } game;
 
 typedef struct 
@@ -61,9 +71,38 @@ char **col_edges ;
 char **boxes ;
 char **dfs ;
 char turn;
-unsigned int t = 0 ;
 
 //time_t time ;
+
+void copyArrays(game* gamePtr) 
+{
+    // Copy array_of_row_edges
+    for (int i = 0; i <= n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            row_edges[i][j] = gamePtr->array_of_row_edges[i][j];
+        }
+    }
+
+    // Copy array_of_column_edges
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j <= n; ++j) 
+        {
+            col_edges[i][j] = gamePtr->array_of_column_edges[i][j];
+        }
+    }
+
+    // Copy array_of_boxes
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            boxes[i][j] = gamePtr->array_of_boxes[i][j];
+        }
+    }
+}
 
 void reset_variables_to_zeros()
 {
@@ -124,30 +163,28 @@ void print_array_2D(short int row,short int col,char **arr){
 void print_horizontal(short int r){
    short int i ;   ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
-        printf(white"+") ;
-        //printf("%hd", r);
-        //print_array_2D(n+1,n, row_edges);
+        printf(white"+"RESET) ;
         
         if (row_edges[r-1][i] == '1'){
-            printf(cyan"%s",line) ;
+            printf(cyan"%s"RESET,line) ;
         }else if(row_edges[r-1][i] == '2'){
-            printf(green"%s",line) ;
+            printf(green"%s"RESET,line) ;
         }else{
             printf("       ") ;
         }
    }
-   printf(white"+\n") ;
+   printf(white"+\n"RESET) ;
 }
 
 void print_boxes_color(short int c,short int i)
 {
     if (boxes[c-1][i] == '1')
     {
-        printf(back_cyan"       ");
+        printf(back_cyan"       "RESET);
     }
     else if(boxes[c-1][i] == '2')
     {
-        printf(back_green"       ");
+        printf(back_green"       "RESET);
     }
     else
     {
@@ -161,9 +198,9 @@ void print_vertical(short int c){
       for(i=0 ; i<n ; i++){
 
          if(col_edges[c-1][i] =='1' || boxes[c-1][i] == '1'){
-            printf(cyan"|") ;
+            printf(cyan"|"RESET) ;
          }else if(col_edges[c-1][i] =='2' || boxes[c-1][i] == '2'){
-            printf(green"|") ;
+            printf(green"|"RESET) ;
          }else{
             printf(" ") ;
          }
@@ -171,9 +208,9 @@ void print_vertical(short int c){
       }
 
    if (col_edges[c-1][i]== '1'){
-      printf(cyan"|\n");
+      printf(cyan"|\n"RESET);
    }else if(col_edges[c-1][i]== '2'){
-      printf(green"|\n") ;
+      printf(green"|\n"RESET) ;
    }else{
       printf(" \n") ;
       }
@@ -274,109 +311,6 @@ void display_stats()
     printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
     //we still need to print the time
 }
-
-/*void Winner(player *winner) 
-{
-    FILE *file = fopen("player_data.txt", "a+");
-
-    if (file == NULL) 
-    {
-        // create the file if it doesn't exist
-        file = fopen("player_data.bin", "w+");
-        if (file == NULL) printf("Error opening or creating the file.\n");
-    }
-
-    player temp;
-    int found = 0;
-
-    //Search for the player in the file
-
-    while (fscanf(file, "%49s %d", temp.name, &temp.score) == 2) 
-    {
-        if (strcmp(temp.name, winner->name) == 0) 
-        {
-            found = 1;
-
-            if (winner->score > temp.score) 
-            {
-                temp.score = winner->score;
-
-                fseek(file, -(49 + sizeof(int) + 2), SEEK_SET);
-
-                fprintf(file, "%s %d\n", temp.name, temp.score);
-            }
-            break;
-        }
-    }
-
-    if (!found) 
-    {
-        fprintf(file, "%s %d\n", winner->name, winner->score);
-    }
-
-    fclose(file);
-}
-
-void printTopPlayers() 
-{
-    FILE *file = fopen("player_data.txt", "r");
-
-    if (file == NULL) 
-    {
-        printf("Error opening the file.\n");
-        exit(1);
-    }
-
-    player *players = NULL;  // Dynamic array to store players
-    int numPlayers = 0;
-
-    // Read players from the file dynamically
-    player tempPlayer;
-    while (fscanf(file, "%49s %d", tempPlayer.name, &tempPlayer.score) == 2) 
-    {
-        // Dynamically allocate memory for a new player
-        players = realloc(players, (numPlayers + 1) * sizeof(player));
-
-        // Check if memory allocation is successful
-        if (players == NULL) 
-        {
-            printf("Memory allocation failed.\n");
-            exit(1);
-        }
-
-        // Copy the temporary player data to the array
-        players[numPlayers++] = tempPlayer;
-        //numPlayers++;
-    }
-
-    fclose(file);
-
-    // Sort the players based on score
-    for (int i = 0; i < numPlayers - 1; i++)
-    {
-        for (int j = i + 1; j < numPlayers; j++) 
-        {
-            if (players[j].score > players[i].score) 
-            {
-                player temp = players[i];
-                players[i] = players[j];
-                players[j] = temp;
-            }
-        }
-    }
-
-    printf("Top %d Players:\n", numPlayers);
-
-    int numPlayersToPrint = (numPlayers < MAX_PLAYERS_TO_PRINT) ? numPlayers : MAX_PLAYERS_TO_PRINT;
-
-    for (int i = 0; i < numPlayersToPrint; i++) 
-    {
-        printf("%d. %s - %d\n", i + 1, players[i].name, players[i].score);
-    }
-
-    // Free dynamically allocated memory
-    free(players);
-}*/
 
 void input_size()
 {
@@ -601,22 +535,6 @@ void input_nodes()
     }
 }
 
-// Serialize and save the player to a binary file
-void savePlayer(const player* player) 
-{
-    FILE* file = fopen("player_data.bin", "ab");  // "ab" for append in binary mode
-
-    if (file == NULL) 
-    {
-        printf("Error opening or creating the file.\n");
-        return;
-    }
-
-    fwrite(player, sizeof(player), 1, file);
-
-    fclose(file);
-}
-
 // Deserialize and load players from a binary file
 player* loadPlayers(int* numPlayers) 
 {
@@ -624,8 +542,27 @@ player* loadPlayers(int* numPlayers)
 
     if (file == NULL) 
     {
-        printf("Error opening the file.\n");
-        exit(1);
+        printf("File not found. Creating a new file.\n");
+
+        // Create a new file if it doesn't exist
+        file = fopen("player_data.bin", "wb");
+        
+        if (file == NULL) 
+        {
+            printf("Error creating the file.\n");
+            return NULL;
+        }
+
+        fclose(file);
+
+        // Now attempt to open the file again
+        file = fopen("player_data.bin", "rb");
+
+        if (file == NULL) 
+        {
+            printf("Error opening the file.\n");
+            return NULL;
+        }
     }
 
     player* players = NULL;
@@ -640,7 +577,8 @@ player* loadPlayers(int* numPlayers)
         if (players == NULL) 
         {
             printf("Memory allocation failed.\n");
-            exit(1);
+            fclose(file);
+            return NULL;
         }
 
         players[(*numPlayers)++] = tempPlayer;
@@ -651,7 +589,6 @@ player* loadPlayers(int* numPlayers)
     return players;
 }
 
-// Serialize and save the winner to the file
 void Winner(player* winner) 
 {
     player* players;
@@ -685,7 +622,7 @@ void Winner(player* winner)
         if (players == NULL) 
         {
             printf("Memory allocation failed.\n");
-            exit(1);
+            return;
         }
 
         players[numPlayers++] = *winner;
@@ -708,8 +645,34 @@ void Winner(player* winner)
 }
 
 // Function to serialize and save the game to a binary file
-int saveGame(const game* gamePtr) 
+int saveGame(game* gamePtr) 
 {
+    for (int i = 0; i <= n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            gamePtr->array_of_row_edges[i][j] = row_edges[i][j];
+        }
+    }
+
+    // Copy col_edges to array_of_column_edges
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j <= n; ++j) 
+        {
+            gamePtr->array_of_column_edges[i][j] = col_edges[i][j];
+        }
+    }
+
+    // Copy boxes to array_of_boxes
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < n; ++j) 
+        {
+            gamePtr->array_of_boxes[i][j] = boxes[i][j];
+        }
+    }
+
     file = fopen("saved_game.bin", "wb");
     if (file != NULL) 
     {
@@ -788,12 +751,12 @@ void printTopPlayers()
     // Free dynamically allocated memory
     free(players);
 }
-/*The savePlayer function serializes and saves a single player to the binary file in append mode ("ab").
-The loadPlayers function deserializes and loads all players from the binary file. It returns a dynamic array of
-Player structs and updates the numPlayers variable.
-The Winner function uses loadPlayers to get the existing players, updates the information for the winner,
-and then saves the updated players back to the file.
-The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.*/
+
+//The loadPlayers function deserializes and loads all players from the binary file. It returns a dynamic array of
+//Player structs and updates the numPlayers variable.
+//The Winner function uses loadPlayers to get the existing players, updates the information for the winner,
+//and then saves the updated players back to the file.
+//The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.
 
 void print_options()
 {
@@ -877,7 +840,7 @@ void inputGameMode()
 
 void print_menu()
 {
-    printf("To Start game [Press S]\n");
+    printf("\nTo Start game [Press S]\n");
     printf("To load previous game [Press L]\n");
     printf("To display Top 10 players [Press T]\n");
     printf("To Exit game [Press E]\n");
@@ -896,27 +859,33 @@ void print_menu()
         }
         else
         {
-            op = temp[0] ;
+            op = small(temp[0]) ;
         }
 
-        if(small(op) == 'l')
+        if(op == 'l')
         {
             loadGame(&current_game);
+            turn = current_game.turn;
+            n = current_game.size;
+            declare_arrays(n);
+            copyArrays(&current_game);
+            empty_both_stacks();
+            return;
         }
-        else if(small(op) == 't')
+        else if(op == 't')
         {
             printTopPlayers();
             clearInputBuffer();
             print_menu();
             return;
         }
-        else if(small(op) =='e')
+        else if(op == 'e')
         {
-            exit(1) ;
+            exit(1);
         }
         else
         {
-            if(small(op)!='s')
+            if(op !='s')
             {
                 clearInputBuffer();
                 print_menu();
@@ -948,19 +917,28 @@ void print_menu()
                 {
                     strcpy(current_game.player_2.name , "computer");
                 }
+
+                turn = '1';
+                current_game.player_1.number_of_moves = 0;
+                current_game.player_2.number_of_moves = 0;
+                current_game.player_1.score = 0;
+                current_game.player_2.score = 0;
+                empty_both_stacks();
+                current_game.elapsed_time = 0;
             }
         }
 }
 
+/*
 void time_passed()
 {
     while(1)
     {
         sleep(1) ;
-        t++;
+        current_game.elapsed_time++;
     }
 }
-
+*/
 int main()
 {
     printf("Welcome to Dots & Boxes game\n");
@@ -983,10 +961,14 @@ int main()
             switch_turn();
             display_stats();
         }
+        player winnerName = (current_game.player_1.score > current_game.player_2.score)
+        ? current_game.player_1
+        : current_game.player_2;
+        Winner(&winnerName);
+        printTopPlayers();
     }
 }
 
-//el function ely enta 3ayzha ya zmyly
 void generate_edges() 
 {
     for(int i = 0 ; i < n ; i++)
