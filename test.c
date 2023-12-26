@@ -178,7 +178,10 @@ void trace_vertical(short int a,short int b,unsigned int sign){
          director = 2 ;
          indexes[0] = a ; indexes[1] = b+1 ;
          dfs[a][b] = turn ;
-      }else{ //No chain
+      }else if()
+      
+      
+      else{ //No chain
          director = 0 ;
          n_empty++ ;
       }

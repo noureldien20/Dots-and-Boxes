@@ -97,6 +97,7 @@ void time_passed(){
    }
 }
 
+
 /*
 #define MAX_SIZE_OF_STACK 30
 
@@ -136,5 +137,9 @@ Stack redo_stack;
 game current_game;
 
 */
+
+
+
+
 
 #endif
