@@ -130,7 +130,7 @@ void time_passed()
 {
    while(1)
    {
-      Sleep(1000) ;
+      sleep(1) ;
       current_game.elapsed_time++; 
    }
 }

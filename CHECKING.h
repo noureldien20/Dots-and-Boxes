@@ -15,15 +15,6 @@ number of dots  = (n+1)(n+1)
 
 // n_empty = (n_edges/2) - 2
 
-short int n_edges = 3 ; //number of filled edges in chain
-short int n_empty = 1 ; //number of empty edges in chain
-
-short int indexes[3] = {0,0,0} ; 
-//third element in indexes array express row or col  [row ---> 0] , [col ---> 1]
-
-short int director = 0 ;  // [director]  up ---> 1 , down ---> -1
-// [director]  right ---> 2 , left ---> -2
-
 // sign = 0 (director = 1 , -2)
 // sign = 1 (director = -1 , 2)
 
@@ -43,7 +34,7 @@ void generate_edges(){
     }
 }
 
-short int check_edges(){   //no errors
+void check_edges(){   //no errors
    short int i,j ;
    for (i=0 ; i<n ; i++){
       for (j=0 ; j<n ; j++){
@@ -53,7 +44,6 @@ short int check_edges(){   //no errors
            
             //DFS() ;
             boxes[i][j] = turn ;
-            return 1 ;
          }
       }
    }

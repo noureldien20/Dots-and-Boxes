@@ -73,4 +73,7 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
     *current = peek(undo_stack);
 }
 
+
+
+
 #endif

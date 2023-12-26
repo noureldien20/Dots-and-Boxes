@@ -2,43 +2,43 @@
 #include <stdlib.h>
 #include <time.h>
 #include "Basic Var and Func.h"
+#include "Save_Load.h"
+#include "Menu_Options.h"
+#include "Undo_Redo.h"
 #include "INPUT.h"
 #include "CHECKING.h"
 #include "Display.h"
 #include <pthread.h>
-//#include "temperory game.c"
 
 /******************************** بسم الله الرحمن الرحيم  *********************************/
 
-int main(){
-printf("Welcome to Dots & Boxes game\n");
+int main()
+{
+    printf("Welcome to Dots & Boxes game\n");
 
-while(1 /* lw m3ml4 quit */){ // bta3t el brnamg kolo
+    while(1)
+    {
+        print_menu();
 
-print_menu();
+        pthread_t time_thread ;
+        pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
-pthread_t time_thread ;
-pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        print_grid();
 
-print_grid();
-
-while(1 /* number of filled boxes = n*n */){
-
-    //current_game.previous_sum = number_of_filled_boxes();
-    input_nodes();
-    check_edges();
-    print_grid();
-    printf("%d",t);
-    //switch_turn();
-    //display_stats();
-}
-//free game matrices & variables
-free(row_edges) ;
-free(col_edges) ;
-free(boxes) ;
-free(dfs);
-t = 0 ;
-
-}
-
+        while(number_of_filled_boxes() != n*n)
+        {
+            current_game.previous_sum = number_of_filled_boxes();
+            clearInputBuffer();
+            input_nodes();
+            check_edges();
+            print_grid();
+            switch_turn();
+            display_stats();
+        }
+        player winnerName = (current_game.player_1.score > current_game.player_2.score)
+        ? current_game.player_1
+        : current_game.player_2;
+        Winner(&winnerName);
+        printTopPlayers();
+    }
 }

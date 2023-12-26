@@ -54,7 +54,7 @@ void print_options()
     printf("To Redo [Press R]\n");
     printf("To Save game [Press S]\n");
     printf("To Exit game [Press E]\n");
-    printf("Option: ");
+    printf("Option : ");
 
     char temp[5] ;
     char op ;
@@ -193,5 +193,6 @@ void print_menu()
             }
         }
 }
+
 
 #endif
