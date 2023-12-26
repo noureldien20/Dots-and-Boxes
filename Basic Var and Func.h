@@ -126,22 +126,13 @@ char big(char c){
    else{return c ;}
 }
 
-void time_passed()
+short int number_of_filled_boxes() 
 {
-   while(1)
-   {
-      sleep(1) ;
-      current_game.elapsed_time++; 
-   }
-}
+    short int count = 0;
 
-int number_of_filled_boxes() 
-{
-    int count = 0;
-
-    for (int i = 0; i < current_game.size; ++i) 
+    for (short int i = 0; i < current_game.size; ++i) 
     {
-        for (int j = 0; j < current_game.size; ++j) 
+        for (short int j = 0; j < current_game.size; ++j) 
         {
             if (boxes[i][j] != '\0')
             {
@@ -150,6 +141,15 @@ int number_of_filled_boxes()
         }
     }
     return count;
+}
+
+void time_passed()
+{
+   while(number_of_filled_boxes != n*n)
+   {
+      Sleep(1000) ;
+      current_game.elapsed_time++; 
+   }
 }
 
 void switch_turn()
