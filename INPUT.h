@@ -5,29 +5,18 @@
 #include "Basic Var and Func.h"
 
 
-short int absolute(short int x){
-    if(x<0){
-        return -1*x ;
-    }else{
-        return x ;
-    }
-}
-
-unsigned short int min(unsigned short int x,unsigned short int y){
-    if(x<y){
-        return x ;
-    }else{
-        return y ;
-    }
+int min(int a, int b)
+{
+    return (a < b) ? a : b;
 }
 
 void input_size(){
 
-   char temp[20] = {'\0'} ;
+   char temp[5] = {'\0'};
    unsigned short int arr[2] = {0,0};
 
-   printf("Enter size of grid [MAX 29] : ") ;
-   scanf("%s",temp) ;
+   printf("Enter size of grid [MAX %d]: ", MAX_GRID_SIZE) ;
+    scanf("%2s",temp);
 
    if(
       ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
@@ -47,6 +36,7 @@ void input_size(){
 
    }else{
       printf("Invalid input\n") ;
+      clearInputBuffer();
       input_size() ;
    }
 }
@@ -166,9 +156,26 @@ void AI_input(){
          }
       }
    }
-
-   
 }
+
+void inputGameMode() 
+{
+    char temp[3];
+
+    printf("Enter mode [0 for 2 Players, 1 for 1 Player]: ");
+
+    if (scanf("%1s", temp) != 1 || (strcmp(temp, "0") != 0 && strcmp(temp, "1") != 0)) 
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
+        inputGameMode();
+    } 
+    else 
+    {
+        current_game.mode = temp[0] - '0';
+    }
+}
+
 
 
 #endif

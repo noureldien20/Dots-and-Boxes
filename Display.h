@@ -25,9 +25,9 @@ indexes of loops names ---> i,j,k
 
 void print_boxes_color(short int c,short int i){
    if (boxes[c-1][i]=='1'){
-      printf(back_cyan"       ") ;
+      printf(back_cyan"       "RESET) ;
    }else if(boxes[c-1][i]=='2'){
-      printf(back_green"       ") ;
+      printf(back_green"       "RESET) ;
    }else{
       printf("       ") ;
    }
@@ -36,17 +36,17 @@ void print_boxes_color(short int c,short int i){
 void print_horizontal(short int r){
    short int i ;   ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
-      printf(white"+") ;
+      printf(white"+"RESET) ;
 
       if (row_edges[r-1][i] == '1'){
-         printf(cyan"%s",line) ;
+         printf(cyan"%s"RESET,line) ;
       }else if(row_edges[r-1][i] == '2'){
-         printf(green"%s",line) ;
+         printf(green"%s"RESET,line) ;
       }else{
          printf("       ") ;
       }
    }
-   printf(white"+\n") ;
+   printf(white"+\n"RESET) ;
 }
 
 void print_vertical(short int c){
@@ -55,9 +55,9 @@ void print_vertical(short int c){
       for(i=0 ; i<n ; i++){
 
          if(col_edges[c-1][i]=='1' || boxes[c-1][i]=='1'){
-            printf(cyan"|") ;
+            printf(cyan"|"RESET) ;
          }else if(col_edges[c-1][i]=='2' || boxes[c-1][i]=='2'){
-            printf(green"|") ;
+            printf(green"|"RESET) ;
          }else{
             printf(" ") ;
          }
@@ -65,9 +65,9 @@ void print_vertical(short int c){
       }
 
    if (col_edges[c-1][i]=='1'){
-      printf(cyan"|\n");
+      printf(cyan"|\n"RESET);
    }else if(col_edges[c-1][i]=='2'){
-      printf(green"|\n") ;
+      printf(green"|\n"RESET) ;
    }else{
       printf(" \n") ;
       }
@@ -75,67 +75,24 @@ void print_vertical(short int c){
 }
 
 void print_grid(){
+   printf("\n");
    short int j ;
    for(j=1 ; j<=n ; j++){
       print_horizontal(j) ;
       print_vertical(j) ;
    }
    print_horizontal(j) ;
+   printf("\n");
 }
 
-void print_menu(){
-   
-   printf("To Start game [Press S]\n");
-   printf("To Load previous game [Press L]\n");
-   printf("To show Top 10 players [Press T]\n");
-   printf("To Exit game [Press E]\n");
-
-   char temp[20] ;
-   char op ;
-   scanf("%s",temp) ;
-
-   if(temp[1]!='\0'){
-      printf("Invalid input\n") ;
-      print_menu() ;
-   }else{
-      op = temp[0] ;
-   }
-
-   if(small(op) == 'l'){
-      // function to load from file
-   }else if(small(op) == 't'){
-      //function to print top 10
-      print_menu() ;
-   }else if(small(op) =='e'){
-      exit(1) ;
-   }else{
-
-      if(small(op)!='s'){
-         print_menu() ;
-      }else{
-         input_size() ;
-         declare_arrays(n) ;
-      }
-
-   }
-   
+void display_stats()
+{
+    printf("\nNext turn: %s\n", turn == '1' ? current_game.player_1.name : current_game.player_2.name);
+    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
+    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
+    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
+    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+    //we still need to print the time
 }
-
-
-
-
-//DURING GAME PRINTING
-/*void print_status(){
-
-   printf("Current turn: %s\n", current_game.turn == 11 and 2 or a and b ?
-   current_game.player_1.name : current_game.player_2.name) ; //modify the condition
-
-   printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
-   printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
-   printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
-   printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
-   printf("%d : %d\n",time/60 , time%60) ;
-
-}*/
 
 #endif

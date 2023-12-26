@@ -4,18 +4,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
-#define red "\e[0;91m"
-#define green "\e[0;92m"
-#define yellow "\e[0;93m"
-#define blue "\e[0;94m"
-#define cyan "\e[0;96m"
-#define white "\e[0;97m"
-#define back_cyan "\e[106m"
-#define back_green "\e[102m"
-#define back_white "\e[107m"
+#define green "\x1b[0;92m"
+#define yellow "\x1b[0;93m"
+#define cyan "\x1b[96m"
+#define white "\x1b[97m"
+#define back_cyan "\x1b[106m"
+#define back_green "\x1b[102m"
+#define back_white "\x1b[107m"
+#define RESET "\x1b[0m"
 
 #define Ctrl_Z '\x1A'
 #define Ctrl_R '\x12'
@@ -25,13 +25,40 @@
 number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
 
+#define MAX_PLAYERS_TO_PRINT 10
+#define MAX_NAME_LENGHT 40
+#define MAX_GRID_SIZE 10
+
+typedef struct 
+{
+   char name[MAX_NAME_LENGHT + 1];
+   int score;
+   int number_of_moves;
+} player;
+
+typedef struct 
+{
+    unsigned short int size;
+    char array_of_row_edges[MAX_GRID_SIZE+1][MAX_GRID_SIZE];
+    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE+1];
+    char array_of_boxes[MAX_GRID_SIZE][MAX_GRID_SIZE];
+    unsigned int elapsed_time;
+    char turn;
+    int number_of_remaining_boxes;
+    player player_1;
+    player player_2;
+    int previous_sum;
+    unsigned short int mode; // 1 --> computer
+} game;
+
+game current_game;
+
 unsigned short int n ;
 char **row_edges ;  //2D array of the edges of rows  ( of size [n+1][n])
 char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn = '1' ;
-unsigned int t = 0 ;
 
 // n_empty = (n_edges/2) - 2
 
@@ -46,6 +73,16 @@ short int director = 0 ;  // [director]  up ---> 1 , down ---> -1
 
 // mode indicator
 short int mode ;  // 1 --> computer
+
+void clearInputBuffer() 
+{
+    int c;
+
+    while ((c = getchar()) != '\n' && c != EOF) 
+    {
+        // Keep reading characters until newline or end of file
+    }
+}
 
 void zero_2D_array(short int row,short int col,char **arr){
    for (int i=0 ; i<row ; i++){
@@ -89,52 +126,65 @@ char big(char c){
    else{return c ;}
 }
 
-void time_passed(){
-   
-   while(1){
+void time_passed()
+{
+   while(1)
+   {
       Sleep(1000) ;
-      t++ ;
+      current_game.elapsed_time++; 
    }
 }
 
-/*
-#define MAX_SIZE_OF_STACK 30
+int number_of_filled_boxes() 
+{
+    int count = 0;
 
-#define MAX_PLAYERS_TO_PRINT 10
+    for (int i = 0; i < current_game.size; ++i) 
+    {
+        for (int j = 0; j < current_game.size; ++j) 
+        {
+            if (boxes[i][j] != '\0')
+            {
+                count++;
+            }
+        }
+    }
+    return count;
+}
 
-#define MAX_NAME_LENGHT 20
+void switch_turn()
+{
+    int temp = number_of_filled_boxes();
 
-#define MAX_SIZE_OF_ARRAY 10
+    if (turn == '1') 
+    {
+        current_game.player_1.number_of_moves++;
+    } 
+    else 
+    {
+        current_game.player_2.number_of_moves++;
+    }
 
-typedef struct {
-   char name[MAX_NAME_LENGHT];
-   int score;
-   int number_of_moves;
-}player;
+    if(temp == current_game.previous_sum)
+    {
+        empty_both_stacks();
+        turn = (turn == '1') ? '2' : '1';
+        current_game.turn = turn;
+    }
+    else
+    {
+        if (turn == '1') 
+        {
+            current_game.player_1.score += temp - current_game.previous_sum;
+        } 
+        else 
+        {
+            current_game.player_2.score += temp - current_game.previous_sum;
+        }
+    }
+    current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
+    current_game.turn = turn;
+}
 
-typedef struct{
-    short int n;
-    char array_of_row_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    char array_of_column_edges[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    char array_of_boxes[MAX_SIZE_OF_ARRAY][MAX_SIZE_OF_ARRAY];
-    double elapsed_time;
-    char turn;
-    int number_of_remaining_boxes;
-    player player_1;
-    player player_2;
-    int previous_sum;
-
-}game;
-
-typedef struct {
-    game array[MAX_SIZE_OF_STACK];
-    int top;
-}Stack;
-
-Stack undo_stack;
-Stack redo_stack;
-game current_game;
-
-*/
 
 #endif
