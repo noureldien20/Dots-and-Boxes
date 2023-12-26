@@ -121,6 +121,7 @@ printf("size = %hu\n",n) ;
 }*/
 
 #include <stdio.h>
+//#include "CHECKING.h"
 
 char row_edges[5][4] = {
    {'1','2','1','2'},
@@ -133,7 +134,7 @@ char row_edges[5][4] = {
 char col_edges[4][5] = {
    {'1','2','\0','\0','1'},
    {'2','1','2','\0','1'},
-   {'2','1','1','1','2'},
+   {'2','1','2','1','2'},
    {'1','2','\0','1','2'}
 };
 
@@ -143,7 +144,8 @@ char turn = '1'; unsigned short int n = 4;
 
 short int n_edges = 3 ; //number of filled edges in chain
 short int n_empty = 1 ; //number of empty edges in chain
-short int indexes[2] = {0,0} ;
+short int indexes[3] = {0,0,0} ; 
+//third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
 short int director = -2 ;  // [director]  up ---> 1 , down ---> -1
 // [director]  right ---> 2 , left ---> -2
 // sign = 0 (director = 1 , -2)
@@ -267,7 +269,6 @@ void print_array_2D(short int row,short int col,char arr[][col]){
       printf("\n");
    }
 }
-
 
 int main(){
 director = -1;

@@ -6,8 +6,7 @@
 #include "CHECKING.h"
 #include "Display.h"
 #include <pthread.h>
-#include <time.h>
-//#include "temperory game"
+//#include "temperory game.c"
 
 /******************************** بسم الله الرحمن الرحيم  *********************************/
 

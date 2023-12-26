@@ -3,12 +3,13 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
-//#include <threads.h>
+//#include "Basic Var and Func.h"
 
 #define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
 #define MAX_GRID_SIZE 10
+
 /*#define red "\e[0;91m"
 #define green "\e[0;92m"
 #define yellow "\e[0;93m"
@@ -21,15 +22,14 @@
 #define Ctrl_Z '\x1A'
 #define Ctrl_R '\x12'
 #define Ctrl_S '\x13'*/
+
 #define RESET "\x1b[0m"
 #define white "\x1b[97m"      // High-intensity white
 #define cyan "\x1b[96m"       // High-intensity cyan
 #define back_cyan "\x1b[106m" // High-intensity cyan background
-#define green "\x1b[95m"    // High-intensity magenta 
+#define green "\x1b[95m"   // High-intensity magenta 
 //how esmo magenta bas ana sameto green 3ashan ma abowazsh fe elcode we tedrabny
 #define back_green "\x1b[105m" // High-intensity magenta background
-
-
 
 #define line "-------"
 typedef struct 
@@ -71,8 +71,7 @@ char **col_edges ;
 char **boxes ;
 char **dfs ;
 char turn;
-
-//time_t time ;
+//unsigned int t ;
 
 void copyArrays(game* gamePtr) 
 {
@@ -440,7 +439,7 @@ void switch_turn()
     current_game.turn = turn;
 }
 
-int min(int a, int b) 
+int min(int a, int b)
 {
     return (a < b) ? a : b;
 }
@@ -929,16 +928,16 @@ void print_menu()
         }
 }
 
-/*
+
 void time_passed()
 {
     while(1)
     {
-        sleep(1) ;
+        Sleep(1000) ;
         current_game.elapsed_time++;
     }
 }
-*/
+
 int main()
 {
     printf("Welcome to Dots & Boxes game\n");
@@ -947,8 +946,8 @@ int main()
     {
         print_menu();
 
-        //pthread_t time_thread ;
-        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        pthread_t time_thread ;
+        pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
 

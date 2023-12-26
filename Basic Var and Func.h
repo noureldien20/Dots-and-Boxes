@@ -33,6 +33,17 @@ char **dfs ;
 char turn = '1' ;
 unsigned int t = 0 ;
 
+// n_empty = (n_edges/2) - 2
+
+short int n_edges = 3 ; //number of filled edges in chain
+short int n_empty = 1 ; //number of empty edges in chain
+
+short int indexes[3] = {0,0,0} ; 
+//third element in indexes array express row or col  [row ---> 0] , [col ---> 1]
+
+short int director = 0 ;  // [director]  up ---> 1 , down ---> -1
+// [director]  right ---> 2 , left ---> -2
+
 // mode indicator
 short int mode ;  // 1 --> computer
 
@@ -81,7 +92,7 @@ char big(char c){
 void time_passed(){
    
    while(1){
-      sleep(1) ;
+      Sleep(1000) ;
       t++ ;
    }
 }

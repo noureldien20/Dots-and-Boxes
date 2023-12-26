@@ -1,7 +1,7 @@
 #ifndef CHECKING_H
 #define CHECKING_H
 
-#include <stdio.h>
+#include "INPUT.h"
 #include "Basic Var and Func.h"
 
 /******************************** بسم الله الرحمن الرحيم  **************************************/
@@ -17,9 +17,15 @@ number of dots  = (n+1)(n+1)
 
 short int n_edges = 3 ; //number of filled edges in chain
 short int n_empty = 1 ; //number of empty edges in chain
-short int indexes[2] = {0,0} ;
-short int director ;  // [director]  up ---> 1 , down ---> -1
+
+short int indexes[3] = {0,0,0} ; 
+//third element in indexes array express row or col  [row ---> 0] , [col ---> 1]
+
+short int director = 0 ;  // [director]  up ---> 1 , down ---> -1
 // [director]  right ---> 2 , left ---> -2
+
+// sign = 0 (director = 1 , -2)
+// sign = 1 (director = -1 , 2)
 
 //el function ely enta 3ayzha ya zmyly
 void generate_edges(){
@@ -85,17 +91,20 @@ short int check_box(short int i,short int j){
    }
 }
 
+void directing(){   
+   
+   if(indexes[2] == 0){ // edge is row
+      if(indexes[0] == 0 || indexes[0] == n){director = 0 ;}
+      else if (boxes[indexes[0]][indexes[1]] != '\0'){director = -1 ;}
+      else{director = 1 ;}
+   
+   }else{ // edge is column
+      if(indexes[1] == 0 || indexes[1] == n){director = 0 ;}
+      else if (boxes[indexes[0]][indexes[1]] != '\0'){director = 2 ;}
+      else{director = -2 ;}
+   }
 
-void directing(){
 }
-
-short int n_edges = 3 ; //number of filled edges in chain
-short int n_empty = 1 ; //number of empty edges in chain
-short int indexes[2] = {0,0} ;
-short int director = -2 ;  // [director]  up ---> 1 , down ---> -1
-// [director]  right ---> 2 , left ---> -2
-// sign = 0 (director = 1 , -2)
-// sign = 1 (director = -1 , 2)
 
 void trace_vertical(short int a,short int b,unsigned int sign){
    while(a<n && a>=0 && col_edges[a][b]!='\0' && col_edges[a][b+1]!='\0'){
@@ -170,10 +179,8 @@ void trace_horizontal(short int a,short int b,unsigned int sign){
    }
 }
 
-void DFS(unsigned short int i,unsigned short int j){
-   indexes[0] = i ; indexes[1] = j ;
-   //i,j are indexes of the last edge that make the first box of the chain filled 
-   
+void DFS(){
+   //directing();
    while(director){
 
       if(director == 1){
