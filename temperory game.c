@@ -954,6 +954,7 @@ int main()
         while(number_of_filled_boxes() != n*n)
         {
             current_game.previous_sum = number_of_filled_boxes();
+            clearInputBuffer();
             input_nodes();
             check_edges();
             print_grid();
