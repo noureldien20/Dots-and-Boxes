@@ -139,9 +139,6 @@ int number_of_filled_boxes()
 {
     int count = 0;
 
-/*
-#define MAX_SIZE_OF_STACK 30
-
     for (int i = 0; i < current_game.size; ++i) 
     {
         for (int j = 0; j < current_game.size; ++j) 
@@ -188,10 +185,6 @@ void switch_turn()
     current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
     current_game.turn = turn;
 }
-
-
-
-
 
 
 #endif
