@@ -148,6 +148,7 @@ short int indexes[3] = {0,0,0} ;
 //third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
 short int director = -2 ;  // [director]  up ---> 1 , down ---> -1
 // [director]  right ---> 2 , left ---> -2
+
 // sign = 0 (director = 1 , -2)
 // sign = 1 (director = -1 , 2)
 

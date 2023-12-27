@@ -1,9 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-//#include <pthread.h>
+#include <string.h>
 
-#include "Basic_Var_and_Func.h"
+
+
+
+
+
+
+
+
+
+
+
+
+#include <pthread.h>
+
+#include "Basic Var and Func.h"
 #include "Save_Load.h"
 #include "Menu_Options.h"
 #include "Undo_Redo.h"
