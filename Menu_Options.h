@@ -1,12 +1,12 @@
 #ifndef MENU_OPTIONS_H
 #define MENU_OPTIONS_H
 
-#include "Basic Var and Func.h"
+#include "Basic_Var_and_Func.h"
 #include "Undo_Redo.h"
 #include "INPUT.h"
 #include "Save_Load.h"
 
-void copyArrays(game* gamePtr) 
+void copy_struct_to_arrays(game* gamePtr) 
 {
     // Copy array_of_row_edges
     for (int i = 0; i <= n; ++i) 
@@ -121,78 +121,76 @@ void print_menu()
     char op ;
     scanf("%1s",temp);
 
-        if(temp[1]!='\0')
-        {
-            printf("Invalid input\n");
-            clearInputBuffer();
-            print_menu() ;
-            return;
-        }
-        else
-        {
-            op = small(temp[0]) ;
-        }
+    if(temp[1]!='\0')
+    {
+        printf("Invalid input\n");
+        clearInputBuffer();
+        print_menu() ;
+        return;
+    }
+    else
+    {
+        op = small(temp[0]) ;
+    }
 
-        if(op == 'l')
+    if(op == 'l')
+    {
+        loadGame(&current_game);
+        turn = current_game.turn;
+        n = current_game.size;
+        declare_arrays();
+        copy_struct_to_arrays(&current_game);
+        return;
+    }
+    else if(op == 't')
+    {
+        printTopPlayers();
+        clearInputBuffer();
+        print_menu();
+        return;
+    }
+    else if(op == 'e')
+    {
+        exit(1);
+    }
+    else
+    {
+        if(op !='s')
         {
-            loadGame(&current_game);
-            turn = current_game.turn;
-            n = current_game.size;
-            declare_arrays();
-            copyArrays(&current_game);
-            empty_both_stacks();
-            return;
-        }
-        else if(op == 't')
-        {
-            printTopPlayers();
             clearInputBuffer();
             print_menu();
             return;
         }
-        else if(op == 'e')
-        {
-            exit(1);
-        }
         else
         {
-            if(op !='s')
+            clearInputBuffer();
+            input_size();
+            current_game.size = n;
+
+            declare_arrays();
+
+            clearInputBuffer();
+
+            inputGameMode();
+            
+            printf("Enter player 1 name: ");
+            clearInputBuffer();
+            scanf("%40s", &current_game.player_1.name);
+            
+            if(current_game.mode == 0)
             {
+                printf("Enter player 2 name: ");
                 clearInputBuffer();
-                print_menu();
-                return;
+                scanf("%40s", &current_game.player_2.name);
             }
             else
             {
-                clearInputBuffer();
-                input_size();
-                current_game.size = n;
-
-                declare_arrays();
-
-                clearInputBuffer();
-
-                inputGameMode();
-                
-                printf("Enter player 1 name: ");
-                clearInputBuffer();
-                scanf("%40s", &current_game.player_1.name);
-                
-                if(current_game.mode == 0)
-                {
-                    printf("Enter player 2 name: ");
-                    clearInputBuffer();
-                    scanf("%40s", &current_game.player_2.name);
-                }
-                else
-                {
-                    strcpy(current_game.player_2.name , "computer");
-                }
-
-                reset_variables_to_zeros();
+                strcpy(current_game.player_2.name , "computer");
             }
-        }
-}
 
+            reset_variables_to_zeros();
+        }
+    }
+}
 
 #endif

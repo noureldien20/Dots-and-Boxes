@@ -1,7 +1,8 @@
 #ifndef SAVE_LOAD_H
 #define SAVE_LOAD_H
 
-#include "Basic Var and Func.h"
+#include "Basic_Var_and_Func.h"
+#include "Display.h"
 
 FILE* file;
 
@@ -113,8 +114,7 @@ void Winner(player* winner)
     free(players);
 }
 
-// Function to serialize and save the game to a binary file
-int saveGame(game* gamePtr) 
+void Copy_Arrays_To_Struct(game* gamePtr)
 {
     for (int i = 0; i <= n; ++i) 
     {
@@ -141,6 +141,12 @@ int saveGame(game* gamePtr)
             gamePtr->array_of_boxes[i][j] = boxes[i][j];
         }
     }
+}
+
+// Function to serialize and save the game to a binary file
+int saveGame(game* gamePtr) 
+{
+    Copy_Arrays_To_Struct(&current_game);
 
     file = fopen("saved_game.bin", "wb");
     if (file != NULL) 
@@ -157,7 +163,6 @@ int saveGame(game* gamePtr)
         return 0;
     }
 }
-//saveGame(&myGame, "saved_game.bin")
 
 // Function to deserialize and load the game from a binary file
 void loadGame(game* gamePtr) 
@@ -183,6 +188,7 @@ void loadGame(game* gamePtr)
     {
         fprintf(stderr, "Unable to open file for loading.\n");
     }
+    display_stats();
 }
 
 // Display the top players and their scores

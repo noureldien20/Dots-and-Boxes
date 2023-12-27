@@ -2,7 +2,8 @@
 #define DISPLAY_H
 
 #include <stdio.h>
-#include "Basic Var and Func.h"
+
+#include "Basic_Var_and_Func.h"
              
 #define line "-------"
 
@@ -87,12 +88,12 @@ void print_grid(){
 
 void display_stats()
 {
-    printf("\nNext turn: %s\n", turn == '1' ? current_game.player_1.name : current_game.player_2.name);
-    printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
-    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
-    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
-    //we still need to print the time
+   printf("\nNext turn: %s\n", turn == '1' ? current_game.player_1.name : current_game.player_2.name);
+   printf("Player:\t%s\t%s\n", current_game.player_1.name, current_game.player_2.name);
+   printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
+   printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
+   printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+   printf("Time: %d:%d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
 }
 
 #endif
