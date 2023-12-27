@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+#include <pthread.h>
+
 #include "Basic Var and Func.h"
 #include "Save_Load.h"
 #include "Menu_Options.h"
@@ -8,7 +11,6 @@
 #include "INPUT.h"
 #include "CHECKING.h"
 #include "Display.h"
-#include <pthread.h>
 
 /********************************** بسم الله الرحمن الرحيم  *************************************/
 
