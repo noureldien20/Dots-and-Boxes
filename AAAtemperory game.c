@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <pthread.h>
+//#include <pthread.h>
 //#include "Basic Var and Func.h"
 
 #define MAX_SIZE_OF_STACK 15
@@ -73,7 +73,7 @@ char **dfs ;
 char turn;
 //unsigned int t ;
 
-void copyArrays(game* gamePtr) 
+void copy_struct_to_arrays(game* gamePtr) 
 {
     // Copy array_of_row_edges
     for (int i = 0; i <= n; ++i) 
@@ -102,6 +102,7 @@ void copyArrays(game* gamePtr)
         }
     }
 }
+void empty_both_stacks();
 
 void reset_variables_to_zeros()
 {
@@ -867,7 +868,7 @@ void print_menu()
             turn = current_game.turn;
             n = current_game.size;
             declare_arrays(n);
-            copyArrays(&current_game);
+            copy_struct_to_arrays(&current_game);
             empty_both_stacks();
             return;
         }
@@ -929,14 +930,14 @@ void print_menu()
 }
 
 
-void time_passed()
+/*void time_passed()
 {
     while(1)
     {
         Sleep(1000) ;
         current_game.elapsed_time++;
     }
-}
+}*/
 
 int main()
 {
@@ -946,8 +947,8 @@ int main()
     {
         print_menu();
 
-        pthread_t time_thread ;
-        pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        //pthread_t time_thread ;
+        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
 

@@ -1,19 +1,8 @@
 #ifndef UNDO_REDO_H
 #define UNDO_REDO_H
 
-#include "Basic Var and Func.h"
-
-#define MAX_SIZE_OF_STACK 15
-
-typedef struct 
-{
-    game array[MAX_SIZE_OF_STACK];
-    int top;
-} Stack;
-
-Stack undo_stack;
-Stack redo_stack;
-
+#include "Basic_Var_and_Func.h"
+#include "Menu_Options.h"
 
 game peek(Stack* stack)
 {
@@ -48,13 +37,17 @@ void undo(Stack *undo_stack,Stack *redo_stack, game *current)
         push(redo_stack, pop(undo_stack));
         
         printf("Undo successful.\n");
+
+        *current = peek(undo_stack);
+        copy_struct_to_arrays(&current_game);
+        turn = current_game.turn;
+        print_grid();
+        display_stats();
     } 
     else 
     {
         printf("u can't undo anymore.\n");
     }
-
-    *current = peek(undo_stack);
 }
 
 void redo(Stack *undo_stack,Stack *redo_stack, game *current)
@@ -64,16 +57,17 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
         push(undo_stack, pop(redo_stack));
  
         printf("Redo successful.\n");
+
+        *current = peek(undo_stack);
+        copy_struct_to_arrays(&current_game);
+        turn = current_game.turn;
+        print_grid();
+        display_stats();
     } 
     else 
     {
         printf("u can't redo anymore\n");
     }
-
-    *current = peek(undo_stack);
 }
-
-
-
 
 #endif

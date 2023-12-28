@@ -2,7 +2,7 @@
 #define CHECKING_H
 
 #include "INPUT.h"
-#include "Basic Var and Func.h"
+#include "Basic_Var_and_Func.h"
 
 /******************************** بسم الله الرحمن الرحيم  **************************************/
 

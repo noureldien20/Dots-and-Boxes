@@ -2,7 +2,9 @@
 #define INPUT_H
 
 #include <stdio.h>
-#include "Basic Var and Func.h"
+
+#include "Basic_Var_and_Func.h"
+#include "Menu_Options.h"
 
 
 int min(int a, int b)
@@ -175,7 +177,5 @@ void inputGameMode()
         current_game.mode = temp[0] - '0';
     }
 }
-
-
 
 #endif

@@ -28,6 +28,7 @@ indexes of loops names ---> i,j,k **/
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
 #define MAX_GRID_SIZE 10
+#define MAX_SIZE_OF_STACK 15
 
 typedef struct 
 {
@@ -39,8 +40,8 @@ typedef struct
 typedef struct 
 {
     unsigned short int size;
-    char array_of_row_edges[MAX_GRID_SIZE+1][MAX_GRID_SIZE];
-    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE+1];
+    char array_of_row_edges[MAX_GRID_SIZE + 1][MAX_GRID_SIZE];
+    char array_of_column_edges[MAX_GRID_SIZE][MAX_GRID_SIZE + 1];
     char array_of_boxes[MAX_GRID_SIZE][MAX_GRID_SIZE];
     unsigned int elapsed_time;
     char turn;
@@ -51,6 +52,14 @@ typedef struct
     unsigned short int mode; // 1 --> computer
 } game;
 
+typedef struct 
+{
+    game array[MAX_SIZE_OF_STACK];
+    int top;
+} Stack;
+
+Stack undo_stack;
+Stack redo_stack;
 game current_game;
 
 unsigned short int n ;
@@ -143,14 +152,14 @@ short int number_of_filled_boxes()
     return count;
 }
 
-void time_passed()
+/*void time_passed()
 {
    while(number_of_filled_boxes != n*n)
    {
       Sleep(1000) ;
       current_game.elapsed_time++; 
    }
-}
+}*/
 
 void switch_turn()
 {
@@ -185,6 +194,5 @@ void switch_turn()
     current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
     current_game.turn = turn;
 }
-
 
 #endif
