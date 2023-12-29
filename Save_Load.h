@@ -156,7 +156,7 @@ int saveGame(game* gamePtr)
         fclose(file);
         printf("Game saved successfully.\n");
         return 1;
-    } 
+    }
     else 
     {
         fprintf(stderr, "Unable to open file for saving.\n");

@@ -6,6 +6,8 @@
 #include "INPUT.h"
 #include "Save_Load.h"
 
+
+
 void copy_struct_to_arrays(game* gamePtr) 
 {
     // Copy array_of_row_edges

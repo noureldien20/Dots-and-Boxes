@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 #define MAX_SIZE_OF_STACK 15
 #define MAX_PLAYERS_TO_PRINT 10
@@ -73,7 +73,7 @@ int previous_sum;
 int number_of_filled_boxes();
 void generate_edges();
 void inputGameMode();
-//void time_passed();
+void time_passed();
 void inputGameMode();
 void printTopPlayers();
 player* loadPlayers(int* numPlayers);
@@ -123,8 +123,8 @@ int main()
     {
         print_menu();
 
-        //pthread_t time_thread ;
-        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        pthread_t time_thread ;
+        pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
         update_stats();
@@ -169,14 +169,14 @@ void generate_edges()
     }
 }
 
-/*void time_passed()
+void time_passed()
 {
     while(1)
     {
-        Sleep(1000) ;
+        sleep(1) ;
         current_game.elapsed_time++;
     }
-}*/
+}
 
 void inputGameMode() 
 {
@@ -700,7 +700,7 @@ void display_stats()
     printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
     printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
     printf("Remaining Boxes: %d\n", current_game.size * current_game.size - number_of_filled_boxes());
-    printf("Time: %d:%d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
+    printf("Time: %d : %d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
 }
 
 void input_size()
@@ -741,7 +741,7 @@ void input_size()
 
 void undo(Stack *undo_stack,Stack *redo_stack, GameArrays *current)
 {
-    if (undo_stack->top  > 0)
+    if (undo_stack->top > 0)
     {
         push(redo_stack, pop(undo_stack));
         
@@ -1113,7 +1113,7 @@ void update_stats()
             if(col_edges[i][j] == '1') 
             {
                 (current_game.player_1.number_of_moves)++;
-            } 
+            }
             else if(col_edges[i][j] == '2') 
             {
                 (current_game.player_2.number_of_moves)++;

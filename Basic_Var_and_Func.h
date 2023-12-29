@@ -5,6 +5,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <pthread.h>
+
+void empty_both_stacks();
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -152,14 +155,14 @@ short int number_of_filled_boxes()
     return count;
 }
 
-/*void time_passed()
+void time_passed()
 {
-   while(number_of_filled_boxes != n*n)
+   while((number_of_filled_boxes()) != n*n)
    {
       Sleep(1000) ;
       current_game.elapsed_time++; 
    }
-}*/
+}
 
 void switch_turn()
 {

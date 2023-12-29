@@ -2,19 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-
-
-
-
-
-
-
-
-
-
-
-
 #include <pthread.h>
 
 #include "Basic_Var_and_Func.h"
@@ -25,7 +12,22 @@
 #include "CHECKING.h"
 #include "Display.h"
 
-/********************************** بسم الله الرحمن الرحيم  *************************************/
+/**player 1 ---> cyan , name1
+player 2 ---> green , name2
+dots ---> white
+
+line constant --> 7 underscores _
+space ---> '\t' --> 7 spaces
+
+/** Names of variables
+row_edges ---> 2D array of the edges of rows  ( of size [n+1][n])
+col_edges ---> 2D array of the edges of columns ( of size[n][n+1])
+boxes ---> 2D array of access of boxes and who close every box ( of size[n][n] )
+number of dots  = (n+1)(n+1)
+indexes of loops names ---> i,j,k
+**/
+
+/********************************** بسم الله الرحمن الرحيم  **************************************/
 
 int main()
 {
@@ -35,8 +37,8 @@ int main()
     {
         print_menu();
 
-        //pthread_t time_thread ;
-        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        pthread_t time_thread ;
+        pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
 

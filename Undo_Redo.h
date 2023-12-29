@@ -4,6 +4,10 @@
 #include "Basic_Var_and_Func.h"
 #include "Menu_Options.h"
 
+void empty_both_stacks();
+
+void copy_struct_to_arrays(game* gamePtr);
+
 game peek(Stack* stack)
 {
     return stack->array[stack->top];
@@ -63,11 +67,13 @@ void redo(Stack *undo_stack,Stack *redo_stack, game *current)
         turn = current_game.turn;
         print_grid();
         display_stats();
-    } 
+    }
     else 
     {
         printf("u can't redo anymore\n");
     }
 }
+
+
 
 #endif

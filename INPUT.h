@@ -6,6 +6,7 @@
 #include "Basic_Var_and_Func.h"
 #include "Menu_Options.h"
 
+void print_options();
 
 int min(int a, int b)
 {
@@ -158,6 +159,11 @@ void AI_input(){
          }
       }
    }
+
+
+
+
+
 }
 
 void inputGameMode() 

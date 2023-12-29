@@ -959,6 +959,12 @@ int main()
             input_nodes();
             check_edges();
             print_grid();
+            
+            // ask for undo
+            // if yes -----> to undo stack (not empty) ---> print grid
+            // if no  -----> input nodes
+            // if (redo) --->
+
             switch_turn();
             display_stats();
         }
