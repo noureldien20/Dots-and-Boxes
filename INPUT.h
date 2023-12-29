@@ -117,13 +117,13 @@ void input_nodes(){ //bta3t ahmed
         row_edges[r1-1][min(c1,c2)-1] = turn ;
         indexes[0] = r1-1 ;
         indexes[1] = min(c1,c2)-1 ;
-        indexes[3] = 0 ;
+        indexes[2] = 0 ;
     }
     else{ //c1==c2
         col_edges[min(r1,r2)-1][c1-1] = turn ;
         indexes[0] = min(r1,r2)-1 ;
         indexes[1] = c1-1 ;
-        indexes[3] = 1 ;
+        indexes[2] = 1 ;
     }
 }
 

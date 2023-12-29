@@ -43,7 +43,8 @@ int main()
         print_grid();
 
         while(number_of_filled_boxes() != n*n)
-        {
+        {   
+            temp_time = current_game.elapsed_time + 60 ;
             current_game.previous_sum = number_of_filled_boxes();
             clearInputBuffer();
             input_nodes();

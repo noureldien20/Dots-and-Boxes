@@ -126,18 +126,18 @@ printf("size = %hu\n",n) ;
 void trace_horizontal(short int a,short int b,unsigned short int sign) ;
 
 char row_edges[5][4] = {
-   {'\0','1','\0','1'},
+   {'2','2','1','1'},
+   {'1','1','\0','2'},
    {'\0','\0','\0','\0'},
-   {'1','\0','1','\0'},
-   {'1','\0','2','1'},
-   {'\0','2','1','\0'}
+   {'\0','\0','2','\0'},
+   {'\0','\0','\0','\0'},
 };
 
 char col_edges[4][5] = {
-   {'\0','1','2','1','2'},
-   {'\0','1','2','2','1'},
    {'1','\0','\0','\0','1'},
-   {'\0','1','2','\0','\0'}
+   {'\0','\0','2','1','\0'},
+   {'\0','\0','2','2','\0'},
+   {'1','\0','\0','\0','1'}
 };
 
 char dfs[4][4] = {'\0'} ;
@@ -146,23 +146,22 @@ char turn = '1'; unsigned short int n = 4;
 
 short int n_edges = 3 ; //number of filled edges in chain
 short int n_empty = 1 ; //number of empty edges in chain
-short int indexes[3] = {0,0,0} ;
+short int indexes[3] = {2,2,0} ;
 //third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
 short int director = 0 ;  // [director]  up ---> 1 , down ---> -1
 // [director]  right ---> 2 , left ---> -2
-short int old_director = 0 ; // director to store the original direction in case of branches
+//short int old_director = 0 ; // director to store the original direction in case of branches
 // sign = 0 (director = 1 , -2)
 // sign = 1 (director = -1 , 2)
 
 void trace_vertical(short int a,short int b,unsigned short int sign){
-   printf("\nhere vertical with a = %d , b = %d , director = %d\n",a,b,director);
-   if(a>n || b>n || a<0 || b<0){exit(1);}
+   printf("\nvertical with a = %d , b = %d , director = %d\n",a,b,director);
+   if(a>n-1 || b>n || a<=0 || b<0 || dfs[a+sign-1][b]!='\0'){return;}
 
    while(a<n && a>0 && col_edges[a+sign-1][b]!='\0' && col_edges[a+sign-1][b+1]!='\0'){
       n_edges+=2 ;
       dfs[a+sign-1][b] = turn ;
-
-      if(row_edges[a+sign-1][b]!='\0'){
+      if(row_edges[a+sign+sign-1][b]!='\0'){
          n_edges++ ;
          director = 0 ;
          dfs[a+sign-1][b] = turn ;
@@ -170,12 +169,10 @@ void trace_vertical(short int a,short int b,unsigned short int sign){
       }
       a = a-director ;
       n_empty++ ;
-      indexes[0] = a ;
-      indexes[1] = b ;
    }
 
    if(director){
-      
+
       if(col_edges[a+sign-1][b+1] =='\0' && row_edges[a-director][b]!='\0' && col_edges[a+sign-1][b] != '\0'){
          // Letter L
          n_edges+=2 ; n_empty++ ;
@@ -194,7 +191,7 @@ void trace_vertical(short int a,short int b,unsigned short int sign){
 
       }else if(col_edges[a+sign-1][b+1] == '\0' && row_edges[a-director][b]=='\0' && col_edges[a+sign-1][b] !='\0'){
          // L opened from bottom
-         old_director = director ;
+         short int old_director = director ;
          n_edges+=1 ; n_empty+=2 ;
          dfs[a+sign-1][b] = turn ;
 
@@ -206,19 +203,21 @@ void trace_vertical(short int a,short int b,unsigned short int sign){
 
       }else if(col_edges[a+sign-1][b+1] != '\0' && row_edges[a-director][b]=='\0' && col_edges[a+sign-1][b] =='\0'){
          // Inverted L opened from bottom
-         old_director = director ;
+         short int old_director = director ;
+         printf("\n with a = %d , b = %d , director = %d\n",a,b,director);
          n_edges++ ; n_empty+=2 ;
 
          director = -2 ;
          dfs[a+sign-1][b] = turn ;
          trace_horizontal(a+sign-1,b,0) ;
+         printf("correct path\n");
 
          director = old_director ;
+         //printf("\nhere with a = %d , b = %d , director = %d\n",a,b,director);
          trace_vertical(a-director,b,sign) ; // continue tracing in original path
 
       }else{ // plus chain
-
-         old_director = director ;
+         short int old_director = director ;
          n_empty+=3 ;
 
          director = 2 ;
@@ -239,15 +238,15 @@ void trace_vertical(short int a,short int b,unsigned short int sign){
 /*******************************************************************************************************************************/
 
 void trace_horizontal(short int a,short int b,unsigned short int sign){
-   printf("\nhere horizontal with a = %d , b = %d , director = %d\n",a,b,director);
+   printf("\nhorizontal with a = %d , b = %d , director = %d\n",a,b,director);
    director = director / 2 ;
-   if(a>n || b>n || a<0 || b<0){exit(1);}
+   if(a>n || b>n-1 || a<0 || b<=0 || dfs[a][b+sign-1]!='\0'){return;}
 
-   while(b<n && b>=0 && row_edges[a][b+sign-1]!='\0' && row_edges[a+1][b+sign-1]!='\0'){
+   while(b<n && b>0 && row_edges[a][b+sign-1]!='\0' && row_edges[a+1][b+sign-1]!='\0'){
       n_edges+=2 ;
       dfs[a][b+sign-1] = turn ;
 
-      if(col_edges[a][b+sign-1]!='\0'){ 
+      if(col_edges[a][b+sign+sign-1]!='\0'){ 
          n_edges++ ;
          director = 0 ;
          dfs[a][b+sign-1] = turn ;
@@ -257,10 +256,8 @@ void trace_horizontal(short int a,short int b,unsigned short int sign){
       b = b+director ;
       n_empty++ ;
    }
-
    // sign = 0 (director = 1 , -2)
    // sign = 1 (director = -1 , 2)
-   // printf("\nhere with a = %d , b = %d , director = %d\n",a,b,director);
    if(director){
 
       if(row_edges[a][b+sign-1] == '\0' && row_edges[a+1][b+sign-1]!='\0' && col_edges[a][b+director] != '\0'){
@@ -281,7 +278,7 @@ void trace_horizontal(short int a,short int b,unsigned short int sign){
 
       }else if(row_edges[a][b+sign-1] != '\0' && row_edges[a+1][b+sign-1]=='\0' && col_edges[a][b+director] == '\0'){
          // T chain
-         old_director = director*2 ;
+         short int old_director = director*2 ;
          n_edges+=1 ; n_empty+=2 ;
          dfs[a][b+sign-1] = turn ;
 
@@ -291,10 +288,10 @@ void trace_horizontal(short int a,short int b,unsigned short int sign){
          director = old_director ;
          trace_horizontal(a,b+(director/2),sign) ; // continue tracing in original path
 
-      }else if(row_edges[a][b+sign-1] == '\0' && row_edges[a+1][b+sign-1]!='\0' && col_edges[a][b+director] == '\0'){
+      }else if(row_edges[a][b+sign-1] == '\0' && row_edges[a+1][b+sign-1]!='\0' && col_edges[a][b+director] != '\0'){
          // Inverted T chain
          //printf("here\n");
-         old_director = director*2 ;
+         short int old_director = director*2 ;
          n_edges++ ; n_empty+=2 ;
          dfs[a][b+sign-1] = turn ;
 
@@ -306,14 +303,9 @@ void trace_horizontal(short int a,short int b,unsigned short int sign){
          trace_horizontal(a,b+(director/2),sign) ; // continue tracing in original path
 
       }else{ // plus chain
-
-         //printf("\nwrong path (horizontal plus)\n");
-         //printf("\nhere with a = %d , b = %d , director = %d\n",a,b,director);
-         //exit(1) ;
-
-         old_director = director*2 ;
-         n_edges+=1 ; n_empty+=2 ;
+         short int old_director = director*2 ;
          dfs[a][b+sign-1] = turn ;
+         n_empty+=3;
 
          director = 1 ;
          trace_vertical(a,b+sign-1,0) ; // trace up
@@ -329,10 +321,7 @@ void trace_horizontal(short int a,short int b,unsigned short int sign){
 
 }
 
-void DFS(unsigned short int i,unsigned short int j){
-   indexes[0] = i ; indexes[1] = j ;
-   //i,j are indexes of the last edge that make the first box of the chain filled 
-   //printf("%d\n",director);
+void DFS(){
 
       if(director == 1){
          trace_vertical(indexes[0],indexes[1],0) ;
@@ -374,8 +363,8 @@ void print_array_2D(short int row,short int col,char arr[][col]){
 
 int main(){
 
-director = -1;
-DFS(1,3) ; printf("\n") ;
+director = 1 ;
+DFS() ; printf("\n") ;
 printf("%d %d\n",n_edges,n_empty) ;
 print_array_2D(4,4,dfs) ;
 

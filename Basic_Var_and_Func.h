@@ -71,17 +71,10 @@ char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn = '1' ;
+int temp_time = 60 ;
 
-// n_empty = (n_edges/2) - 2
-
-short int n_edges = 3 ; //number of filled edges in chain
-short int n_empty = 1 ; //number of empty edges in chain
-
-short int indexes[3] = {0,0,0} ; 
-//third element in indexes array express row or col  [row ---> 0] , [col ---> 1]
-
-short int director = 0 ;  // [director]  up ---> 1 , down ---> -1
-// [director]  right ---> 2 , left ---> -2
+short int indexes[3] = {0,0,0} ;
+//third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
 
 // mode indicator
 short int mode ;  // 1 --> computer
@@ -155,13 +148,17 @@ short int number_of_filled_boxes()
     return count;
 }
 
-void time_passed()
-{
-   while((number_of_filled_boxes()) != n*n)
-   {
-      Sleep(1000) ;
-      current_game.elapsed_time++; 
-   }
+void time_passed(){
+    while((number_of_filled_boxes()) != n*n){
+
+        if(current_game.elapsed_time == temp_time){
+            printf("\nTime:  %02d : %02d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
+            
+        }
+
+        Sleep(1000) ;
+        current_game.elapsed_time++; 
+    }
 }
 
 void switch_turn()

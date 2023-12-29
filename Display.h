@@ -93,7 +93,7 @@ void display_stats()
    printf("Score:\t%d\t%d\t\n", current_game.player_1.score, current_game.player_2.score);
    printf("Moves:\t%d\t%d\t\n", current_game.player_1.number_of_moves, current_game.player_2.number_of_moves);
    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
-   printf("Time: %d:%d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
+   printf("Time:  %02d : %02d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
 }
 
 #endif
