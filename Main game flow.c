@@ -41,6 +41,7 @@ int main()
         pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
+        display_stats();
 
         while(number_of_filled_boxes() != n*n)
         {   
@@ -48,12 +49,13 @@ int main()
             current_game.previous_sum = number_of_filled_boxes();
             clearInputBuffer();
             input_nodes();
-            check_edges();
-            print_grid();
-            switch_turn();
-            display_stats();
-            Copy_Arrays_To_Struct(&current_game);
-            push(&undo_stack, current_game);
+
+            if(UndoRedoFlag != 1)
+            {
+                print_grid();
+                switch_turn();
+                display_stats();
+            }
         }
 
         player winnerName = (current_game.player_1.score > current_game.player_2.score)

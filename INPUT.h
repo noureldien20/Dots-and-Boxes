@@ -7,6 +7,7 @@
 #include "Menu_Options.h"
 
 void print_options();
+void check_edges();
 
 int min(int a, int b)
 {
@@ -118,12 +119,18 @@ void input_nodes(){ //bta3t ahmed
         indexes[0] = r1-1 ;
         indexes[1] = min(c1,c2)-1 ;
         indexes[2] = 0 ;
+        check_edges();
+        empty_redo_stack();
+        UndoRedoFlag = 0;
     }
     else{ //c1==c2
         col_edges[min(r1,r2)-1][c1-1] = turn ;
         indexes[0] = min(r1,r2)-1 ;
         indexes[1] = c1-1 ;
         indexes[2] = 1 ;
+        check_edges();
+        empty_redo_stack();
+        UndoRedoFlag = 0;
     }
 }
 
