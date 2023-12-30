@@ -127,43 +127,220 @@ void input_nodes(){ //bta3t ahmed
     }
 }
 
-void AI_input(){
-   
-   /* precendence in input edges
-   1. edges that will fill a box (box have 3 filled edges)
-   2. edges in boxes that have 1 edge & make a chain
-   3. edges in boxes that have 1 edge
-   4. edges in a box that has zero edges filled [random] */  
+void AI_input()
+{
+    /* precendence in input edges
+    1. edges that will fill a box (box have 3 filled edges)
+    2. edges in boxes that have 1 edge & make a chain
+    3. edges in boxes that have 1 edge
+    4. edges in a box that has zero edges filled [random] */  
 
-   for(int i=0 ; i<n ; i++){ //box have 3 edges
-      for(int j=0 ; j<n ; j++){
-         if(boxes[i][j]=='\0'){
-            
-            if(row_edges[i][j]=='\0' && row_edges[i+1][j]!='\0' &&
-               col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
-               row_edges[i][j] = turn ; return ;
+    // Seed the random number generator with the current time
+    srand(time(NULL));
+
+    //box have 3 edges
+    for(int i = 0 ; i < n ; i++)
+    { 
+        for(int j = 0 ; j < n ; j++)
+        {
+            if(boxes[i][j] == '\0')
+            {
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] != '\0')
+                {
+                    row_edges[i][j] = turn;
+                    return;
+                }
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] != '\0')
+                {
+                    row_edges[i+1][j] = turn;
+                    return;
+                }
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] != '\0')
+                {
+                    col_edges[i][j] = turn;
+                    return;
+                }
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] == '\0')
+                {
+                    col_edges[i][j+1] = turn;
+                    return;
+                }
             }
-            if(row_edges[i][j]!='\0' && row_edges[i+1][j]=='\0' &&
-               col_edges[i][j]!='\0' && col_edges[i][j+1]!='\0'){
-               row_edges[i+1][j] = turn ; return ;
+        }
+    }
+  
+    // box has 2 edges
+    for(int i = 0 ; i < n ; i++)
+    { 
+        for(int j = 0 ; j < n ; j++)
+        {
+            if(boxes[i][j] == '\0')
+            {
+                int random_choice = rand() % 2;
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return ;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] != '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        row_edges[i+1][j] = turn;
+                    }
+                    return ;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return ;
+                }
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        col_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return ;
+                }
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] != '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j] = turn;
+                    }
+                    return ;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] != '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j] = turn;
+                    }
+                    return ;
+                }
             }
-            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' &&
-               col_edges[i][j]=='\0' && col_edges[i][j+1]!='\0'){
-               col_edges[i][j] = turn ; return ;
+        }
+    }
+
+    // box has 1 edge
+    for(int i = 0 ; i < n ; i++)
+    { 
+        for(int j = 0 ; j < n ; j++)
+        {
+            if(boxes[i][j] == '\0')
+            {
+                int random_choice = rand() % 3;
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        col_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        col_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] != '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j] = turn;
+                    }
+                    return;
+                }
             }
-            if(row_edges[i][j]!='\0' && row_edges[i][j]!='\0' &&
-               col_edges[i][j]!='\0' && col_edges[i][j+1]=='\0'){
-               col_edges[i][j+1] = turn ; return ;
-            }
-
-         }
-      }
-   }
-
-
-
-
-
+        }
+    }
 }
 
 void inputGameMode() 
