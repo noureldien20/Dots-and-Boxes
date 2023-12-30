@@ -6,49 +6,6 @@
 #include "INPUT.h"
 #include "Save_Load.h"
 
-
-
-void copy_struct_to_arrays(game* gamePtr) 
-{
-    // Copy array_of_row_edges
-    for (int i = 0; i <= n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            row_edges[i][j] = gamePtr->array_of_row_edges[i][j];
-        }
-    }
-
-    // Copy array_of_column_edges
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j <= n; ++j) 
-        {
-            col_edges[i][j] = gamePtr->array_of_column_edges[i][j];
-        }
-    }
-
-    // Copy array_of_boxes
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            boxes[i][j] = gamePtr->array_of_boxes[i][j];
-        }
-    }
-}
-
-void reset_variables_to_zeros()
-{
-    turn = '1';
-    current_game.player_1.number_of_moves = 0;
-    current_game.player_2.number_of_moves = 0;
-    current_game.player_1.score = 0;
-    current_game.player_2.score = 0;
-    empty_both_stacks();
-    current_game.elapsed_time = 0;
-}
-
 void print_options()
 {
     printf("To Make a move [Press M]\n");
@@ -75,16 +32,18 @@ void print_options()
     
     if(op == 'u')
     {
-        undo(&undo_stack, &redo_stack, &current_game);
-        clearInputBuffer();
-        input_nodes();
+        undo();
+        UndoRedoFlag = 1;
+        print_grid();
+        display_stats();
         return;
     }
     else if(op == 'r')
     {
-        redo(&undo_stack, &redo_stack, &current_game);
-        clearInputBuffer();
-        input_nodes();
+        redo();
+        UndoRedoFlag = 1;
+        print_grid();
+        display_stats();
         return;
     }
     else if(op =='s')
@@ -141,7 +100,6 @@ void print_menu()
         turn = current_game.turn;
         n = current_game.size;
         declare_arrays();
-        copy_struct_to_arrays(&current_game);
         return;
     }
     else if(op == 't')
@@ -177,13 +135,13 @@ void print_menu()
             
             printf("Enter player 1 name: ");
             clearInputBuffer();
-            scanf("%40s", &current_game.player_1.name);
+            scanf("%40s", current_game.player_1.name);
             
             if(current_game.mode == 0)
             {
                 printf("Enter player 2 name: ");
                 clearInputBuffer();
-                scanf("%40s", &current_game.player_2.name);
+                scanf("%40s", current_game.player_2.name);
             }
             else
             {
