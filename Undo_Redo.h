@@ -1,4 +1,4 @@
-ifndef UNDO_REDO_H
+#ifndef UNDO_REDO_H
 #define UNDO_REDO_H
 
 #include "Basic_Var_and_Func.h"

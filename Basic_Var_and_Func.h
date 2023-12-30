@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -81,14 +81,23 @@ short int mode ;  // 1 --> computer
 void empty_stack();
 void push();
 
-void clearInputBuffer() 
+char *take_input(int length) 
 {
-    int c;
+    char c;
+    char* s = malloc(length + 1);
+    int i = 0;
 
-    while ((c = getchar()) != '\n' && c != EOF) 
+    while((c = getchar()) != '\n')
     {
-        // Keep reading characters until newline or end of file
-    }//to be deleted later
+        if(i < length)
+        {
+            s[i] = c;
+            i++;
+        }
+    }
+
+    s[i] = '\0';
+    return s;
 }
 
 void zero_2D_array(short int row,short int col,char **arr){
@@ -160,7 +169,7 @@ void time_passed(){
             
         }
 
-        sleep(1);
+        //sleep(1);
         current_game.elapsed_time++; 
     }
 }

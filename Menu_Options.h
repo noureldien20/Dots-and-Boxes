@@ -15,14 +15,13 @@ void print_options()
     printf("To Exit game [Press E]\n");
     printf("Option : ");
 
-    char temp[5] ;
+    char* temp;
     char op ;
-    scanf("%1s",temp) ;
+    temp = take_input(5);
 
-    if(temp[1]!='\0')
+    if(temp[1] != '\0')
     {
         printf("Invalid input\n");
-        clearInputBuffer();
         print_options();
         return;
     }else
@@ -57,14 +56,12 @@ void print_options()
     }
     else if(op =='m')
     {
-        clearInputBuffer();
         input_nodes();
         return;
     }
     else
     {
         printf("Invalid input\n");
-        clearInputBuffer();
         print_options();
         return;
     }
@@ -78,20 +75,19 @@ void print_menu()
     printf("To Exit game [Press E]\n");
     printf("Option: ");
 
-    char temp[5] ;
-    char op ;
-    scanf("%1s",temp);
+    char* temp1;
+    char op;
+    temp1 = take_input(5);
 
-    if(temp[1]!='\0')
+    if(temp1[1] != '\0')
     {
         printf("Invalid input\n");
-        clearInputBuffer();
         print_menu() ;
         return;
     }
     else
     {
-        op = small(temp[0]) ;
+        op = small(temp1[0]) ;
     }
 
     if(op == 'l')
@@ -105,7 +101,7 @@ void print_menu()
     else if(op == 't')
     {
         printTopPlayers();
-        clearInputBuffer();
+        
         print_menu();
         return;
     }
@@ -117,30 +113,29 @@ void print_menu()
     {
         if(op !='s')
         {
-            clearInputBuffer();
+            
             print_menu();
+            printf("Invalid input\n");
             return;
         }
         else
         {
-            clearInputBuffer();
+            
             input_size();
             current_game.size = n;
 
             declare_arrays();
 
-            clearInputBuffer();
-
             inputGameMode();
             
             printf("Enter player 1 name: ");
-            clearInputBuffer();
+            
             scanf("%40s", current_game.player_1.name);
             
             if(current_game.mode == 0)
             {
                 printf("Enter player 2 name: ");
-                clearInputBuffer();
+                
                 scanf("%40s", current_game.player_2.name);
             }
             else

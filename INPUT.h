@@ -40,7 +40,6 @@ void input_size(){
 
    }else{
       printf("Invalid input\n") ;
-      clearInputBuffer();
       input_size() ;
    }
 }
@@ -53,22 +52,30 @@ unsigned short int check_node(char x){
       }
 }
 
-void input_nodes(){ //bta3t ahmed
+void input_nodes()
+{ //bta3t ahmed
     unsigned short int r1,r2,c1,c2;
     printf("Enter 2 dots (row,row,col,col), for options [Press o]: ");
 
-    char temp[10] = {'\0'};
-    scanf("%4s",temp);
+    char* temp;
+    char op ;
+    temp = take_input(6);
 
-    if(temp[0] == 'o' || temp[0] == 'O'){
-        clearInputBuffer();
+    if(temp[4] != '\0')
+    {
+        printf("Invalid input\n");
+        input_nodes();
+        return;
+    }
+
+    if(temp[0] == 'o' || temp[0] == 'O')
+    {
         print_options();
         return;
     }
 
     if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3]))){
         printf("Invalid input\n") ;
-        clearInputBuffer();
         input_nodes() ;
         return;
     }
@@ -80,7 +87,6 @@ void input_nodes(){ //bta3t ahmed
 
     if(r1>n+1 || r2>n+1 || c1>n+1 || c2>n+1){
         printf("Invalid input\n") ;
-        clearInputBuffer();
         input_nodes() ;
         return;
     }
@@ -90,7 +96,6 @@ void input_nodes(){ //bta3t ahmed
         !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
         ){
         printf("Invalid input\n") ;
-        clearInputBuffer();
         input_nodes() ;
         return;
     }
@@ -99,7 +104,6 @@ void input_nodes(){ //bta3t ahmed
         if(row_edges[r1-1][min(c1,c2)-1]!='\0')
         {
             printf("Invalid input\n") ;
-            clearInputBuffer();
             input_nodes() ;
             return;
         }
@@ -108,7 +112,6 @@ void input_nodes(){ //bta3t ahmed
     if(c1==c2){
         if(col_edges[min(r1,r2)-1][c1-1]!='\0'){         
             printf("Invalid input\n");
-            clearInputBuffer();
             input_nodes() ;
             return;
         }
@@ -393,7 +396,6 @@ void inputGameMode()
     if (scanf("%1s", temp) != 1 || (strcmp(temp, "0") != 0 && strcmp(temp, "1") != 0)) 
     {
         printf("Invalid input\n");
-        clearInputBuffer();
         inputGameMode();
     } 
     else 
