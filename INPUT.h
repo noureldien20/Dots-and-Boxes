@@ -172,7 +172,7 @@ void AI_input()
         }
     }
   
-    // box has 2 edges
+/*    // box has 2 edges
     for(int i = 0 ; i < n ; i++)
     { 
         for(int j = 0 ; j < n ; j++)
@@ -261,7 +261,7 @@ void AI_input()
             }
         }
     }
-
+*/
     // box has 1 edge
     for(int i = 0 ; i < n ; i++)
     { 
