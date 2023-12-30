@@ -179,6 +179,119 @@ void AI_input()
         }
     }
   
+    // box has 0 edge
+    for(int i = 0 ; i < n ; i++)
+    { 
+        for(int j = 0 ; j < n ; j++)
+        {
+            if(boxes[i][j] == '\0')
+            {
+                int random_choice = rand() % 4;
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] != '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else if (random_choice == 2)
+                    {
+                        col_edges[i][j] = turn;
+                    }
+                    else
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    // box has 1 edge
+    for(int i = 0 ; i < n ; i++)
+    { 
+        for(int j = 0 ; j < n ; j++)
+        {
+            if(boxes[i][j] == '\0')
+            {
+                int random_choice = rand() % 3;
+
+                if(row_edges[i][j] != '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        col_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        col_edges[i][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] == '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j+1] = turn;
+                    }
+                    return;
+                }
+
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] != '\0')
+                {
+                    if (random_choice == 0) 
+                    {
+                        row_edges[i][j] = turn;
+                    } 
+                    else if (random_choice == 1) 
+                    {
+                        row_edges[i+1][j] = turn;
+                    } 
+                    else 
+                    {
+                        col_edges[i][j] = turn;
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
     // box has 2 edges
     for(int i = 0 ; i < n ; i++)
     { 
@@ -268,86 +381,7 @@ void AI_input()
             }
         }
     }
-
-    // box has 1 edge
-    for(int i = 0 ; i < n ; i++)
-    { 
-        for(int j = 0 ; j < n ; j++)
-        {
-            if(boxes[i][j] == '\0')
-            {
-                int random_choice = rand() % 3;
-
-                if(row_edges[i][j] != '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
-                {
-                    if (random_choice == 0) 
-                    {
-                        row_edges[i+1][j] = turn;
-                    } 
-                    else if (random_choice == 1) 
-                    {
-                        col_edges[i][j] = turn;
-                    } 
-                    else 
-                    {
-                        col_edges[i][j+1] = turn;
-                    }
-                    return;
-                }
-
-                if(row_edges[i][j] == '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
-                {
-                    if (random_choice == 0) 
-                    {
-                        row_edges[i][j] = turn;
-                    } 
-                    else if (random_choice == 1) 
-                    {
-                        col_edges[i][j] = turn;
-                    } 
-                    else 
-                    {
-                        col_edges[i][j+1] = turn;
-                    }
-                    return;
-                }
-
-                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] == '\0')
-                {
-                    if (random_choice == 0) 
-                    {
-                        row_edges[i][j] = turn;
-                    } 
-                    else if (random_choice == 1) 
-                    {
-                        row_edges[i+1][j] = turn;
-                    } 
-                    else 
-                    {
-                        col_edges[i][j+1] = turn;
-                    }
-                    return;
-                }
-
-                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] != '\0')
-                {
-                    if (random_choice == 0) 
-                    {
-                        row_edges[i][j] = turn;
-                    } 
-                    else if (random_choice == 1) 
-                    {
-                        row_edges[i+1][j] = turn;
-                    } 
-                    else 
-                    {
-                        col_edges[i][j] = turn;
-                    }
-                    return;
-                }
-            }
-        }
-    }
+    
 }
 
 void inputGameMode() 
