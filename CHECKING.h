@@ -58,7 +58,7 @@ void directing(){
       if(indexes[1] == 0 || indexes[1] == n){
          director = 0 ;
 
-      }else if(boxes[indexes[0]][indexes[1]] != '\0'){
+      }else if(boxes[indexes[0]][indexes[1]-1] != '\0'){
          director = 2 ;
 
       }else{
@@ -79,7 +79,7 @@ void check_edges(){   //no errors
              boxes[i][j] == '\0'){
             
             printf("indexes  (%hd , %hd)",indexes[0],indexes[1]);
-            //boxes[i][j] = turn ;
+            boxes[i][j] = turn ;
             directing() ;
             DFS() ;
             boxes[i][j] = turn ;
@@ -149,7 +149,7 @@ void trace_vertical(short int a,short int b,unsigned short int sign){
       }else{ // plus chain
          short int old_director = director ;
          n_empty+=3 ;
-
+         printf("\nn_edges = %d , n_empty = %d\n", n_edges, n_empty) ;
          director = 2 ;
          dfs[a+sign-1][b] = turn ;
          trace_horizontal(a+sign-1,b+1,1) ;
@@ -157,9 +157,11 @@ void trace_vertical(short int a,short int b,unsigned short int sign){
          director = -2 ;
          dfs[a+sign-1][b] = turn ;
          trace_horizontal(a+sign-1,b,0) ;
-
+        
          director = old_director ;
+         printf("\nin dfs and director = %hd , a = %hd , b = %hd\n",director,a,b);
          trace_vertical(a-director,b,sign) ; // continue tracing in original path
+         printf("\nn_edges = %d , n_empty = %d\n", n_edges, n_empty) ;
       }
 
    }
