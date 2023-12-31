@@ -6,6 +6,8 @@
 
 FILE* file;
 
+void print_menu();
+
 player* loadPlayers(int* numPlayers) 
 {
     FILE* file = fopen("player_data.bin", "rb");
@@ -161,52 +163,103 @@ void loadGame(game* gamePtr)
     }
 }*/
 
-void saveGame(game* gamePtr) 
+void saveGame(game *gamePtr) 
 {
+    char fileName[20];
+    char* temp;
+
+    printf("Choose which file to save the game to\n");
+    printf("saved_game_1.bin [Press 1]\n");
+    printf("saved_game_2.bin [Press 2]\n");
+    printf("saved_game_3.bin [Press 3]\n");
+    printf("Option: ");
+
+    temp = take_input(3);
+
+    if(temp[1] != '\0')
+    {
+        printf(red"Invalid input\n"RESET);
+        saveGame(&current_game);
+        return;
+    }
+
+    if(temp[0] == '1')
+    {
+        strcpy(fileName, "saved_game_1.bin");
+    }
+    else if (temp[0] == '2')
+    {
+        strcpy(fileName, "saved_game_2.bin");
+    }
+    else if (temp[0] == '3')
+    {
+        strcpy(fileName, "saved_game_3.bin");
+    }
+    else
+    {
+        printf(red"Invalid input\n"RESET);
+        saveGame(&current_game);
+        return;
+    }
+
     copy_current_game_arrays_from_Ahmed();
 
-    char filepath[20];
-    char * filename;
-    char * temp;
-
-    printf("Enter the name of the file to be saved [MAX 20]: ");
-
-    temp = take_input(25);
-
-    filename = (char*)malloc(strlen(temp) + 1);
-
-    strcpy(filename, temp);
-    strcpy(filepath, "Saved Games/");
-    strcat(filepath, filename);
-    strcat(filepath,".bin\"");
-
-    file = fopen(filepath, "ab");
+    FILE *file = fopen(fileName, "wb");
     if (file != NULL) 
     {
         // Serialize the game struct
         fwrite(gamePtr, sizeof(game), 1, file);
         fclose(file);
-        printf("Game saved successfully to '%s'.\n", filepath);
-    }
+        printf("Game saved successfully to %s.\n", fileName);
+    } 
     else 
     {
-        fprintf(stderr, "Unable to open file for saving.\n");
+        printf("Unable to open file %s for saving.\n", fileName);
+        print_menu();
+
     }
-    free(filename);
 }
 
 void loadGame(game* gamePtr) 
 {
-    char filename[256];  // Assuming a maximum filename length of 255 characters
-    
-    // List the available saved game files in the current directory
-    printf("List of saved games:\n");
-    system("ls *.bin");  // Assumes a Unix-like system; modify for Windows if needed
+    char fileName[20];
+    char* temp;
 
-    printf("Enter the name of the file to load: ");
-    scanf("%255s", filename);  // Limit the input to 255 characters
+    printf("Choose which file to load the game from\n");
+    printf("saved_game_1.bin [Press 1]\n");
+    printf("saved_game_2.bin [Press 2]\n");
+    printf("saved_game_3.bin [Press 3]\n");
+    printf("Option: ");
 
-    file = fopen(filename, "rb");
+    temp = take_input(3);
+
+    if (temp[1] != '\0') 
+    {
+        printf(red"Invalid input\n"RESET);
+        loadGame(&current_game);
+        return;
+    }
+
+    if (temp[0] == '1') 
+    {
+        strcpy(fileName, "saved_game_1.bin");
+    } 
+    else if (temp[0] == '2') 
+    {
+        strcpy(fileName, "saved_game_2.bin");
+    } 
+    else if (temp[0] == '3') 
+    {
+        strcpy(fileName, "saved_game_3.bin");
+    } 
+    else 
+    {
+        printf(red"Invalid input\n"RESET);
+        loadGame(&current_game);
+        return;
+    }
+
+    FILE* file = fopen(fileName, "rb");
     if (file != NULL) 
     {
         // Get the size of the file
@@ -221,11 +274,12 @@ void loadGame(game* gamePtr)
         free(buffer);
 
         fclose(file);
-        printf("Game loaded successfully from '%s'.\n", filename);
+        printf("Game loaded successfully from %s.\n", fileName);
     } 
     else 
     {
-        fprintf(stderr, "Unable to open file for loading.\n");
+        printf("Unable to open file %s for loading.\n", fileName);
+        print_menu();
     }
 }
 
@@ -270,6 +324,5 @@ void printTopPlayers()
 //The Winner function uses loadPlayers to get the existing players, updates the information for the winner,
 //and then saves the updated players back to the file.
 //The printTopPlayers function also uses loadPlayers to get the players and then sorts and prints the top players based on their scores.
-
 
 #endif

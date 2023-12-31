@@ -6,6 +6,15 @@
 #include "INPUT.h"
 #include "Save_Load.h"
 
+void convertToLowercase(char *str) 
+{
+    while (*str) 
+    {
+        *str = tolower((unsigned char)*str);
+        str++;
+    }
+}
+
 void print_options()
 {
     printf("To Make a move [Press M]\n");
@@ -119,9 +128,8 @@ void print_menu()
     {
         if(op !='s')
         {
-            
-            print_menu();
             printf(red"Invalid input\n"RESET);
+            print_menu();
             return;
         }
         else
@@ -131,19 +139,31 @@ void print_menu()
             current_game.size = n ;
             declare_arrays() ;
             inputGameMode() ;
-
-            printf("Enter player 1 name: ");
             
-            temp2 = take_input(MAX_NAME_LENGTH+1) ;
+            /*
+            printf("Enter player 1 name [MAX %d]: ", MAX_NAME_LENGTH);
+            
+            temp2 = take_input(MAX_NAME_LENGTH + 1) ;
+            for(int i = 0 ; i < MAX_NAME_LENGTH ; i++)
+            {
+                if(temp2[i] == '\0') // valid input
+                else call for the funcion again
+            }
             strcpy(current_game.player_1.name , temp2) ;
-            //scanf("%40s", current_game.player_1.name);
+            convertToLowercase(current_game.player_1.name);
+            */
+            getPlayerName(&current_game.player_1, 1);
             
             if(current_game.mode == 2)
             {
-                printf("Enter player 2 name: ");
+                /*
+                printf("Enter player 2 name [MAX %d]: ", MAX_NAME_LENGTH);
                 
                 temp3 = take_input(MAX_NAME_LENGTH+1) ;
                 strcpy(current_game.player_2.name , temp3) ;
+                convertToLowercase(current_game.player_2.name);
+                */
+                getPlayerName(&current_game.player_2, 2);
             }
             else
             {

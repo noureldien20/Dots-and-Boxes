@@ -8,6 +8,7 @@
 
 void print_options();
 void check_edges();
+void convertToLowercase(char *str);
 
 int min(int a, int b){
     return (a < b) ? a : b;
@@ -384,6 +385,45 @@ void inputGameMode()
 
 }
 
+void getPlayerName(player *player, short int i) 
+{
+    char *temp;
 
+    printf("Enter player %hd name [MAX %d]: ", i, MAX_NAME_LENGTH);
+
+    temp = take_input(MAX_NAME_LENGTH);
+    short int found = 0;
+
+    if(temp[0] == '\0')
+    {
+        printf(red"Invalid input\n"RESET);
+        free(temp); // Free the memory allocated by take_input
+        getPlayerName(player, i);
+        return;
+    }
+
+    for (int i = 1; i < MAX_NAME_LENGTH; i++) 
+    {
+        if (temp[i] == '\0') 
+        {
+            found = 1;
+            break;
+        } 
+    }
+
+    if(!found)
+    {
+        printf(red"Invalid input\n"RESET);
+        free(temp); // Free the memory allocated by take_input
+        getPlayerName(player, i);
+        return;
+    }
+    
+    strcpy(player->name, temp);
+    convertToLowercase(player->name);
+
+    // Free the memory allocated by take_input
+    free(temp);
+}
 
 #endif
