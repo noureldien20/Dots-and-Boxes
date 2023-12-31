@@ -99,19 +99,19 @@ void print_grid(){
 
 void display_stats()
 {
-    if(turn == 1)
-    {
-        printf(cyan"\nNext turn: %s\n"RESET,current_game.player_1.name);
-    }
-    else
-    {
-        printf(green"\nNext turn: %s\n"RESET,current_game.player_2.name);
-    }
+   if(turn == 1)
+   {
+      printf(cyan"\nNext turn: %s\n"RESET,current_game.player_1.name);
+   }
+   else
+   {
+      printf(green"\nNext turn: %s\n"RESET,current_game.player_2.name);
+   }
 
-    printf(cyan"Player 1 : %s, Score: %d, Moves: %d\n"RESET, current_game.player_1.name, current_game.player_1.score, current_game.player_1.number_of_moves);
-    printf(green"Player 1 : %s, Score: %d, Moves: %d\n"RESET, current_game.player_2.name, current_game.player_2.score, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
-    printf("Time:  %02d : %02d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
+   printf(cyan"Player 1 : %s, Score: %d, Moves: %d\n"RESET, current_game.player_1.name, current_game.player_1.score, current_game.player_1.number_of_moves);
+   printf(green"Player 1 : %s, Score: %d, Moves: %d\n"RESET, current_game.player_2.name, current_game.player_2.score, current_game.player_2.number_of_moves);
+   printf("Remaining Boxes: %d\n", current_game.number_of_remaining_boxes);
+   printf("Time:  %02d : %02d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
 }
 
 #endif

@@ -115,7 +115,7 @@ void Winner(player* winner)
 }
 
 // Function to serialize and save the game to a binary file
-int saveGame(game* gamePtr) 
+/*int saveGame(game* gamePtr) 
 {
     copy_current_game_arrays_from_Ahmed();
 
@@ -154,6 +154,74 @@ void loadGame(game* gamePtr)
 
         fclose(file);
         printf("Game loaded successfully.\n");
+    } 
+    else 
+    {
+        fprintf(stderr, "Unable to open file for loading.\n");
+    }
+}*/
+
+void saveGame(game* gamePtr) 
+{
+    copy_current_game_arrays_from_Ahmed();
+
+    char filepath[20];
+    char * filename;
+    char * temp;
+
+    printf("Enter the name of the file to be saved [MAX 20]: ");
+
+    temp = take_input(25);
+
+    filename = (char*)malloc(strlen(temp) + 1);
+
+    strcpy(filename, temp);
+    strcpy(filepath, "Saved Games/");
+    strcat(filepath, filename);
+    strcat(filepath,".bin\"");
+
+    file = fopen(filepath, "ab");
+    if (file != NULL) 
+    {
+        // Serialize the game struct
+        fwrite(gamePtr, sizeof(game), 1, file);
+        fclose(file);
+        printf("Game saved successfully to '%s'.\n", filepath);
+    }
+    else 
+    {
+        fprintf(stderr, "Unable to open file for saving.\n");
+    }
+    free(filename);
+}
+
+void loadGame(game* gamePtr) 
+{
+    char filename[256];  // Assuming a maximum filename length of 255 characters
+    
+    // List the available saved game files in the current directory
+    printf("List of saved games:\n");
+    system("ls *.bin");  // Assumes a Unix-like system; modify for Windows if needed
+
+    printf("Enter the name of the file to load: ");
+    scanf("%255s", filename);  // Limit the input to 255 characters
+
+    file = fopen(filename, "rb");
+    if (file != NULL) 
+    {
+        // Get the size of the file
+        fseek(file, 0, SEEK_END);
+        long fileSize = ftell(file);
+        fseek(file, 0, SEEK_SET);
+
+        // Deserialize the game struct
+        char* buffer = (char*)malloc(fileSize);
+        fread(buffer, fileSize, 1, file);
+        memcpy(gamePtr, buffer, sizeof(game));
+        free(buffer);
+
+        fclose(file);
+        printf("Game loaded successfully from '%s'.\n", filename);
     } 
     else 
     {
