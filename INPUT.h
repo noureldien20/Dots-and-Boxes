@@ -9,39 +9,21 @@
 void print_options();
 void check_edges();
 
-int min(int a, int b)
-{
+int min(int a, int b){
     return (a < b) ? a : b;
 }
 
-void input_size()
-{
-    char temp[5] = {'\0'};
-    unsigned short int arr[2] = {0,0};
-    char c;
+void input_size(){
 
+    char *temp ;
     printf("Enter size of grid [MAX %d]: ", MAX_GRID_SIZE) ; // momken n5aly max 9 eshan el input 2arafny
-    scanf("%2s", temp);
+    temp = take_input(2) ;
 
-    if(
-        ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
-        (int)temp[0] <= 50 && (int)temp[0] >= 49 && temp[1]!='\0' )
-        &&(
-            (int)temp[1] <= 57 && (int)temp[1] >= 48 || temp[1] == '\0'
-            ) && (temp[2]=='\0')
-        ){
-        arr[0] = (unsigned short int)temp[0] - 48 ;
-
-        if (temp[1]!='\0'){
-            arr[1] = (unsigned short int)temp[1] - 48 ;
-            n = arr[1] + (arr[0]*10) ;
-        }else{
-            n = arr[0] ;
-        }
+    if(temp[0] <= '9' && temp[0] > '0' && temp[1]=='\0'){
+        n = temp[0] - 48 ;
 
     }else{
         printf("Invalid input\n") ;
-        while((c = getchar()) != '\n'){}
         input_size();
     }
 }
@@ -69,7 +51,7 @@ void input_nodes()
         return;
     }
 
-    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])) && temp[4] != '\0'){
+    if(temp[4] != '\0' && !(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3]))){
         printf("Invalid input\n") ;
         input_nodes() ;
         return;
@@ -114,9 +96,11 @@ void input_nodes()
 
     if(r1==r2){
         row_edges[r1-1][min(c1,c2)-1] = turn ;
+        
         indexes[0] = r1-1 ;
         indexes[1] = min(c1,c2)-1 ;
         indexes[2] = 0 ;
+
         check_edges();
         empty_redo_stack();
         UndoRedoFlag = 0;
@@ -384,21 +368,21 @@ void AI_input()
 
 void inputGameMode() 
 {
-    char temp[3];
-    char c;
-
+    char *temp ;
     printf("Enter mode [2 for 2 Players, 1 for 1 Player]: ");
+    temp = take_input(2);
 
-    if (scanf("%1s", temp) != 1 || (strcmp(temp, "2") != 0 && strcmp(temp, "1") != 0))
-    {
+    if(temp[1]!='\0' || (temp[0]!='1' && temp[0]!='2')){
         printf("Invalid input\n");
-        while((c = getchar()) != '\n'){}
         inputGameMode();
-    } 
+    }
     else 
     {
         current_game.mode = temp[0] - '0';
     }
+
 }
+
+
 
 #endif

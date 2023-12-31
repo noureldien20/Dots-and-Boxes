@@ -5,7 +5,9 @@
 
 #include "Basic_Var_and_Func.h"
              
-#define line "-------"
+#define line "------------"
+#define space "            "
+#define dot '+'
 
 /******************************** بسم الله الرحمن الرحيم  ************************************/
 
@@ -26,35 +28,37 @@ indexes of loops names ---> i,j,k
 
 void print_boxes_color(short int c,short int i){
    if (boxes[c-1][i]=='1'){
-      printf(back_cyan"       "RESET) ;
+      printf(back_cyan"%s"RESET,space) ;
+
    }else if(boxes[c-1][i]=='2'){
-      printf(back_green"       "RESET) ;
+      printf(back_green"%s"RESET,space) ;
+
    }else{
-      printf("       ") ;
+      printf("%s",space) ;
    }
 }
 
 void print_horizontal(short int r){
    short int i ;   ///r is not index , if r=2 ---> row that has index 1
    for(i=0 ; i<n ; i++){
-      printf(white"+"RESET) ;
+      printf(white"%c"RESET,dot) ;
 
       if (row_edges[r-1][i] == '1'){
          printf(cyan"%s"RESET,line) ;
       }else if(row_edges[r-1][i] == '2'){
          printf(green"%s"RESET,line) ;
       }else{
-         printf("       ") ;
+         printf("%s",space) ;
       }
    }
-   printf(white"+\n"RESET) ;
+   printf(white"%c\n"RESET,dot) ;
 }
 
 void print_vertical(short int c){
    short int i ;
-   for(int j=0; j<3 ;j++){
+   for(int j=0; j<5 ;j++){
+      printf("  ");
       for(i=0 ; i<n ; i++){
-
          if(col_edges[c-1][i]=='1' || boxes[c-1][i]=='1'){
             printf(cyan"|"RESET) ;
          }else if(col_edges[c-1][i]=='2' || boxes[c-1][i]=='2'){
@@ -78,10 +82,17 @@ void print_vertical(short int c){
 void print_grid(){
    printf("\n");
    short int j ;
+   printf("  ");
+   for(j=1 ; j<=n+1 ; j++){
+      printf("%hd%s",j,space);
+   }
+   printf("\n");
    for(j=1 ; j<=n ; j++){
+      printf("%hd ",j);
       print_horizontal(j) ;
       print_vertical(j) ;
    }
+   printf("%hd ",j);
    print_horizontal(j) ;
    printf("\n");
 }
