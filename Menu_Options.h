@@ -101,6 +101,7 @@ void print_menu()
         declare_arrays();
         copy_current_game_arrays_to_Ahmed();
         empty_stack();
+        temp_time = 60;
         return;
     }
     else if(op == 't')

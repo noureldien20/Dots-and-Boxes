@@ -38,20 +38,17 @@ int main(){
         pthread_t time_thread ;
         pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
-        print_grid() ;
-        display_stats() ;
-        push() ; // new by ahmed
-        printf("\npointer index = %d\n",Game_stack.pointer_to_index) ; // new by ahed
+        print_grid();
+        display_stats();
+        
         while(number_of_filled_boxes() != n*n)
         {   
             temp_time = current_game.elapsed_time + 60;
-            //previous_state = current_game;
             current_game.previous_sum = number_of_filled_boxes();
             
             if(current_game.mode == 2) // 2 players
             {
                 input_nodes();
-                push() ; // new by ahmed
             }
             else //play vs computer
             {
@@ -71,6 +68,7 @@ int main(){
                 print_grid();
                 switch_turn();
                 display_stats();
+                push();
             }
         }
 
@@ -80,5 +78,10 @@ int main(){
         Winner(&winnerName);
         printf("Winner is ") ;
         printTopPlayers();
+
+        free(row_edges);
+        free(col_edges);
+        free(dfs);
+        free(boxes);
     }
 }

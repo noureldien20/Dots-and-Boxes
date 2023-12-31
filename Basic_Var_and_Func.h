@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -55,8 +55,7 @@ typedef struct
     unsigned short int mode; // 1 ( 1 player ) --> computer
 } game;
 
-game current_game ;
-//game previous_state ;
+game current_game;
 
 typedef struct {
     game array[MAX_SIZE_OF_STACK];
@@ -71,14 +70,11 @@ char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
 char turn = '1' ;
-int temp_time = 60 ; //add me to reset variables
+int temp_time; //add me to reset variables
 int UndoRedoFlag ;
 
 short int indexes[3] = {0,0,0} ;
 //third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
-
-// mode indicator
-short int mode ;  // 1 --> computer
 
 void empty_stack();
 void push();
@@ -147,9 +143,9 @@ short int number_of_filled_boxes()
 {
     short int count = 0;
 
-    for (short int i = 0; i < current_game.size; ++i)
+    for (short int i = 0; i < n; ++i)
     {
-        for (short int j = 0; j < current_game.size; ++j)
+        for (short int j = 0; j < n; ++j)
         {
             if (boxes[i][j] != '\0')
             {
@@ -168,7 +164,7 @@ void time_passed(){
             
         }
 
-        Sleep(1000) ;
+        //Sleep(1000) ;
         current_game.elapsed_time++; 
     }
 }
@@ -188,10 +184,9 @@ void switch_turn()
 
     if(temp == current_game.previous_sum)
     {
-        empty_stack();   
+        empty_stack();
         current_game.turn = (current_game.turn == '1') ? '2' : '1';
         turn = current_game.turn;
-        //double_push_flag == 1;
     }
     else{
         if (current_game.turn == '1'){
@@ -200,8 +195,6 @@ void switch_turn()
         else{
             current_game.player_2.score += temp - current_game.previous_sum;
         }
-        // push only if he closes a box
-        push();
     }
     current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
 }
@@ -220,6 +213,7 @@ void reset_variables_to_zeros()
     current_game.index_flag = 1 ;
     current_game.elapsed_time = 0 ; 
     copy_current_game_arrays_from_Ahmed();
+    temp_time = 60;
 }
 
 void copy_current_game_arrays_to_Ahmed(){ 
