@@ -45,21 +45,17 @@ int main(){
         
         while(number_of_filled_boxes() != n*n)
         {   
-            printf("\npointer index = %d\n",Game_stack.pointer_to_index) ; // new by ahmed
             temp_time = current_game.elapsed_time + 60;
-            //previous_state = current_game;
             current_game.previous_sum = number_of_filled_boxes();
             
             if(current_game.mode == 2) // 2 players
             {
-                //push();
                 input_nodes();
             }
             else //play vs computer
             {
                 if(turn == '1')
                 {
-                    //push();
                     input_nodes();
                 }
                 else //computer turn
@@ -83,5 +79,9 @@ int main(){
         : current_game.player_2;
         Winner(&winnerName);
         printTopPlayers();
+        free(row_edges);
+        free(col_edges);
+        free(dfs);
+        free(boxes);
     }
 }
