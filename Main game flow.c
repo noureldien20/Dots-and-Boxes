@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 #include "Basic_Var_and_Func.h"
 #include "Save_Load.h"
@@ -37,23 +37,41 @@ int main()
     {
         print_menu();
 
-        pthread_t time_thread ;
-        pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        //pthread_t time_thread ;
+        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
+        display_stats();
 
         while(number_of_filled_boxes() != n*n)
         {   
             temp_time = current_game.elapsed_time + 60 ;
+            //previous_state = current_game;
             current_game.previous_sum = number_of_filled_boxes();
-            clearInputBuffer();
-            input_nodes();
-            check_edges();
-            print_grid();
-            switch_turn();
-            display_stats();
-            Copy_Arrays_To_Struct(&current_game);
-            push(&undo_stack, current_game);
+            
+            if(current_game.mode == 2) // 2 players
+            {
+                input_nodes();
+            }
+            else
+            {
+                if(turn == '1')
+                {
+                    input_nodes();
+                }
+                else
+                {
+                    AI_input();
+                    check_edges();
+                }
+            }
+            
+            if(UndoRedoFlag != 1)
+            {
+                print_grid();
+                switch_turn();
+                display_stats();
+            }
         }
 
         player winnerName = (current_game.player_1.score > current_game.player_2.score)

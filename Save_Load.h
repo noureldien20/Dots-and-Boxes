@@ -114,39 +114,10 @@ void Winner(player* winner)
     free(players);
 }
 
-void Copy_Arrays_To_Struct(game* gamePtr)
-{
-    for (int i = 0; i <= n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            gamePtr->array_of_row_edges[i][j] = row_edges[i][j];
-        }
-    }
-
-    // Copy col_edges to array_of_column_edges
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j <= n; ++j) 
-        {
-            gamePtr->array_of_column_edges[i][j] = col_edges[i][j];
-        }
-    }
-
-    // Copy boxes to array_of_boxes
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            gamePtr->array_of_boxes[i][j] = boxes[i][j];
-        }
-    }
-}
-
 // Function to serialize and save the game to a binary file
 int saveGame(game* gamePtr) 
 {
-    Copy_Arrays_To_Struct(&current_game);
+    copy_current_game_arrays_from_Ahmed();
 
     file = fopen("saved_game.bin", "wb");
     if (file != NULL) 
@@ -188,7 +159,6 @@ void loadGame(game* gamePtr)
     {
         fprintf(stderr, "Unable to open file for loading.\n");
     }
-    display_stats();
 }
 
 // Display the top players and their scores

@@ -4,76 +4,75 @@
 #include "Basic_Var_and_Func.h"
 #include "Menu_Options.h"
 
-void empty_both_stacks();
-
-void copy_struct_to_arrays(game* gamePtr);
-
-game peek(Stack* stack)
+void push()
 {
-    return stack->array[stack->top];
+    copy_current_game_arrays_from_Ahmed();
+    Game_stack.array[++Game_stack.pointer_to_index] = current_game;
 }
 
-game pop(Stack* stack) 
+void undo()
 {
-    return stack->array[stack->top--];
-}
-
-void push(Stack *stack, game game)
-{
-    stack->array[++stack->top] = game;
-}
-
-void empty(Stack *stack) // also used to initialize the stack
-{
-    stack->top = -1;
-}
-
-void empty_both_stacks()
-{
-    empty(&undo_stack);
-    empty(&redo_stack);
-}
-
-void undo(Stack *undo_stack,Stack *redo_stack, game *current)
-{
-    if (current->turn == peek(undo_stack).turn && undo_stack->top != -1)
+    if (Game_stack.pointer_to_index > 0)
     {
-        push(redo_stack, pop(undo_stack));
-        
-        printf("Undo successful.\n");
+        Game_stack.pointer_to_index--;
+        current_game = Game_stack.array[Game_stack.pointer_to_index];
+        copy_current_game_arrays_to_Ahmed();
 
-        *current = peek(undo_stack);
-        copy_struct_to_arrays(&current_game);
-        turn = current_game.turn;
-        print_grid();
-        display_stats();
+        printf("\n\nUndo successful.\n\n");
+    }
+    else 
+    {
+        printf("\n\nu can't undo anymore.\n\n");
+    }
+}
+
+void redo()
+{
+    if (Game_stack.array[Game_stack.pointer_to_index + 1].index_flag > 0)
+    {
+        Game_stack.pointer_to_index++;
+
+        current_game = Game_stack.array[Game_stack.pointer_to_index];
+        copy_current_game_arrays_to_Ahmed();
+
+        printf("\n\nRedo successful.\n\n");
     } 
     else 
     {
-        printf("u can't undo anymore.\n");
+        printf("\n\nu can't redo anymore\n\n");
     }
 }
 
-void redo(Stack *undo_stack,Stack *redo_stack, game *current)
+void empty_redo_stack()
 {
-    if (current->turn == peek(redo_stack).turn && undo_stack->top != -1)
+    for(int i = Game_stack.pointer_to_index + 1 ; i < MAX_SIZE_OF_STACK ; i++)
     {
-        push(undo_stack, pop(redo_stack));
- 
-        printf("Redo successful.\n");
-
-        *current = peek(undo_stack);
-        copy_struct_to_arrays(&current_game);
-        turn = current_game.turn;
-        print_grid();
-        display_stats();
-    }
-    else 
-    {
-        printf("u can't redo anymore\n");
+        if(Game_stack.array[i].index_flag == 0)
+        {
+            break;
+        }
+        else
+        {
+            Game_stack.array[i].index_flag = 0;
+        }
     }
 }
 
+void empty_stack()
+{
+    for(int i = 0 ; i < MAX_SIZE_OF_STACK ; i++)
+    {
+        if(Game_stack.array[i].index_flag == 0)
+        {
+            break;
+        }
+        else
+        {
+            Game_stack.array[i].index_flag = 0;
+        }
+    }
 
+    Game_stack.pointer_to_index = -1;
+}
 
 #endif
