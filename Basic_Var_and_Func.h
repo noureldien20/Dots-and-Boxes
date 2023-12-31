@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -53,26 +53,25 @@ typedef struct
     int previous_sum;
     unsigned short int mode; // 1 ( 1 player ) --> computer
 } game;
+
 game current_game;
 game previous_state;
 
-typedef struct 
-{
+typedef struct {
     game array[MAX_SIZE_OF_STACK];
-    int pointer_to_index;
-} Stack;
+    int pointer_to_index ;
+}Stack ;
 
-Stack Game_stack;
+Stack Game_stack ;
 
-unsigned short int n;
+unsigned short int n ;
 char **row_edges ;  //2D array of the edges of rows  ( of size [n+1][n])
 char **col_edges ;  //2D array of the edges of columns ( of size[n][n+1])
 char **boxes ;  //2D array of access of boxes and who close every box ( of size[n][n] )
 char **dfs ;
-char turn = '1';
-int temp_time = 60;//add me to reset variables
-int UndoRedoFlag;
-int double_push_flag;
+char turn = '1' ;
+int temp_time = 60 ; //add me to reset variables
+int UndoRedoFlag ;
 
 short int indexes[3] = {0,0,0} ;
 //third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
@@ -168,7 +167,7 @@ void time_passed(){
             
         }
 
-        //sleep(1);
+        Sleep(1000) ;
         current_game.elapsed_time++; 
     }
 }
@@ -179,11 +178,11 @@ void switch_turn()
 
     if (current_game.turn == '1') 
     {
-        current_game.player_1.number_of_moves++;
-    } 
+        current_game.player_1.number_of_moves++ ;
+    }
     else 
     {
-        current_game.player_2.number_of_moves++;
+        current_game.player_2.number_of_moves++ ;
     }
 
     if(temp == current_game.previous_sum)
@@ -193,28 +192,20 @@ void switch_turn()
         turn = current_game.turn;
         //double_push_flag == 1;
     }
-    else
-    {
-        if (current_game.turn == '1') 
-        {
+    else{
+        if (current_game.turn == '1'){
             current_game.player_1.score += temp - current_game.previous_sum;
         } 
-        else 
-        {
+        else{
             current_game.player_2.score += temp - current_game.previous_sum;
         }
         // push only if he closes a box
-        /*if(double_push_flag == 1)
-        {
-            Game_stack.array[++Game_stack.pointer_to_index] = previous_state;
-            double_push_flag == 0;
-        }*/
         push();
     }
     current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
 }
 
-void copy_current_game_arrays_from_Ahmed();
+void copy_current_game_arrays_from_Ahmed() ;
 
 void reset_variables_to_zeros()
 {
@@ -225,63 +216,38 @@ void reset_variables_to_zeros()
     current_game.player_1.score = 0;
     current_game.player_2.score = 0;
     empty_stack();
-    current_game.index_flag = 1;
-    current_game.elapsed_time = 0;
+    current_game.index_flag = 1 ;
+    current_game.elapsed_time = 0 ; 
     copy_current_game_arrays_from_Ahmed();
 }
 
-void copy_current_game_arrays_to_Ahmed() 
-{
-    for (int i = 0; i <= n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
+void copy_current_game_arrays_to_Ahmed(){ 
+    for (int i = 0; i < n ; i++){
+        for (int j = 0; j < n ; j++){
+
             row_edges[i][j] = current_game.array_of_row_edges[i][j];
-        }
-    }
-
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j <= n; ++j) 
-        {
             col_edges[i][j] = current_game.array_of_column_edges[i][j];
-        }
-    }
-
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
             boxes[i][j] = current_game.array_of_boxes[i][j];
         }
+
+        row_edges[n][i] = current_game.array_of_row_edges[n][i] ;
+        col_edges[i][n] = current_game.array_of_column_edges[i][n];
     }
 }
 
-void copy_current_game_arrays_from_Ahmed()
-{
-    for (int i = 0; i <= n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            current_game.array_of_row_edges[i][j] = row_edges[i][j];
+void copy_current_game_arrays_from_Ahmed(){
+    for (int i = 0; i < n ; i++){
+        for (int j = 0; j < n ; j++){
+
+            current_game.array_of_row_edges[i][j] = row_edges[i][j] ;
+            current_game.array_of_column_edges[i][j] = col_edges[i][j] ;
+            current_game.array_of_boxes[i][j] = boxes[i][j] ;
         }
+
+        current_game.array_of_row_edges[n][i] = row_edges[n][i] ;
+        current_game.array_of_column_edges[i][n] = col_edges[i][n] ;
     }
 
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j <= n; ++j) 
-        {
-            current_game.array_of_column_edges[i][j] = col_edges[i][j];
-        }
-    }
-
-    for (int i = 0; i < n; ++i) 
-    {
-        for (int j = 0; j < n; ++j) 
-        {
-            current_game.array_of_boxes[i][j] = boxes[i][j];
-        }
-    }
 }
 
 #endif

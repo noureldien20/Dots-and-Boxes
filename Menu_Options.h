@@ -18,7 +18,7 @@ void print_options()
     char* temp;
     char op ;
     temp = take_input(5);
-
+    printf("\n");
     if(temp[1] != '\0')
     {
         printf("Invalid input\n");
@@ -80,6 +80,7 @@ void print_menu()
     char* temp1;
     char op;
     temp1 = take_input(5);
+    printf("\n");
 
     if(temp1[1] != '\0')
     {
@@ -125,13 +126,11 @@ void print_menu()
         else
         {
             
-            input_size();
-            current_game.size = n;
+            input_size() ;
+            current_game.size = n ;
+            declare_arrays() ;
+            inputGameMode() ;
 
-            declare_arrays();
-
-            inputGameMode();
-            
             printf("Enter player 1 name: ");
             
             temp2 = take_input(MAX_NAME_LENGTH+1) ;

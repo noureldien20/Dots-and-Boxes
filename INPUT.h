@@ -370,7 +370,8 @@ void inputGameMode()
 {
     char *temp ;
     printf("Enter mode [2 for 2 Players, 1 for 1 Player]: ");
-    temp = take_input(2);
+    temp = take_input(2) ;
+    printf("\n");
 
     if(temp[1]!='\0' || (temp[0]!='1' && temp[0]!='2')){
         printf("Invalid input\n");
