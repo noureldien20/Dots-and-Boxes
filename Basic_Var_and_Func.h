@@ -146,9 +146,9 @@ short int number_of_filled_boxes()
 {
     short int count = 0;
 
-    for (short int i = 0; i < current_game.size; ++i)
+    for (short int i = 0; i < n; ++i)
     {
-        for (short int j = 0; j < current_game.size; ++j)
+        for (short int j = 0; j < n; ++j)
         {
             if (boxes[i][j] != '\0')
             {
@@ -200,7 +200,7 @@ void switch_turn()
             current_game.player_2.score += temp - current_game.previous_sum;
         }
         // push only if he closes a box
-        push();
+        //push();
     }
     current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
 }

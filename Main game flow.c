@@ -52,12 +52,14 @@ int main(){
             
             if(current_game.mode == 2) // 2 players
             {
+                //push();
                 input_nodes();
             }
             else //play vs computer
             {
                 if(turn == '1')
                 {
+                    //push();
                     input_nodes();
                 }
                 else //computer turn
@@ -72,6 +74,7 @@ int main(){
                 print_grid();
                 switch_turn();
                 display_stats();
+                push();
             }
         }
 

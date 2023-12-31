@@ -78,7 +78,8 @@ void empty_stack()
 
 
 void push(){
-    
+    Game_stack.pointer_to_index++;
+    printf("\npointer index (push)before = %d\n",Game_stack.pointer_to_index);
     copy_current_game_arrays_from_Ahmed();
     //Game_stack.array[Game_stack.pointer_to_index] = current_game;
     Game_stack.array[Game_stack.pointer_to_index].index_flag = current_game.index_flag;
@@ -101,9 +102,8 @@ void push(){
         Game_stack.array[Game_stack.pointer_to_index].array_of_row_edges[n][i] = current_game.array_of_row_edges[n][i] ;
         Game_stack.array[Game_stack.pointer_to_index].array_of_column_edges[i][n] = current_game.array_of_column_edges[i][n] ;
     }
-    Game_stack.pointer_to_index++;
     printf("i entered the push  %c\n", current_game.array_of_column_edges[0][1]);
-    printf("i entered the push function %c\n", Game_stack.array[Game_stack.pointer_to_index].array_of_column_edges[0][0]);
+    printf("i entered the push function %c\n", Game_stack.array[Game_stack.pointer_to_index].array_of_column_edges[0][1]);
 }
 
 void undo(){
@@ -143,7 +143,7 @@ void undo(){
 
 void redo(){
 
-    if (Game_stack.array[Game_stack.pointer_to_index].index_flag > 0)
+    if (Game_stack.array[Game_stack.pointer_to_index + 1].index_flag == 1)
     {
         Game_stack.pointer_to_index++;
         current_game.index_flag = Game_stack.array[Game_stack.pointer_to_index].index_flag;
@@ -197,7 +197,7 @@ void empty_stack()
         }
     }
 
-    Game_stack.pointer_to_index = 0 ;
+    Game_stack.pointer_to_index = -1 ;
 }
 
 void delete_stack_values(){
