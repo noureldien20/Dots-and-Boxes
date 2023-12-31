@@ -75,7 +75,7 @@ void print_vertical(short int c){
       printf(green"|\n"RESET) ;
    }else{
       printf(" \n") ;
-      }
+   }
    }
 }
 

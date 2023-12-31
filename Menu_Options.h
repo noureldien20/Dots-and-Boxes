@@ -21,7 +21,7 @@ void print_options()
     printf("\n");
     if(temp[1] != '\0')
     {
-        printf("Invalid input\n");
+        printf(red"Invalid input\n"RESET);
         print_options();
         return;
     }else
@@ -61,7 +61,7 @@ void print_options()
     }
     else
     {
-        printf("Invalid input\n");
+        printf(red"Invalid input\n"RESET);
         print_options();
         return;
     }
@@ -84,7 +84,7 @@ void print_menu()
 
     if(temp1[1] != '\0')
     {
-        printf("Invalid input\n");
+        printf(red"Invalid input\n"RESET);
         print_menu() ;
         return;
     }
@@ -120,7 +120,7 @@ void print_menu()
         {
             
             print_menu();
-            printf("Invalid input\n");
+            printf(red"Invalid input\n"RESET);
             return;
         }
         else
@@ -153,5 +153,7 @@ void print_menu()
         }
     }
 }
+
+
 
 #endif

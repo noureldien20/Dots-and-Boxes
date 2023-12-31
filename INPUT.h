@@ -23,7 +23,7 @@ void input_size(){
         n = temp[0] - 48 ;
 
     }else{
-        printf("Invalid input\n") ;
+        printf(red"Invalid input\n"RESET) ;
         input_size();
     }
 }
@@ -52,7 +52,7 @@ void input_nodes()
     }
 
     if(temp[4] != '\0' && !(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3]))){
-        printf("Invalid input\n") ;
+        printf(red"Invalid input\n"RESET) ;
         input_nodes() ;
         return;
     }
@@ -63,7 +63,7 @@ void input_nodes()
     c2 = (unsigned short int)temp[3] - 48 ;
 
     if(r1>n+1 || r2>n+1 || c1>n+1 || c2>n+1){
-        printf("Invalid input\n") ;
+        printf(red"Invalid input\n"RESET) ;
         input_nodes() ;
         return;
     }
@@ -72,7 +72,7 @@ void input_nodes()
         !(r1==r2 || c1==c2) ||   //nodes are adjacent
         !(abs(r1-r2)==1 || abs(c1-c2)==1) //short line not long line
         ){
-        printf("Invalid input\n") ;
+        printf(red"Invalid input\n"RESET) ;
         input_nodes() ;
         return;
     }
@@ -80,7 +80,7 @@ void input_nodes()
     if(r1==r2){
         if(row_edges[r1-1][min(c1,c2)-1]!='\0')
         {
-            printf("Invalid input\n") ;
+            printf(red"Invalid input\n"RESET) ;
             input_nodes() ;
             return;
         }
@@ -88,7 +88,7 @@ void input_nodes()
 
     if(c1==c2){
         if(col_edges[min(r1,r2)-1][c1-1]!='\0'){         
-            printf("Invalid input\n");
+            printf(red"Invalid input\n"RESET);
             input_nodes() ;
             return;
         }
@@ -374,7 +374,7 @@ void inputGameMode()
     printf("\n");
 
     if(temp[1]!='\0' || (temp[0]!='1' && temp[0]!='2')){
-        printf("Invalid input\n");
+        printf(red"Invalid input\n"RESET);
         inputGameMode();
     }
     else 

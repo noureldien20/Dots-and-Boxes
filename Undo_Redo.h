@@ -75,9 +75,8 @@ void empty_stack()
     Game_stack.pointer_to_index = -1;
 }*/
 
-
 void push(){
-    copy_current_game_arrays_from_Ahmed();
+    copy_current_game_arrays_from_Ahmed() ;
     //Game_stack.array[Game_stack.pointer_to_index] = current_game;
     Game_stack.pointer_to_index++ ;
 }

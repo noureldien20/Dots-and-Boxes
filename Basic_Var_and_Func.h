@@ -9,6 +9,7 @@
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
+#define red "\x1b[0;91m"
 #define green "\x1b[0;92m"
 #define yellow "\x1b[0;93m"
 #define cyan "\x1b[96m"
@@ -54,8 +55,8 @@ typedef struct
     unsigned short int mode; // 1 ( 1 player ) --> computer
 } game;
 
-game current_game;
-game previous_state;
+game current_game ;
+//game previous_state ;
 
 typedef struct {
     game array[MAX_SIZE_OF_STACK];

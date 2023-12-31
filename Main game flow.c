@@ -32,18 +32,16 @@ indexes of loops names ---> i,j,k
 int main(){
     printf("Welcome to Dots & Boxes game\n");
 
-    while(1)
-    {
+    while(1){
         print_menu();
 
         pthread_t time_thread ;
         pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
-        print_grid();
-        display_stats();
+        print_grid() ;
+        display_stats() ;
         push() ; // new by ahmed
-        printf("\npointer index = %d\n",Game_stack.pointer_to_index) ; // new by ahmed
-        
+        printf("\npointer index = %d\n",Game_stack.pointer_to_index) ; // new by ahed
         while(number_of_filled_boxes() != n*n)
         {   
             temp_time = current_game.elapsed_time + 60;
@@ -78,8 +76,9 @@ int main(){
 
         player winnerName = (current_game.player_1.score > current_game.player_2.score)
         ? current_game.player_1
-        : current_game.player_2;
+        : current_game.player_2 ;
         Winner(&winnerName);
+        printf("Winner is ") ;
         printTopPlayers();
     }
 }
