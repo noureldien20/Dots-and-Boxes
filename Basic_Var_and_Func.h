@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -164,7 +164,7 @@ void time_passed(){
             
         }
 
-        //Sleep(1000) ;
+        Sleep(1000) ;
         current_game.elapsed_time++; 
     }
 }
