@@ -165,7 +165,7 @@ void time_passed(){
             
         }
 
-        //Sleep(1000) ;
+        Sleep(1000) ;
         current_game.elapsed_time++; 
     }
 }

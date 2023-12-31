@@ -2,6 +2,7 @@
 #define DISPLAY_H
 
 #include <stdio.h>
+#include <time.h>
 
 #include "Basic_Var_and_Func.h"
              
@@ -113,5 +114,18 @@ void display_stats()
     printf("Remaining Boxes : %d\n", n * n - number_of_filled_boxes()) ;
     printf("Time :  %02d : %02d\n\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
 }
+
+
+void welcome(){
+   char str[] = "Welcome to Dots & Boxes game\n";
+   printf("\t\t\t\t\t");
+   for(int i=0 ; i<29 ; i++){
+      Sleep(100) ;
+      printf("%c",str[i]);
+   }
+
+}
+
+
 
 #endif

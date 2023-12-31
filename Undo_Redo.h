@@ -34,7 +34,6 @@ void push(){
 
 void undo(){
 
-    printf("%d",Game_stack.pointer_to_index) ;
     if (Game_stack.pointer_to_index > 0)
     {
         Game_stack.pointer_to_index--;

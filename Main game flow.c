@@ -30,8 +30,8 @@ indexes of loops names ---> i,j,k
 /********************************** بسم الله الرحمن الرحيم  **************************************/
 
 int main(){
-    printf("Welcome to Dots & Boxes game\n");
-
+    //printf("Welcome to Dots & Boxes game\n");
+    welcome();
     while(1){
         print_menu();
 
