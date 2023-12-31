@@ -94,8 +94,10 @@ void print_menu()
     {
         loadGame(&current_game);
         turn = current_game.turn;
-        n = current_game.size;
+        n = current_game.size;   
         declare_arrays();
+        copy_current_game_arrays_to_Ahmed();
+        empty_stack();
         return;
     }
     else if(op == 't')
@@ -132,7 +134,7 @@ void print_menu()
             
             scanf("%40s", current_game.player_1.name);
             
-            if(current_game.mode == 0)
+            if(current_game.mode == 2)
             {
                 printf("Enter player 2 name: ");
                 

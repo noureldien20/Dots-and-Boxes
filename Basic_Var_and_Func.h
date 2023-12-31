@@ -28,7 +28,7 @@ indexes of loops names ---> i,j,k **/
 
 #define MAX_PLAYERS_TO_PRINT 10
 #define MAX_NAME_LENGHT 40
-#define MAX_GRID_SIZE 10
+#define MAX_GRID_SIZE 60
 #define MAX_SIZE_OF_STACK 15
 
 typedef struct 
@@ -51,9 +51,10 @@ typedef struct
     player player_1;
     player player_2;
     int previous_sum;
-    unsigned short int mode; // 1 --> computer
+    unsigned short int mode; // 1 ( 1 player ) --> computer
 } game;
 game current_game;
+game previous_state;
 
 typedef struct 
 {
@@ -71,6 +72,7 @@ char **dfs ;
 char turn = '1';
 int temp_time = 60;//add me to reset variables
 int UndoRedoFlag;
+int double_push_flag;
 
 short int indexes[3] = {0,0,0} ;
 //third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
@@ -192,6 +194,7 @@ void switch_turn()
         empty_stack();   
         current_game.turn = (current_game.turn == '1') ? '2' : '1';
         turn = current_game.turn;
+        //double_push_flag == 1;
     }
     else
     {
@@ -204,14 +207,22 @@ void switch_turn()
             current_game.player_2.score += temp - current_game.previous_sum;
         }
         // push only if he closes a box
+        /*if(double_push_flag == 1)
+        {
+            Game_stack.array[++Game_stack.pointer_to_index] = previous_state;
+            double_push_flag == 0;
+        }*/
         push();
     }
     current_game.number_of_remaining_boxes = (current_game.size * current_game.size) - temp;
 }
 
+void copy_current_game_arrays_from_Ahmed();
+
 void reset_variables_to_zeros()
 {
     current_game.turn = '1';
+    turn = '1';
     current_game.player_1.number_of_moves = 0;
     current_game.player_2.number_of_moves = 0;
     current_game.player_1.score = 0;
@@ -219,6 +230,7 @@ void reset_variables_to_zeros()
     empty_stack();
     current_game.index_flag = 1;
     current_game.elapsed_time = 0;
+    copy_current_game_arrays_from_Ahmed();
 }
 
 void copy_current_game_arrays_to_Ahmed() 

@@ -14,34 +14,36 @@ int min(int a, int b)
     return (a < b) ? a : b;
 }
 
-void input_size(){
+void input_size()
+{
+    char temp[5] = {'\0'};
+    unsigned short int arr[2] = {0,0};
+    char c;
 
-   char temp[5] = {'\0'};
-   unsigned short int arr[2] = {0,0};
+    printf("Enter size of grid [MAX %d]: ", MAX_GRID_SIZE) ; // momken n5aly max 9 eshan el input 2arafny
+    scanf("%2s", temp);
 
-   printf("Enter size of grid [MAX %d]: ", MAX_GRID_SIZE) ;
-    scanf("%2s",temp);
+    if(
+        ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
+        (int)temp[0] <= 50 && (int)temp[0] >= 49 && temp[1]!='\0' )
+        &&(
+            (int)temp[1] <= 57 && (int)temp[1] >= 48 || temp[1] == '\0'
+            ) && (temp[2]=='\0')
+        ){
+        arr[0] = (unsigned short int)temp[0] - 48 ;
 
-   if(
-      ( (int)temp[0] <= 57 && (int)temp[0] >= 49 && temp[1]=='\0' ||
-      (int)temp[0] <= 50 && (int)temp[0] >= 49 && temp[1]!='\0' )
-      &&(
-         (int)temp[1] <= 57 && (int)temp[1] >= 48 || temp[1] == '\0'
-        ) && (temp[2]=='\0')
-     ){
-      arr[0] = (unsigned short int)temp[0] - 48 ;
+        if (temp[1]!='\0'){
+            arr[1] = (unsigned short int)temp[1] - 48 ;
+            n = arr[1] + (arr[0]*10) ;
+        }else{
+            n = arr[0] ;
+        }
 
-      if (temp[1]!='\0'){
-         arr[1] = (unsigned short int)temp[1] - 48 ;
-         n = arr[1] + (arr[0]*10) ;
-      }else{
-         n = arr[0] ;
-      }
-
-   }else{
-      printf("Invalid input\n") ;
-      input_size() ;
-   }
+    }else{
+        printf("Invalid input\n") ;
+        while((c = getchar()) != '\n'){}
+        input_size();
+    }
 }
 
 unsigned short int check_node(char x){
@@ -61,20 +63,13 @@ void input_nodes()
     char op ;
     temp = take_input(6);
 
-    if(temp[4] != '\0')
-    {
-        printf("Invalid input\n");
-        input_nodes();
-        return;
-    }
-
-    if(temp[0] == 'o' || temp[0] == 'O')
+    if((temp[0] == 'o' || temp[0] == 'O') && temp[1] == '\0')
     {
         print_options();
         return;
     }
 
-    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3]))){
+    if(!(check_node(temp[0]) && check_node(temp[1]) && check_node(temp[2]) && check_node(temp[3])) && temp[4] != '\0'){
         printf("Invalid input\n") ;
         input_nodes() ;
         return;
@@ -191,7 +186,7 @@ void AI_input()
             {
                 int random_choice = rand() % 4;
 
-                if(row_edges[i][j] != '\0' && row_edges[i+1][j] != '\0' && col_edges[i][j] != '\0' && col_edges[i][j+1] != '\0')
+                if(row_edges[i][j] == '\0' && row_edges[i+1][j] == '\0' && col_edges[i][j] == '\0' && col_edges[i][j+1] == '\0')
                 {
                     if (random_choice == 0) 
                     {
@@ -390,12 +385,14 @@ void AI_input()
 void inputGameMode() 
 {
     char temp[3];
+    char c;
 
-    printf("Enter mode [0 for 2 Players, 1 for 1 Player]: ");
+    printf("Enter mode [2 for 2 Players, 1 for 1 Player]: ");
 
-    if (scanf("%1s", temp) != 1 || (strcmp(temp, "0") != 0 && strcmp(temp, "1") != 0)) 
+    if (scanf("%1s", temp) != 1 || (strcmp(temp, "2") != 0 && strcmp(temp, "1") != 0))
     {
         printf("Invalid input\n");
+        while((c = getchar()) != '\n'){}
         inputGameMode();
     } 
     else 

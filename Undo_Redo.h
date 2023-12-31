@@ -35,8 +35,6 @@ void redo()
         current_game = Game_stack.array[Game_stack.pointer_to_index];
         copy_current_game_arrays_to_Ahmed();
 
-        //copy_game_arrays_to_Ahmed();
-
         printf("\n\nRedo successful.\n\n");
     } 
     else 

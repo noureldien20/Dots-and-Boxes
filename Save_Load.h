@@ -152,8 +152,6 @@ void loadGame(game* gamePtr)
         memcpy(gamePtr, buffer, sizeof(game));
         free(buffer);
 
-        copy_current_game_arrays_to_Ahmed();
-
         fclose(file);
         printf("Game loaded successfully.\n");
     } 
