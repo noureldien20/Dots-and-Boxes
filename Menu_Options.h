@@ -18,7 +18,7 @@ void print_options()
     char* temp;
     char op ;
     temp = take_input(5);
-
+    printf("\n");
     if(temp[1] != '\0')
     {
         printf("Invalid input\n");
@@ -80,6 +80,7 @@ void print_menu()
     char* temp1;
     char op;
     temp1 = take_input(5);
+    printf("\n");
 
     if(temp1[1] != '\0')
     {
