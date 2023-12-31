@@ -27,8 +27,8 @@ number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
 
 #define MAX_PLAYERS_TO_PRINT 10
-#define MAX_NAME_LENGHT 40
-#define MAX_GRID_SIZE 60
+#define MAX_NAME_LENGHT 20
+#define MAX_GRID_SIZE 9
 #define MAX_SIZE_OF_STACK 15
 
 typedef struct 
