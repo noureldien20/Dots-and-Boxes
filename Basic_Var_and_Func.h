@@ -27,13 +27,13 @@ number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
 
 #define MAX_PLAYERS_TO_PRINT 10
-#define MAX_NAME_LENGHT 40
-#define MAX_GRID_SIZE 60
+#define MAX_NAME_LENGTH 10
+#define MAX_GRID_SIZE 9
 #define MAX_SIZE_OF_STACK 15
 
 typedef struct 
 {
-   char name[MAX_NAME_LENGHT + 1];
+   char name[MAX_NAME_LENGTH + 1];
    int score;
    int number_of_moves;
 } player;
@@ -83,16 +83,14 @@ short int mode ;  // 1 --> computer
 void empty_stack();
 void push();
 
-char *take_input(int length) 
-{
+char *take_input(int length) {
     char c;
     char* s = malloc(length + 1);
     int i = 0;
 
     while((c = getchar()) != '\n')
     {
-        if(i < length)
-        {
+        if(i < length){
             s[i] = c;
             i++;
         }
@@ -145,13 +143,13 @@ char big(char c){
    else{return c ;}
 }
 
-short int number_of_filled_boxes() 
+short int number_of_filled_boxes()
 {
     short int count = 0;
 
-    for (short int i = 0; i < current_game.size; ++i) 
+    for (short int i = 0; i < current_game.size; ++i)
     {
-        for (short int j = 0; j < current_game.size; ++j) 
+        for (short int j = 0; j < current_game.size; ++j)
         {
             if (boxes[i][j] != '\0')
             {
@@ -163,8 +161,7 @@ short int number_of_filled_boxes()
 }
 
 void time_passed(){
-    while((number_of_filled_boxes()) != n*n)
-    {
+    while((number_of_filled_boxes()) != n*n){
 
         if(current_game.elapsed_time == temp_time){
             printf("\nTime:  %02d : %02d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );

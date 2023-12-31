@@ -184,13 +184,13 @@ void printTopPlayers()
         }
     }
 
-    printf("Top %d Players:\n", numPlayers);
+    printf("Top %d Players :\n", numPlayers);
 
     int numPlayersToPrint = (numPlayers < MAX_PLAYERS_TO_PRINT) ? numPlayers : MAX_PLAYERS_TO_PRINT;
 
     for(int i = 0; i < numPlayersToPrint; i++)
     {
-        printf("%d. %s - %d\n", i + 1, players[i].name, players[i].score);
+        printf("%d. %s -----> %d\n", i + 1, players[i].name, players[i].score);
     }
 
     // Free dynamically allocated memory

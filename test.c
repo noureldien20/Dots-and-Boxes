@@ -4,12 +4,12 @@
 
 #define MAX_PLAYERS_TO_PRINT 10
 
-#define MAX_NAME_LENGHT 20
+#define MAX_NAME_LENGTH 20
 
 #define MAX_SIZE_OF_ARRAY 10
 
 typedef struct {
-   char name[MAX_NAME_LENGHT];
+   char name[MAX_NAME_LENGTH];
    int score;
    int number_of_moves;
 } player;
@@ -377,7 +377,7 @@ print_array_2D(4,4,dfs) ;
 
 #define MAX_SIZE_OF_STACK 30
 #define MAX_PLAYERS_TO_PRINT 10
-#define MAX_NAME_LENGHT 40
+#define MAX_NAME_LENGTH 40
 #define MAX_SIZE_OF_ARRAY 10
 #define red "\e[0;31m"
 #define green "\e[0;32m"
@@ -395,7 +395,7 @@ print_array_2D(4,4,dfs) ;
 //#include <pthread.h>
 
 typedef struct {
-   char name[MAX_NAME_LENGHT + 1];
+   char name[MAX_NAME_LENGTH + 1];
    int score;
    int number_of_moves;
 } player;

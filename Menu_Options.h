@@ -75,6 +75,8 @@ void print_menu()
     printf("To Exit game [Press E]\n");
     printf("Option: ");
 
+    char *temp2 ; //player 1
+    char *temp3 ; //player 2
     char* temp1;
     char op;
     temp1 = take_input(5);
@@ -132,13 +134,16 @@ void print_menu()
             
             printf("Enter player 1 name: ");
             
-            scanf("%40s", current_game.player_1.name);
+            temp2 = take_input(MAX_NAME_LENGTH+1) ;
+            strcpy(current_game.player_1.name , temp2) ;
+            //scanf("%40s", current_game.player_1.name);
             
             if(current_game.mode == 2)
             {
                 printf("Enter player 2 name: ");
                 
-                scanf("%40s", current_game.player_2.name);
+                temp3 = take_input(MAX_NAME_LENGTH+1) ;
+                strcpy(current_game.player_2.name , temp3) ;
             }
             else
             {

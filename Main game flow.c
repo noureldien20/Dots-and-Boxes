@@ -29,8 +29,7 @@ indexes of loops names ---> i,j,k
 
 /********************************** بسم الله الرحمن الرحيم  **************************************/
 
-int main()
-{
+int main(){
     printf("Welcome to Dots & Boxes game\n");
 
     while(1)
@@ -53,13 +52,13 @@ int main()
             {
                 input_nodes();
             }
-            else
+            else //play vs computer
             {
                 if(turn == '1')
                 {
                     input_nodes();
                 }
-                else
+                else //computer turn
                 {
                     AI_input();
                     check_edges();
