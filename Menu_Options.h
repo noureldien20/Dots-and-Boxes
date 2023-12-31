@@ -125,13 +125,11 @@ void print_menu()
         else
         {
             
-            input_size();
-            current_game.size = n;
+            input_size() ;
+            current_game.size = n ;
+            declare_arrays() ;
+            inputGameMode() ;
 
-            declare_arrays();
-
-            inputGameMode();
-            
             printf("Enter player 1 name: ");
             
             temp2 = take_input(MAX_NAME_LENGTH+1) ;

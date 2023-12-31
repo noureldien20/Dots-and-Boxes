@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 #include "Basic_Var_and_Func.h"
 #include "Save_Load.h"
