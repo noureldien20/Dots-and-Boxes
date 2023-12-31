@@ -12,6 +12,7 @@
 #define red "\x1b[0;91m"
 #define green "\x1b[0;92m"
 #define yellow "\x1b[0;93m"
+#define purple "\x1b[0;95m"
 #define cyan "\x1b[96m"
 #define white "\x1b[97m"
 #define back_cyan "\x1b[106m"

@@ -121,7 +121,7 @@ void welcome(){
    printf("\t\t\t\t\t");
    for(int i=0 ; i<29 ; i++){
       Sleep(100) ;
-      printf("%c",str[i]);
+      printf(purple"%c"RESET,str[i]) ;
    }
 
 }
