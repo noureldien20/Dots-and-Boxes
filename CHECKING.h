@@ -262,7 +262,13 @@ void trace_horizontal(short int a,short int b,unsigned short int sign){
 }
 
 void DFS(){
+   printf("\nhere with a = %d , b = %d , director = %d\n",indexes[0],indexes[1],director);
 
+   if(!director)
+   {
+      return;
+   }
+   
    if(director == 1){
       trace_vertical(indexes[0],indexes[1],0) ;
 

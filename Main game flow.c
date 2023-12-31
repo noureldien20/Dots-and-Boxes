@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 #include "Basic_Var_and_Func.h"
 #include "Save_Load.h"
@@ -30,13 +30,13 @@ indexes of loops names ---> i,j,k
 /********************************** بسم الله الرحمن الرحيم  **************************************/
 
 int main(){
-    printf("Welcome to Dots & Boxes game\n");
-
+    //printf("Welcome to Dots & Boxes game\n");
+    welcome();
     while(1){
         print_menu();
 
-        pthread_t time_thread ;
-        pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        //pthread_t time_thread ;
+        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
         display_stats();
