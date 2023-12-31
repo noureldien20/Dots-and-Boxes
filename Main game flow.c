@@ -44,7 +44,7 @@ int main(){
 
         while(number_of_filled_boxes() != n*n)
         {   
-            temp_time = current_game.elapsed_time + 60 ;
+            temp_time = current_game.elapsed_time + 60;
             //previous_state = current_game;
             current_game.previous_sum = number_of_filled_boxes();
             
