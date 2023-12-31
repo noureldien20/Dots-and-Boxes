@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 #include "Basic_Var_and_Func.h"
 #include "Save_Load.h"
@@ -36,16 +36,16 @@ int main(){
     {
         print_menu();
 
-        pthread_t time_thread ;
-        pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        //pthread_t time_thread ;
+        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
         display_stats();
-        push() ; // new by ahmed
-        printf("\npointer index = %d\n",Game_stack.pointer_to_index) ; // new by ahmed
+        //push() ; // new by ahmed
         
         while(number_of_filled_boxes() != n*n)
         {   
+            printf("\npointer index = %d\n",Game_stack.pointer_to_index) ; // new by ahmed
             temp_time = current_game.elapsed_time + 60;
             //previous_state = current_game;
             current_game.previous_sum = number_of_filled_boxes();
@@ -53,7 +53,6 @@ int main(){
             if(current_game.mode == 2) // 2 players
             {
                 input_nodes();
-                push() ; // new by ahmed
             }
             else //play vs computer
             {

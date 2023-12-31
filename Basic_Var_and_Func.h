@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+//#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -167,7 +167,7 @@ void time_passed(){
             
         }
 
-        Sleep(1000) ;
+        //Sleep(1000) ;
         current_game.elapsed_time++; 
     }
 }
@@ -187,7 +187,7 @@ void switch_turn()
 
     if(temp == current_game.previous_sum)
     {
-        empty_stack();   
+        empty_stack();
         current_game.turn = (current_game.turn == '1') ? '2' : '1';
         turn = current_game.turn;
         //double_push_flag == 1;

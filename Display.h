@@ -110,7 +110,7 @@ void display_stats()
 
     printf(cyan"%s -------> (Score : %d) , (Moves : %d)\n"RESET, current_game.player_1.name, current_game.player_1.score, current_game.player_1.number_of_moves);
     printf(green"%s -------> (Score : %d) , (Moves : %d)\n\n"RESET, current_game.player_2.name, current_game.player_2.score, current_game.player_2.number_of_moves);
-    printf("Remaining Boxes : %d\n", number_of_filled_boxes()) ;
+    printf("Remaining Boxes : %d\n", n * n - number_of_filled_boxes()) ;
     printf("Time :  %02d : %02d\n\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
 }
 
