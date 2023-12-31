@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include <pthread.h>
+#include <ctype.h>
+//#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -29,7 +30,7 @@ number of dots  = (n+1)(n+1)
 indexes of loops names ---> i,j,k **/
 
 #define MAX_PLAYERS_TO_PRINT 10
-#define MAX_NAME_LENGTH 10
+#define MAX_NAME_LENGTH 20
 #define MAX_GRID_SIZE 9
 #define MAX_SIZE_OF_STACK 15
 
