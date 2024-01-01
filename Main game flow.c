@@ -87,7 +87,7 @@ int main(){
         }
         else
         {
-            printf(yellow"\n\t\t\t\t TIE "RESET);
+            printf(yellow"\n\t\t\t\t TIE \n"RESET);
         }
 
         printTopPlayers();

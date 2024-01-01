@@ -6,7 +6,7 @@
 #include <time.h>
 #include <string.h>
 #include <ctype.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
@@ -175,7 +175,6 @@ void time_passed(){
         current_game.elapsed_time++ ;
         
     }
-    //printf("\nend of thread\n");
 }
 
 void switch_turn()
