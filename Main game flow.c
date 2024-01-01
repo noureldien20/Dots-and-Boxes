@@ -76,13 +76,13 @@ int main(){
         if(current_game.player_1.score > current_game.player_2.score)
         {
             player winnerName = current_game.player_1;
-            printf(green"Winner is %s"RESET, winnerName.name) ;
+            printf(green"Winner is %s\n"RESET, winnerName.name) ;
             Winner(&winnerName);
         }
         else if(current_game.player_1.score < current_game.player_2.score)
         {
             player winnerName = current_game.player_2;
-            printf(green"Winner is %s"RESET, winnerName.name) ;
+            printf(green"Winner is %s\n"RESET, winnerName.name) ;
             Winner(&winnerName);
         }
         else
