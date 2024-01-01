@@ -72,11 +72,23 @@ int main(){
             }
         }
 
-        player winnerName = (current_game.player_1.score > current_game.player_2.score)
-        ? current_game.player_1
-        : current_game.player_2 ;
-        Winner(&winnerName);
-        printf("Winner is ") ;
+        if(current_game.player_1.score > current_game.player_2.score)
+        {
+            player winnerName = current_game.player_1;
+            printf("Winner is %s", winnerName.name) ;
+            Winner(&winnerName);
+        }
+        else if(current_game.player_1.score < current_game.player_2.score)
+        {
+            player winnerName = current_game.player_2;
+            printf("Winner is %s", winnerName.name) ;
+            Winner(&winnerName);
+        }
+        else
+        {
+            printf("\n TIE ");
+        }
+
         printTopPlayers();
 
         free(row_edges);
