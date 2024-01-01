@@ -7,6 +7,8 @@
 
 void push(){
     Game_stack.pointer_to_index++;
+
+    //Copy “current_game“ data to the to the top of the stack
     
     copy_current_game_arrays_from_Ahmed();
     Game_stack.array[Game_stack.pointer_to_index].index_flag = current_game.index_flag;
@@ -34,8 +36,9 @@ void push(){
 
 void undo(){
 
-    if (Game_stack.pointer_to_index > 0)
+    if (Game_stack.pointer_to_index > 0) //Check if the “pointer_to_index” is bigger than zero (stack not empty)
     {
+        //Copy the data from the game at top of stack to “current_game”
         Game_stack.pointer_to_index--;
         current_game.index_flag = Game_stack.array[Game_stack.pointer_to_index].index_flag;
         current_game.size = Game_stack.array[Game_stack.pointer_to_index].size;
@@ -70,7 +73,11 @@ void redo(){
 
     if (Game_stack.array[Game_stack.pointer_to_index + 1].index_flag == 1)
     {
+        //Check if the “index_flag” of the game after the top of stack = 1 (a game exists and can be copies)
+
         Game_stack.pointer_to_index++;
+        
+        //Copy the data from the game after the top of stack to “current_game” (currently at the top of the stack)
         current_game.index_flag = Game_stack.array[Game_stack.pointer_to_index].index_flag;
         current_game.size = Game_stack.array[Game_stack.pointer_to_index].size;
         current_game.turn = Game_stack.array[Game_stack.pointer_to_index].turn;
@@ -110,6 +117,10 @@ void empty_redo_stack(){
         }
     }
 }
+/*
+It loops from the game after the top of the stack and stops when it encounters “index_flag” equal to zero
+The loop checks if the “index_flag” is equal to 1 if yes if changes it to zero
+*/
 
 void empty_stack()
 {
@@ -124,5 +135,9 @@ void empty_stack()
 
     Game_stack.pointer_to_index = -1 ;
 }
+/*
+It loops from the beginning of the stack until it encounters a “index_flag” equal to zero
+The loop checks if the “index_flag” is equal to 1 if yes if changes it to zero
+*/
 
 #endif

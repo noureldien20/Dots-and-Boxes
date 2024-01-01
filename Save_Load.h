@@ -118,53 +118,6 @@ void Winner(player* winner)
     free(players);
 }
 
-// Function to serialize and save the game to a binary file
-/*int saveGame(game* gamePtr) 
-{
-    copy_current_game_arrays_from_Ahmed();
-
-    file = fopen("saved_game.bin", "wb");
-    if (file != NULL) 
-    {
-        // Serialize the game struct
-        fwrite(gamePtr, sizeof(game), 1, file);
-        fclose(file);
-        printf("Game saved successfully.\n");
-        return 1;
-    }
-    else 
-    {
-        fprintf(stderr, "Unable to open file for saving.\n");
-        return 0;
-    }
-}
-
-// Function to deserialize and load the game from a binary file
-void loadGame(game* gamePtr) 
-{
-    file = fopen("saved_game.bin", "rb");
-    if (file != NULL) 
-    {
-        // Get the size of the file
-        fseek(file, 0, SEEK_END);
-        long fileSize = ftell(file);
-        fseek(file, 0, SEEK_SET);
-
-        // Deserialize the game struct
-        char* buffer = (char*)malloc(fileSize);
-        fread(buffer, fileSize, 1, file);
-        memcpy(gamePtr, buffer, sizeof(game));
-        free(buffer);
-
-        fclose(file);
-        printf("Game loaded successfully.\n");
-    } 
-    else 
-    {
-        fprintf(stderr, "Unable to open file for loading.\n");
-    }
-}*/
-
 void saveGame(game *gamePtr) 
 {
     char fileName[20];
