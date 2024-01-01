@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-//#include <pthread.h>
+#include <pthread.h>
 
 #include "Basic_Var_and_Func.h"
 #include "Save_Load.h"
@@ -30,16 +30,17 @@ indexes of loops names ---> i,j,k
 /********************************** بسم الله الرحمن الرحيم  **************************************/
 
 int main(){
-    //printf("Welcome to Dots & Boxes game\n");
-    welcome();
+    
+    welcome() ;
     while(1){
         print_menu();
 
-        //pthread_t time_thread ;
-        //pthread_create(&time_thread, NULL, time_passed, NULL) ;
+        pthread_t time_thread ;
+        pthread_create(&time_thread, NULL, time_passed, NULL) ;
 
         print_grid();
         display_stats();
+        //printf(cyan"\n%s's turn\n"RESET,current_game.player_1.name);
         
         while(number_of_filled_boxes() != n*n)
         {   
@@ -71,7 +72,7 @@ int main(){
                 push();
             }
         }
-
+        end_flag = 1 ;
         player winnerName = (current_game.player_1.score > current_game.player_2.score)
         ? current_game.player_1
         : current_game.player_2 ;
@@ -79,9 +80,11 @@ int main(){
         printf("Winner is ") ;
         printTopPlayers();
 
-        free(row_edges);
+        free(row_edges) ;
         free(col_edges);
         free(dfs);
         free(boxes);
     }
+
+
 }

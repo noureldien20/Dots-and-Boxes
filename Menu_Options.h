@@ -57,6 +57,9 @@ void print_options()
     else if(op =='s')
     {
         saveGame(&current_game);
+        print_grid();
+        display_stats();
+        UndoRedoFlag = 1 ;
         return;
     }
     else if(op =='e')

@@ -4,6 +4,8 @@
 #include "Basic_Var_and_Func.h"
 #include "Display.h"
 
+void print_options() ;
+
 FILE* file;
 
 void print_menu();
@@ -215,7 +217,7 @@ void saveGame(game *gamePtr)
     else 
     {
         printf("Unable to open file %s for saving.\n", fileName);
-        print_menu();
+        print_options();
 
     }
 }

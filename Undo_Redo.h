@@ -96,7 +96,7 @@ void redo(){
 
         printf(green"\nRedo is done successfully.\n"RESET);
     }else{
-        printf(red"\nnCannot redo anymore\n"RESET);
+        printf(red"\nCannot redo anymore\n"RESET);
     }
 }
 

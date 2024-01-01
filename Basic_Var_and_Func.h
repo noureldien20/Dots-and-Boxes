@@ -10,10 +10,10 @@
 
 /******************************** بسم الله الرحمن الرحيم  ***********************************/
 
-#define red "\x1b[0;91m"
-#define green "\x1b[0;92m"
-#define yellow "\x1b[0;93m"
-#define purple "\x1b[0;95m"
+#define red "\x1b[91m"
+#define green "\x1b[92m"
+#define yellow "\x1b[93m"
+#define purple "\x1b[95m"
 #define cyan "\x1b[96m"
 #define white "\x1b[97m"
 #define back_cyan "\x1b[106m"
@@ -74,6 +74,7 @@ char **dfs ;
 char turn = '1' ;
 int temp_time; //add me to reset variables
 int UndoRedoFlag ;
+short int end_flag = 0 ;
 
 short int indexes[3] = {0,0,0} ;
 //third element in indexes array express edge is row or col  [row ---> 0] , [col ---> 1]
@@ -145,9 +146,9 @@ short int number_of_filled_boxes()
 {
     short int count = 0;
 
-    for (short int i = 0; i < n; ++i)
+    for (short int i = 0; i < n; i++)
     {
-        for (short int j = 0; j < n; ++j)
+        for (short int j = 0; j < n; j++)
         {
             if (boxes[i][j] != '\0')
             {
@@ -159,16 +160,22 @@ short int number_of_filled_boxes()
 }
 
 void time_passed(){
-    while((number_of_filled_boxes()) != n*n){
+    
+    end_flag = 0 ;
+    while(1){
 
         if(current_game.elapsed_time == temp_time){
             printf("\nTime:  %02d : %02d\n", current_game.elapsed_time / 60, current_game.elapsed_time % 60 );
             
         }
 
+        if(end_flag){break ;}
+
         Sleep(1000) ;
-        current_game.elapsed_time++; 
+        current_game.elapsed_time++ ;
+        
     }
+    //printf("\nend of thread\n");
 }
 
 void switch_turn()
