@@ -16,8 +16,8 @@
 player 2 ---> green , name2
 dots ---> white
 
-line constant --> 7 underscores _
-space ---> '\t' --> 7 spaces
+line constant --> 12 underscores _
+space ---> '\t' --> 12 spaces
 
 /** Names of variables
 row_edges ---> 2D array of the edges of rows  ( of size [n+1][n])
@@ -72,12 +72,24 @@ int main(){
                 push();
             }
         }
-        end_flag = 1 ;
-        player winnerName = (current_game.player_1.score > current_game.player_2.score)
-        ? current_game.player_1
-        : current_game.player_2 ;
-        Winner(&winnerName);
-        printf("Winner is ") ;
+
+        if(current_game.player_1.score > current_game.player_2.score)
+        {
+            player winnerName = current_game.player_1;
+            printf(green"Winner is %s"RESET, winnerName.name) ;
+            Winner(&winnerName);
+        }
+        else if(current_game.player_1.score < current_game.player_2.score)
+        {
+            player winnerName = current_game.player_2;
+            printf(green"Winner is %s"RESET, winnerName.name) ;
+            Winner(&winnerName);
+        }
+        else
+        {
+            printf(yellow"\n\t\t\t\t TIE "RESET);
+        }
+
         printTopPlayers();
 
         free(row_edges) ;

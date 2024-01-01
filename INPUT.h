@@ -392,6 +392,19 @@ void getPlayerName(player *player, short int i)
     printf("Enter player %hd name [MAX %d]: ", i, MAX_NAME_LENGTH);
 
     temp = take_input(MAX_NAME_LENGTH);
+
+    while (*temp == ' ') 
+    {
+        temp++;
+    }
+    /* 
+    *temp: This dereferences the pointer temp to get the value (character) it points to.
+    *temp == ' ': This checks if the character at the current position is a space
+    The loop condition while (*temp == ' ') continues to execute as long as the character 
+    at the current position is a space. Inside the loop, temp++ increments the pointer temp
+    to move to the next character in the string
+    */
+
     short int found = 0;
 
     if(temp[0] == '\0')
